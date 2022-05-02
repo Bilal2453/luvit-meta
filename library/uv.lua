@@ -187,7 +187,7 @@ function uv.update_time() end
 ---end)
 ---```
 ---
----@param callback fun(handle: uv_handle_t)
+---@param callback fun(handle: handle_types)
 function uv.walk(callback) end
 
 
@@ -226,6 +226,16 @@ uv_req_t.get_type = uv.req_get_type
 ---
 ---@class uv_handle_t
 local uv_handle_t = {}
+
+---@alias handle_types
+---|uv_handle_t
+---|uv_stream_t
+---|uv_tcp_t
+---|uv_pipe_t
+---|uv_tty_t
+---|uv_udp_t
+---|uv_fs_event_t
+---|uv_fs_poll_t
 
 ---
 ---Returns `true` if the handle is active, `false` if it's inactive. What "active”
@@ -274,7 +284,7 @@ uv_handle_t.is_closing = uv.is_closing
 ---have their callbacks called asynchronously with `ECANCELED`.
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
----@param callback callable
+---@param callback? callable
 function uv.close(handle, callback) end
 uv_handle_t.close = uv.close
 
@@ -811,7 +821,7 @@ function uv.new_signal() end
 ---
 ---@param signal uv_signal_t
 ---@param signum integer|string
----@param callback fun(signum: string)
+---@param callback? fun(signum: string)
 ---@return 0|nil, string?, string?
 function uv.signal_start(signal, signum, callback) end
 uv_signal_t.start = uv.signal_start
@@ -821,7 +831,7 @@ uv_signal_t.start = uv.signal_start
 ---
 ---@param signal uv_signal_t
 ---@param signum integer|string
----@param callback fun(signum: string)
+---@param callback? fun(signum: string)
 ---@return 0|nil, string?, string?
 function uv.signal_start_oneshot(signal, signum, callback) end
 uv_signal_t.start_oneshot = uv.signal_start_oneshot
@@ -2092,12 +2102,10 @@ function uv.new_fs_poll() end
 ---@param fs_event uv_fs_event_t
 ---@param path string
 ---@param interval integer
----@param callback fun(err?: string, prev: table, curr: table)
+---@param callback fun(err?: string, prev: fs_stat_struct, curr: fs_stat_struct)
 ---@return 0|nil, string?, string?
 function uv.fs_poll_start(fs_event, path, interval, callback) end
 uv_fs_poll_t.start = uv.fs_poll_start
-
--- TODO: above callback has prev and curr, which are a return of uv._fs_stat. make an alias of that
 
 ---
 ---Stop the handle, the callback will no longer be called.
@@ -2312,30 +2320,41 @@ function uv.fs_scandir(path, callback) end
 ---@return string|nil, string|nil, string?, string?
 function uv.fs_scandir_next(fs) end
 
+---@alias fs_types
+---|'"file"'
+---|'"directory"'
+---|'"link"'
+---|'"fifo"'
+---|'"socket"'
+---|'"char"'
+---|'"block"'
+---|'"unknown"'
+---@alias fs_stat_struct {gen: integer, flags: integer, atime: {nsec: integer, sec: integer}, ctime: {nsec: integer, sec: integer}, birthtime: {nsec: integer, sec: integer}, uid: integer, gid: integer, mtime: {nsec: integer, sec: integer}, size: integer, type: fs_types, nlink: integer, dev: integer, mode: integer, rdev: integer, ino: integer, blksize: integer, blocks: integer}
+
 ---
 ---Equivalent to `stat(2)`.
 ---
----@overload fun(path: string): table|nil, string?, string?
+---@overload fun(path: string): fs_stat_struct|nil, string?, string?
 ---@param path string
----@param callback fun(err: nil|string, stat: table|nil)
+---@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function uv.fs_stat(path, callback) end
 
 ---
 ---Equivalent to `fstat(2)`.
 ---
----@overload fun(fd: integer): table|nil, string?, string?
+---@overload fun(fd: integer): fs_stat_struct|nil, string?, string?
 ---@param fd integer
----@param callback fun(err: nil|string, stat: table|nil)
+---@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function uv.fs_fstat(fd, callback) end
 
 ---
 ---Equivalent to `lstat(2)`.
 ---
----@overload fun(fd: integer): table|nil, string?, string?
+---@overload fun(fd: integer): fs_stat_struct|nil, string?, string?
 ---@param fd integer
----@param callback fun(err: nil|string, stat: table|nil)
+---@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function uv.fs_lstat(fd, callback) end
 
