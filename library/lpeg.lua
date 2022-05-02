@@ -1,7 +1,5 @@
 ---@meta
 
--- TODO: Fix all links
-
 ---@alias pattern lpeg-pattern|string|number|boolean|table|function
 
 ---
@@ -41,11 +39,11 @@ function lpeg.type(value) end
 function lpeg.setmaxstack(max) end
 
 ---
----The matching function. It attempts to match the given pattern against the subject string. If the match succeeds, returns the index in the subject of the first character after the match, or the [captured values](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#captures) (if the pattern captured any value).
+---The matching function. It attempts to match the given pattern against the subject string. If the match succeeds, returns the index in the subject of the first character after the match, or the [captured values](https://www.inf.puc-rio.br/~roberto/lpeg/#captures) (if the pattern captured any value).
 ---
 ---An optional numeric argument `init` makes the match start at that position in the subject string. As usual in Lua libraries, a negative value counts from the end.
 ---
----Unlike typical pattern-matching functions, `match` works only in anchored mode; that is, it tries to match the pattern with a prefix of the given subject string (at position `init`), not with an arbitrary substring of the subject. So, if we want to find a pattern anywhere in a string, we must either write a loop in Lua or write a pattern that matches anywhere. This second approach is easy and quite efficient; see [examples](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#ex).
+---Unlike typical pattern-matching functions, `match` works only in anchored mode; that is, it tries to match the pattern with a prefix of the given subject string (at position `init`), not with an arbitrary substring of the subject. So, if we want to find a pattern anywhere in a string, we must either write a loop in Lua or write a pattern that matches anywhere. This second approach is easy and quite efficient; see [examples](https://www.inf.puc-rio.br/~roberto/lpeg/#ex).
 ---
 ---@param pattern pattern
 ---@param subject string
@@ -62,13 +60,13 @@ function lpeg.match(pattern, subject, init) end
 ---
 --- - If the argument is a non-negative number *n*, the result is a pattern that matches exactly *n* characters.
 ---
---- - If the argument is a negative number *-n*, the result is a pattern that succeeds only-if the input string has less than *n* characters left: `lpeg.P(-n)` is equivalent to `-lpeg.P(n)` (see the [unary minus operation](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#op-unm)).
+--- - If the argument is a negative number *-n*, the result is a pattern that succeeds only-if the input string has less than *n* characters left: `lpeg.P(-n)` is equivalent to `-lpeg.P(n)` (see the [unary minus operation](https://www.inf.puc-rio.br/~roberto/lpeg/op-unm)).
 ---
 --- - If the argument is a boolean, the result is a pattern that always succeeds or always fails (according to the boolean value), without consuming any input.
 ---
---- - If the argument is a table, it is interpreted as a grammar (see [Grammars](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#grammar)).
+--- - If the argument is a table, it is interpreted as a grammar (see [Grammars](https://www.inf.puc-rio.br/~roberto/lpeg/#grammar)).
 ---
---- - If the argument is a function, returns a pattern equivalent to a [match-time capture](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#matchtime) over the empty string.
+--- - If the argument is a function, returns a pattern equivalent to a [match-time capture](https://www.inf.puc-rio.br/~roberto/lpeg/#matchtime) over the empty string.
 ---
 ---@param value pattern
 ---@return lpeg-pattern
@@ -77,7 +75,7 @@ function lpeg.P(value) end
 ---
 ---Returns a pattern that matches only if the input string at the current position is preceded by `patt`. Pattern `patt` must match only strings with some fixed length, and it cannot contain captures.
 ---
----Like the [and predicate](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#op-len), this pattern never consumes any input, independently of success or failure.
+---Like the [and predicate](https://www.inf.puc-rio.br/~roberto/lpeg/#op-len), this pattern never consumes any input, independently of success or failure.
 ---
 ---@param patt pattern
 ---@return lpeg-pattern
@@ -104,7 +102,7 @@ function lpeg.R(range) end
 function lpeg.S(string) end
 
 ---
----This operation creates a non-terminal (a *variable*) for a grammar. The created non-terminal refers to the rule indexed by `v` in the enclosing grammar. (See [Grammars](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#grammar) for details.)
+---This operation creates a non-terminal (a *variable*) for a grammar. The created non-terminal refers to the rule indexed by `v` in the enclosing grammar. (See [Grammars](https://www.inf.puc-rio.br/~roberto/lpeg/#grammar) for details.)
 ---
 ---@param v pattern
 ---@return lpeg-pattern
@@ -150,7 +148,7 @@ function lpeg.C(patt) end
 function lpeg.Carg(n) end
 
 ---
----Creates a *back capture*. This pattern matches the empty string and produces the values produced by the *most recent* [group capture](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#cap-g) named `name` (where `name` can be any Lua value).
+---Creates a *back capture*. This pattern matches the empty string and produces the values produced by the *most recent* [group capture](https://www.inf.puc-rio.br/~roberto/lpeg/#cap-g) named `name` (where `name` can be any Lua value).
 ---
 ---*Most recent* means the last *complete outermost* group capture with the given name. A *Complete* capture means that the entire pattern corresponding to the capture has matched. An *Outermost* capture means that the capture is not inside another complete capture.
 ---
@@ -171,7 +169,7 @@ function lpeg.Cc(value, ...) end
 ---
 ---Creates a *fold capture*. If `patt` produces a list of captures `C1 C2 ... Cn`, this capture will produce the value `func(...func(func(C1, C2), C3)..., Cn)`, that is, it will *fold* (or *accumulate*, or *reduce*) the captures from `patt` using function `func`.
 ---
----This capture assumes that `patt` should produce at least one capture with at least one value (of any type), which becomes the initial value of an *accumulator*. (If you need a specific initial value, you may prefix a [constant capture](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#cap-cc) to `patt`.) For each subsequent capture, LPeg calls `func` with this accumulator as the first argument and all values produced by the capture as extra arguments; the first result from this call becomes the new value for the accumulator. The final value of the accumulator becomes the captured value.
+---This capture assumes that `patt` should produce at least one capture with at least one value (of any type), which becomes the initial value of an *accumulator*. (If you need a specific initial value, you may prefix a [constant capture](https://www.inf.puc-rio.br/~roberto/lpeg/#cap-cc) to `patt`.) For each subsequent capture, LPeg calls `func` with this accumulator as the first argument and all values produced by the capture as extra arguments; the first result from this call becomes the new value for the accumulator. The final value of the accumulator becomes the captured value.
 ---
 ---As an example, the following pattern matches a list of numbers separated by commas and returns their addition:
 ---```lua
@@ -198,7 +196,7 @@ function lpeg.Cf(patt, func) end
 ---
 ---Creates a *group capture*. It groups all values returned by `patt` into a single capture. The group may be anonymous (if no name is given) or named with the given name (which can be any non-nil Lua value).
 ---
----An anonymous group serves to join values from several captures into a single capture. A named group has a different behavior. In most situations, a named group returns no values at all. Its values are only relevant for a following [back capture](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#cap-b) or when used inside a [table capture](file:///mnt/data/bilal/home/documents/Wikis/Parsing/LPEG%20docs/LPeg%20-%20Parsing%20Expression%20Grammars%20For%20Lua.htm#cap-t).
+---An anonymous group serves to join values from several captures into a single capture. A named group has a different behavior. In most situations, a named group returns no values at all. Its values are only relevant for a following [back capture](https://www.inf.puc-rio.br/~roberto/lpeg/#cap-b) or when used inside a [table capture](https://www.inf.puc-rio.br/~roberto/lpeg/#cap-t).
 ---
 ---@param patt pattern
 ---@param name? any
