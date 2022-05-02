@@ -9,7 +9,7 @@
 ---That is, the `require` you use inside the required `modname` is Lua's, which does not understand `deps`/`libs` directories.
 ---
 ---[View Lua 5.1 documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-require"])
----[View Luvit documents](TODO)
+---[View Luvit documents](https://luvit.io/api/require.html)
 ---
 ---@param modname string
 ---@return unknown
