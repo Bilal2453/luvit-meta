@@ -1,10 +1,11 @@
 ---@meta
 
 ---
---- TODO
----Command-line arguments of Lua Standalone.
+---The raw `argc` and `argv` from C side exposed as a **zero** indexed lua table of strings.
 ---
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-arg"])
+---```lua
+---p('Your args were ', args)
+---```
 ---
 ---@type string[]
 args = {
@@ -174,8 +175,13 @@ function loadstring(text, chunkname) end
 function newproxy(proxy) end
 
 ---
---- TODO
----@type {exports: string[], path: string, dir: string}
+---A global that holds information about the current loaded module
+---
+--- - path: the path to the module.
+--- - dir: the path to directory containing the module.
+--- - exports: an initially empty table that can be used to export values out of the module. Module returns override this,
+---
+---@type {exports: any[], path: string, dir: string}
 module = {}
 
 ---
