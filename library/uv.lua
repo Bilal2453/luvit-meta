@@ -9,7 +9,6 @@
 ---@class uv
 local uv = {}
 
----@alias callable function|table|userdata
 ---@alias buffer string|string[]
 ---@alias threadargs userdata|string|number|boolean|nil
 
@@ -284,7 +283,7 @@ uv_handle_t.is_closing = uv.is_closing
 ---have their callbacks called asynchronously with `ECANCELED`.
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
----@param callback? callable
+---@param callback? function
 function uv.close(handle, callback) end
 uv_handle_t.close = uv.close
 
@@ -431,7 +430,7 @@ function uv.new_timer() end
 ---@param timer uv_timer_t
 ---@param timeout integer
 ---@param repeat_n integer
----@param callback callable
+---@param callback function
 ---@return 0|nil, string?, string?
 function uv.timer_start(timer, timeout, repeat_n, callback) end
 uv_timer_t.start = uv.timer_start
@@ -516,7 +515,7 @@ function uv.new_prepare() end
 ---Start the handle with the given callback.
 ---
 ---@param prepare uv_prepare_t
----@param callback callable
+---@param callback function
 ---@return 0|nil, string?, string?
 function uv.prepare_start(prepare, callback) end
 uv_prepare_t.start = uv.prepare_start
@@ -555,7 +554,7 @@ function uv.new_check() end
 ---Start the handle with the given callback.
 ---
 ---@param check uv_check_t
----@param callback callable
+---@param callback function
 ---@return 0|nil, string?, string?
 function uv.check_start(check, callback) end
 uv_check_t.start = uv.check_start
@@ -601,7 +600,7 @@ function uv.new_idle() end
 ---Start the handle with the given callback.
 ---
 ---@param idle uv_idle_t
----@param callback callable
+---@param callback function
 ---@return 0|nil, string?, string?
 function uv.idle_start(idle, callback) end
 uv_idle_t.start = uv.idle_start
@@ -1117,7 +1116,7 @@ local uv_write_t = {}
 ---@param stream uv_stream_t
 ---@param data buffer
 ---@param send_handle uv_tcp_t|uv_pipe_t
----@param callback callable|nil
+---@param callback function|nil
 ---@return uv_write_t|nil, string?, string?
 function uv.write2(stream, data, send_handle, callback) end
 uv_stream_t.write2 = uv.write2
@@ -1336,7 +1335,7 @@ uv_tcp_t.write_queue_size = uv.tcp_write_queue_size
 ---and `uv.tcp_close_reset()` calls is not allowed.
 ---
 ---@param tcp uv_tcp_t
----@param callback callable|nil
+---@param callback function|nil
 ---@return 0|nil, string?, string?
 function uv.tcp_close_reset(tcp, callback) end
 uv_tcp_t.close_reset = uv.tcp_close_reset
