@@ -1,4 +1,3 @@
--- TODO: change userdata types into Luv's stream
 -- TODO: Description for methods
 
 ---
@@ -6,9 +5,9 @@
 ---
 ---@class pretty-print
 ---@field theme table<colors_names, string> # The currently loaded theme.
----@field stdin  userdata # stdin stream
----@field stdout userdata # stdout stream
----@field stderr userdata # stderr stream
+---@field stdin  uv_stream_t|uv_pipe_t # stdin stream
+---@field stdout uv_stream_t|uv_pipe_t # stdout stream
+---@field stderr uv_stream_t|uv_pipe_t # stderr stream
 local pretty_print = {}
 
 ---
