@@ -421,9 +421,3 @@ function xpcall(f, msgh, arg1, ...) end
 ---@return T
 ---@nodiscard
 function unpack(list, i, j) end
-
---[[ Luvit special globals ]]
-
----@type pretty-print
-local pretty_print = {}
-p = pretty_print.prettyPrint
