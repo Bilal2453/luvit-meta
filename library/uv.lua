@@ -1,3 +1,5 @@
+---@meta
+
 ---
 ---The [luv](https://github.com/luvit/luv/) project provides access to the multi-platform support library
 ---[libuv](http://libuv.org/) in Lua code. It was primarily developed for the [luvit](https://github.com/luvit/luvit/) project as

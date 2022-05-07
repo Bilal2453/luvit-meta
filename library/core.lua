@@ -1,3 +1,5 @@
+---@meta
+
 ---
 ---Core object model for luvit using simple prototypes and inheritance.
 ---

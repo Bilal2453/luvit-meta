@@ -1,3 +1,5 @@
+---@meta
+
 -- TODO: Description for methods
 
 ---
@@ -61,6 +63,7 @@ function pretty_print.console_write(fs, s) end
 ---@vararg any
 ---@return nil
 function pretty_print.prettyPrint(...) end
+p = pretty_print.prettyPrint
 
 
 -- TODO: Continue themes
