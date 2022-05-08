@@ -124,18 +124,22 @@ function Emitter:missingHandlerType(name, ...) end
 ---
 ---Same as `Emitter:on` except it de-registers itself after the first event.
 ---
+---@generic T: Emitter
+---@param self T
 ---@param name string            # The event name to listen on
 ---@param callback fun(...: any) # The callback to execute on event fire
----@return Emitter self
+---@return T self
 function Emitter:once(name, callback) end
 
 ---
 ---Adds an event listener `callback` for the named event `name`.
 ---`callback` will receive whatever `Emitter:emit` passes as arguments.
 ---
+---@generic T: Emitter
+---@param self T
 ---@param name string            # The event name to listen on
 ---@param callback fun(...: any) # The callback to execute on event fire
----@return Emitter self
+---@return T self
 function Emitter:on(name, callback) end
 
 ---
@@ -149,9 +153,11 @@ function Emitter:listenerCount(name) end
 ---
 ---Emit a named event to all listeners with optional data argument(s).
 ---
+---@generic T: Emitter
+---@param self T
 ---@param name string
 ---@param ... any
----@return Emitter self
+---@return T self
 function Emitter:emit(name, ...) end
 
 ---
