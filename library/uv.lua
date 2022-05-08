@@ -52,7 +52,7 @@ local uv_loop_t = {}
 ---loop has finished executing and all open handles and requests have been closed,
 ---or it will return `EBUSY`.
 ---
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.loop_close() end
 
 ---
@@ -76,7 +76,7 @@ function uv.loop_close() end
 ---your initial set of event callbacks to start the event loop.
 ---
 ---@param mode uv_run_mode|nil
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 function uv.run(mode) end
 
 ---@alias uv_run_mode
@@ -105,7 +105,7 @@ function uv.run(mode) end
 ---
 ---@param option string
 ---@param ... any
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.loop_configure(option, ...) end
 
 ---@alias uv_loop_configure_option
@@ -124,7 +124,7 @@ function uv.loop_mode() end
 ---Returns `true` if there are referenced active handles, active requests, or
 ---closing handles in the loop; otherwise, `false`.
 ---
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.loop_alive() end
 
@@ -205,7 +205,7 @@ local uv_req_t = {}
 ---`uv_getnameinfo_t` and `uv_work_t` requests is currently supported.
 ---
 ---@param req uv_req_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.cancel(req) end
 uv_req_t.cancel = uv.cancel
 
@@ -256,7 +256,7 @@ local uv_handle_t = {}
 --- respective stop function.
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.is_active(handle) end
 uv_handle_t.is_active = uv.is_active
@@ -268,7 +268,7 @@ uv_handle_t.is_active = uv.is_active
 ---handle and the arrival of the close callback.
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.is_closing(handle) end
 uv_handle_t.is_closing = uv.is_closing
@@ -309,7 +309,7 @@ uv_handle_t.unref = uv.unref
 ---Returns `true` if the handle referenced, `false` if not.
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.has_ref(handle) end
 uv_handle_t.has_ref = uv.has_ref
@@ -327,7 +327,7 @@ uv_handle_t.has_ref = uv.has_ref
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
 ---@param size? integer # (default: `0`)
----@return integer|nil, string?, string?
+---@return integer|nil, string? err_name, string? err_msg
 function uv.send_buffer_size(handle, size) end
 uv_handle_t.send_buffer_size = uv.send_buffer_size
 
@@ -344,7 +344,7 @@ uv_handle_t.send_buffer_size = uv.send_buffer_size
 ---
 ---@param handle uv_handle_t `userdata` for sub-type of `uv_handle_t`
 ---@param size? integer # (default: `0`)
----@return integer|nil, string?, string?
+---@return integer|nil, string? err_name, string? err_msg
 function uv.recv_buffer_size(handle, size) end
 uv_handle_t.recv_buffer_size = uv.recv_buffer_size
 
@@ -361,7 +361,7 @@ uv_handle_t.recv_buffer_size = uv.recv_buffer_size
 ---control of the file descriptor so any change to it may lead to malfunction.
 ---
 ---@param handle uv_handle_t `userdata` for sub-type of `uv_handle_t`
----@return integer|nil, string?, string?
+---@return integer|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.fileno(handle) end
 uv_handle_t.recv_buffer_size = uv.recv_buffer_size
@@ -418,7 +418,7 @@ local uv_timer_t = {}
 ---end
 ---```
 ---
----@return uv_timer_t|nil, string?, string?
+---@return uv_timer_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_timer() end
 
@@ -433,7 +433,7 @@ function uv.new_timer() end
 ---@param timeout integer
 ---@param repeat_n integer
 ---@param callback function
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.timer_start(timer, timeout, repeat_n, callback) end
 uv_timer_t.start = uv.timer_start
 
@@ -441,7 +441,7 @@ uv_timer_t.start = uv.timer_start
 ---Stop the timer, the callback will not be called anymore.
 ---
 ---@param timer uv_timer_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.timer_stop(timer) end
 uv_timer_t.stop = uv.timer_stop
 
@@ -450,7 +450,7 @@ uv_timer_t.stop = uv.timer_stop
 ---timeout. If the timer has never been started before it raises `EINVAL`.
 ---
 ---@param timer uv_timer_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.timer_again(timer) end
 uv_timer_t.again = uv.timer_again
 
@@ -509,7 +509,7 @@ local uv_prepare_t = {}
 ---Creates and initializes a new `uv_prepare_t`. Returns the Lua userdata wrapping
 ---it.
 ---
----@return uv_prepare_t|nil, string?, string?
+---@return uv_prepare_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_prepare() end
 
@@ -518,7 +518,7 @@ function uv.new_prepare() end
 ---
 ---@param prepare uv_prepare_t
 ---@param callback function
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.prepare_start(prepare, callback) end
 uv_prepare_t.start = uv.prepare_start
 
@@ -526,7 +526,7 @@ uv_prepare_t.start = uv.prepare_start
 ---Stop the handle, the callback will no longer be called.
 ---
 ---@param prepare uv_prepare_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.prepare_stop(prepare) end
 uv_prepare_t.stop = uv.prepare_stop
 
@@ -548,7 +548,7 @@ local uv_check_t = {}
 ---
 ---Creates and initializes a new `uv_check_t`. Returns the Lua userdata wrapping it.
 ---
----@return uv_check_t|nil, string?, string?
+---@return uv_check_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_check() end
 
@@ -557,7 +557,7 @@ function uv.new_check() end
 ---
 ---@param check uv_check_t
 ---@param callback function
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.check_start(check, callback) end
 uv_check_t.start = uv.check_start
 
@@ -565,7 +565,7 @@ uv_check_t.start = uv.check_start
 ---Stop the handle, the callback will no longer be called.
 ---
 ---@param check uv_check_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.check_stop(check) end
 uv_check_t.stop = uv.check_stop
 
@@ -594,7 +594,7 @@ local uv_idle_t = {}
 ---
 ---Creates and initializes a new `uv_idle_t`. Returns the Lua userdata wrapping it.
 ---
----@return uv_idle_t|nil, string?, string?
+---@return uv_idle_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_idle() end
 
@@ -603,7 +603,7 @@ function uv.new_idle() end
 ---
 ---@param idle uv_idle_t
 ---@param callback function
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.idle_start(idle, callback) end
 uv_idle_t.start = uv.idle_start
 
@@ -611,7 +611,7 @@ uv_idle_t.start = uv.idle_start
 ---Stop the handle, the callback will no longer be called.
 ---
 ---@param idle uv_idle_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.idle_stop(idle) end
 uv_idle_t.stop = uv.idle_stop
 
@@ -641,7 +641,7 @@ local uv_async_t = {}
 ---the handle.
 ---
 ---@param callback fun(...: threadargs)|nil
----@return uv_async_t|nil, string?, string?
+---@return uv_async_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_async(callback) end
 
@@ -659,7 +659,7 @@ function uv.new_async(callback) end
 ---
 ---@param async uv_async_t
 ---@param ... threadargs
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.async_send(async, ...) end
 uv_async_t.send = uv.async_send
 
@@ -699,7 +699,7 @@ local uv_poll_t = {}
 ---The file descriptor is set to non-blocking mode.
 ---
 ---@param fd integer # the file descriptor
----@return uv_poll_t|nil, string?, string?
+---@return uv_poll_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_poll(fd) end
 
@@ -709,7 +709,7 @@ function uv.new_poll(fd) end
 ---The socket is set to non-blocking mode.
 ---
 ---@param fd integer # the file descriptor
----@return uv_poll_t|nil, string?, string?
+---@return uv_poll_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_socket_poll(fd) end
 
@@ -731,7 +731,7 @@ function uv.new_socket_poll(fd) end
 ---@param poll uv_poll_t
 ---@param events uv_poll_events|nil # (default: `"rw"`)
 ---@param callback fun(err?: string, events?: uv_poll_events)
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.poll_start(poll, events, callback) end
 uv_poll_t.start = uv.poll_start
 
@@ -756,7 +756,7 @@ uv_poll_t.start = uv.poll_start
 ---Stop polling the file descriptor, the callback will no longer be called.
 ---
 ---@param poll uv_poll_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.poll_stop(poll) end
 uv_poll_t.stop = uv.poll_stop
 
@@ -813,7 +813,7 @@ local uv_signal_t = {}
 ---
 ---Creates and initializes a new `uv_signal_t`. Returns the Lua userdata wrapping it.
 ---
----@return uv_signal_t|nil, string?, string?
+---@return uv_signal_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_signal() end
 
@@ -823,7 +823,7 @@ function uv.new_signal() end
 ---@param signal uv_signal_t
 ---@param signum integer|string
 ---@param callback? fun(signum: string)
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.signal_start(signal, signum, callback) end
 uv_signal_t.start = uv.signal_start
 
@@ -833,7 +833,7 @@ uv_signal_t.start = uv.signal_start
 ---@param signal uv_signal_t
 ---@param signum integer|string
 ---@param callback? fun(signum: string)
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.signal_start_oneshot(signal, signum, callback) end
 uv_signal_t.start_oneshot = uv.signal_start_oneshot
 
@@ -841,7 +841,7 @@ uv_signal_t.start_oneshot = uv.signal_start_oneshot
 ---Stop the handle, the callback will no longer be called.
 ---
 ---@param signal uv_signal_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.signal_stop(signal) end
 uv_signal_t.stop = uv.signal_stop
 
@@ -980,7 +980,7 @@ function uv.spawn(path, options, on_exit) end
 ---
 ---@param process uv_process_t
 ---@param signum integer|string
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.process_kill(process, signum) end
 uv_process_t.kill = uv.process_kill
 
@@ -990,7 +990,7 @@ uv_process_t.kill = uv.process_kill
 ---
 ---@param pid integer
 ---@param signum integer|string
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.kill(pid, signum) end
 
 ---
@@ -1017,7 +1017,7 @@ local uv_stream_t = {}
 ---
 ---@param stream uv_stream_t
 ---@param callback fun(err?: string)|nil
----@return uv_shutdown_t|nil, string?, string?
+---@return uv_shutdown_t|nil, string? err_name, string? err_msg
 function uv.shutdown(stream, callback) end
 uv_stream_t.shutdown = uv.shutdown
 
@@ -1032,7 +1032,7 @@ local uv_shutdown_t = {}
 ---@param stream uv_stream_t
 ---@param backlog integer
 ---@param callback fun(err?: string)
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.listen(stream, backlog, callback) end
 uv_stream_t.listen = uv.listen
 
@@ -1055,7 +1055,7 @@ uv_stream_t.listen = uv.listen
 ---
 ---@param stream uv_stream_t
 ---@param client_stream uv_stream_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.accept(stream, client_stream) end
 uv_stream_t.accept = uv.accept
 
@@ -1078,7 +1078,7 @@ uv_stream_t.accept = uv.accept
 ---
 ---@param stream uv_stream_t
 ---@param callback fun(err?: string, data?: string)
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.read_start(stream, callback) end
 uv_stream_t.read_start = uv.read_start
 
@@ -1087,7 +1087,7 @@ uv_stream_t.read_start = uv.read_start
 ---This function is idempotent and may be safely called on a stopped stream.
 ---
 ---@param stream uv_stream_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.read_stop(stream) end
 uv_stream_t.read_stop = uv.read_stop
 
@@ -1100,7 +1100,7 @@ uv_stream_t.read_stop = uv.read_stop
 ---@param stream uv_stream_t
 ---@param data buffer
 ---@param callback fun(err?: string)|nil
----@return uv_write_t|nil, string?, string?
+---@return uv_write_t|nil, string? err_name, string? err_msg
 function uv.write(stream, data, callback) end
 uv_stream_t.write = uv.write
 
@@ -1119,7 +1119,7 @@ local uv_write_t = {}
 ---@param data buffer
 ---@param send_handle uv_tcp_t|uv_pipe_t
 ---@param callback function|nil
----@return uv_write_t|nil, string?, string?
+---@return uv_write_t|nil, string? err_name, string? err_msg
 function uv.write2(stream, data, send_handle, callback) end
 uv_stream_t.write2 = uv.write2
 
@@ -1130,7 +1130,7 @@ uv_stream_t.write2 = uv.write2
 ---
 ---@param stream uv_stream_t
 ---@param data buffer
----@return integer|nil, string?, string?
+---@return integer|nil, string? err_name, string? err_msg
 function uv.try_write(stream, data) end
 uv_stream_t.try_write = uv.try_write
 
@@ -1141,7 +1141,7 @@ uv_stream_t.try_write = uv.try_write
 ---@param stream uv_stream_t
 ---@param data buffer
 ---@param send_handle uv_tcp_t|uv_pipe_t
----@return integer|nil, string?, string?
+---@return integer|nil, string? err_name, string? err_msg
 function uv.try_write2(stream, data, send_handle) end
 uv_stream_t.try_write2 = uv.try_write2
 
@@ -1178,7 +1178,7 @@ uv_stream_t.is_writable = uv.is_writable
 ---
 ---@param stream uv_stream_t
 ---@param blocking boolean
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.stream_set_blocking(stream, blocking) end
 uv_stream_t.set_blocking = uv.stream_set_blocking
 
@@ -1202,7 +1202,7 @@ local uv_tcp_t = {}
 ---Creates and initializes a new `uv_tcp_t`. Returns the Lua userdata wrapping it.
 ---
 ---@param flags network_family|nil
----@return uv_tcp_t|nil, string?, string?
+---@return uv_tcp_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_tcp(flags) end
 
@@ -1225,7 +1225,7 @@ function uv.new_tcp(flags) end
 ---
 ---@param tcp uv_tcp_t
 ---@param sock integer
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tcp_open(tcp, sock) end
 uv_tcp_t.open = uv.tcp_open
 
@@ -1234,7 +1234,7 @@ uv_tcp_t.open = uv.tcp_open
 ---
 ---@param tcp uv_tcp_t
 ---@param enable boolean
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tcp_nodelay(tcp, enable) end
 uv_tcp_t.nodelay = uv.tcp_nodelay
 
@@ -1245,7 +1245,7 @@ uv_tcp_t.nodelay = uv.tcp_nodelay
 ---@param tcp uv_tcp_t
 ---@param enable boolean
 ---@param delay integer|nil
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tcp_keepalive(tcp, enable, delay) end
 uv_tcp_t.keepalive = uv.tcp_keepalive
 
@@ -1260,7 +1260,7 @@ uv_tcp_t.keepalive = uv.tcp_keepalive
 ---
 ---@param tcp uv_tcp_t
 ---@param enable boolean
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tcp_simultaneous_accepts(tcp, enable) end
 uv_tcp_t.simultaneous_accepts = uv.tcp_simultaneous_accepts
 
@@ -1281,7 +1281,7 @@ uv_tcp_t.simultaneous_accepts = uv.tcp_simultaneous_accepts
 ---@param host string
 ---@param port integer
 ---@param flags {ipv6only: boolean}|nil
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tcp_bind(tcp, host, port, flags) end
 uv_tcp_t.bind = uv.tcp_bind
 
@@ -1289,7 +1289,7 @@ uv_tcp_t.bind = uv.tcp_bind
 ---Get the address of the peer connected to the handle.
 ---
 ---@param tcp uv_tcp_t
----@return {ip: string, family: network_family, port: integer}|nil, string?, string?
+---@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
 function uv.tcp_getpeername(tcp) end
 uv_tcp_t.getpeername = uv.tcp_getpeername
 
@@ -1297,7 +1297,7 @@ uv_tcp_t.getpeername = uv.tcp_getpeername
 ---Get the current address to which the handle is bound.
 ---
 ---@param tcp uv_tcp_t
----@return {ip: string, family: network_family, port: integer}|nil, string?, string?
+---@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
 function uv.tcp_getsockname(tcp) end
 uv_tcp_t.getsockname = uv.tcp_getsockname
 
@@ -1315,7 +1315,7 @@ uv_tcp_t.getsockname = uv.tcp_getsockname
 ---@param host string
 ---@param port integer
 ---@param callback fun(err?: string)
----@return uv_connect_t|nil, string?, string?
+---@return uv_connect_t|nil, string? err_name, string? err_msg
 function uv.tcp_connect(tcp, host, port, callback) end
 uv_tcp_t.connect = uv.tcp_connect
 
@@ -1338,7 +1338,7 @@ uv_tcp_t.write_queue_size = uv.tcp_write_queue_size
 ---
 ---@param tcp uv_tcp_t
 ---@param callback function|nil
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tcp_close_reset(tcp, callback) end
 uv_tcp_t.close_reset = uv.tcp_close_reset
 
@@ -1375,7 +1375,7 @@ uv_tcp_t.close_reset = uv.tcp_close_reset
 ---@param protocol network_protocols|integer|nil # (default: `0`)
 ---@param flags1 {nonblock: boolean}|nil # (nonblock default: `false`)
 ---@param flags2 {nonblock: boolean}|nil # (nonblock default: `false`)
----@return {[1]: integer, [2]: integer}|nil, string?, string? # [1, 2] file descriptor
+---@return {[1]: integer, [2]: integer}|nil, string? err_name, string? err_msg # [1, 2] file descriptor
 function uv.socketpair(socktype, protocol, flags1, flags2) end
 
 ---@alias network_protocols
@@ -1554,7 +1554,7 @@ local uv_pipe_t = {}
 ---handle passing between processes.
 ---
 ---@param ipc boolean|nil
----@return uv_pipe_t|nil, string?, string?
+---@return uv_pipe_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_pipe(ipc) end
 
@@ -1565,7 +1565,7 @@ function uv.new_pipe(ipc) end
 ---
 ---@param pipe uv_pipe_t
 ---@param fd integer
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.pipe_open(pipe, fd) end
 uv_pipe_t.open = uv.pipe_open
 
@@ -1577,7 +1577,7 @@ uv_pipe_t.open = uv.pipe_open
 ---
 ---@param pipe uv_pipe_t
 ---@param name string
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.pipe_bind(pipe, name) end
 uv_pipe_t.bind = uv.pipe_bind
 
@@ -1590,7 +1590,7 @@ uv_pipe_t.bind = uv.pipe_bind
 ---@param pipe uv_pipe_t
 ---@param name string
 ---@param callback fun(err?: string)|nil
----@return uv_connect_t|nil, string?, string?
+---@return uv_connect_t|nil, string? err_name, string? err_msg
 function uv.pipe_connect(pipe, name, callback) end
 uv_pipe_t.connect = uv.pipe_connect
 
@@ -1598,7 +1598,7 @@ uv_pipe_t.connect = uv.pipe_connect
 ---Get the name of the Unix domain socket or the named pipe.
 ---
 ---@param pipe uv_pipe_t
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.pipe_getsockname(pipe) end
 uv_pipe_t.getsockname = uv.pipe_getsockname
 
@@ -1607,7 +1607,7 @@ uv_pipe_t.getsockname = uv.pipe_getsockname
 ---connected.
 ---
 ---@param pipe uv_pipe_t
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.pipe_getpeername(pipe) end
 uv_pipe_t.getpeername = uv.pipe_getpeername
 
@@ -1652,7 +1652,7 @@ uv_pipe_t.pending_type = uv.pipe_pending_type
 ---
 ---@param pipe uv_pipe_t
 ---@param flags uv_pipe_flags
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.pipe_chmod(pipe, flags) end
 uv_pipe_t.chmod = uv.pipe_chmod
 
@@ -1691,7 +1691,7 @@ uv_pipe_t.chmod = uv.pipe_chmod
 ---
 ---@param read_flags {nonblock: boolean}|nil  # (nonblock default: `false`)
 ---@param write_flags {nonblock: boolean}|nil # (nonblock default: `false`)
----@return {read: integer, write: integer}|nil, string?, string?
+---@return {read: integer, write: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.pipe(read_flags, write_flags) end
 
@@ -1735,7 +1735,7 @@ local uv_tty_t = {}
 ---
 ---@param fd tty_fd|integer
 ---@param readable boolean
----@return uv_tty_t|nil, string?, string?
+---@return uv_tty_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_tty(fd, readable) end
 
@@ -1751,7 +1751,7 @@ function uv.new_tty(fd, readable) end
 ---
 ---@param tty uv_tty_t
 ---@param mode tty_mode
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tty_set_mode(tty, mode) end
 uv_tty_t.set_mode = uv.tty_set_mode
 
@@ -1766,14 +1766,14 @@ uv_tty_t.set_mode = uv.tty_set_mode
 ---This function is async signal-safe on Unix platforms but can fail with error
 ---code `EBUSY` if you call it when execution is inside `uv.tty_set_mode()`.
 ---
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.tty_reset_mode() end
 
 ---
 ---Gets the current Window width and height.
 ---
 ---@param tty uv_tty_t
----@return integer, integer|nil, string?, string?
+---@return integer, integer|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.tty_get_winsize(tty) end
 uv_tty_t.get_winsize = uv.tty_get_winsize
@@ -1799,7 +1799,7 @@ function uv.tty_set_vterm_state(state) end
 ---by libuv or the console. The return value is `"supported"` or `"unsupported"`.
 ---This function is not implemented on Unix, where it returns `ENOTSUP`.
 ---
----@return tty_vsterm_state|nil, string?, string?
+---@return tty_vsterm_state|nil, string? err_name, string? err_msg
 function uv.tty_get_vterm_state() end
 
 
@@ -1827,7 +1827,7 @@ local uv_udp_t = {}
 ---calling `uv_udp_init_ex`.
 ---
 ---@param flags {family: network_family, mmsgs: integer}|nil # (mmsgs default: `1`)
----@return uv_udp_t|nil, string?, string?
+---@return uv_udp_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_udp(flags) end
 
@@ -1862,7 +1862,7 @@ uv_udp_t.get_send_queue_count = uv.udp_get_send_queue_count
 ---
 ---@param udp uv_udp_t
 ---@param fd integer
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_open(udp, fd) end
 uv_udp_t.open = uv.udp_open
 
@@ -1874,7 +1874,7 @@ uv_udp_t.open = uv.udp_open
 ---@param host string
 ---@param port integer
 ---@param flags {ipv6only: boolean, reuseaddr: boolean}|nil
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_bind(udp, host, port, flags) end
 uv_udp_t.bind = uv.udp_bind
 
@@ -1882,7 +1882,7 @@ uv_udp_t.bind = uv.udp_bind
 ---Get the local IP and port of the UDP handle.
 ---
 ---@param udp uv_udp_t
----@return {ip: string, family: network_family, port: integer}|nil, string?, string?
+---@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.udp_getsockname(udp) end
 uv_udp_t.getsockname = uv.udp_getsockname
@@ -1891,7 +1891,7 @@ uv_udp_t.getsockname = uv.udp_getsockname
 ---Get the remote IP and port of the UDP handle on connected UDP handles.
 ---
 ---@param udp uv_udp_t
----@return {ip: string, family: network_family, port: integer}|nil, string?, string?
+---@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.udp_getpeername(udp) end
 uv_udp_t.getpeername = uv.udp_getpeername
@@ -1905,7 +1905,7 @@ uv_udp_t.getpeername = uv.udp_getpeername
 ---@param multicast_addr string
 ---@param interface_addr string|nil
 ---@param membership "leave"|"join"
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_set_membership(udp, multicast_addr, interface_addr, membership) end
 uv_udp_t.set_membership = uv.udp_set_membership
 
@@ -1919,7 +1919,7 @@ uv_udp_t.set_membership = uv.udp_set_membership
 ---@param interface_addr string|nil
 ---@param source_addr string
 ---@param membership "leave"|"join"
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_set_source_membership(udp, multicast_addr, interface_addr, source_addr, membership) end
 uv_udp_t.set_source_membership = uv.udp_set_source_membership
 
@@ -1929,7 +1929,7 @@ uv_udp_t.set_source_membership = uv.udp_set_source_membership
 ---
 ---@param udp uv_udp_t
 ---@param on boolean
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_set_multicast_loop(udp, on) end
 uv_udp_t.set_multicast_loop = uv.udp_set_multicast_loop
 
@@ -1939,7 +1939,7 @@ uv_udp_t.set_multicast_loop = uv.udp_set_multicast_loop
 ---
 ---@param udp uv_udp_t
 ---@param ttl integer
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_set_multicast_ttl(udp, ttl) end
 uv_udp_t.set_multicast_ttl = uv.udp_set_multicast_ttl
 
@@ -1948,7 +1948,7 @@ uv_udp_t.set_multicast_ttl = uv.udp_set_multicast_ttl
 ---
 ---@param udp uv_udp_t
 ---@param interface_addr string
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_set_multicast_interface(udp, interface_addr) end
 uv_udp_t.set_multicast_interface = uv.udp_set_multicast_interface
 
@@ -1957,7 +1957,7 @@ uv_udp_t.set_multicast_interface = uv.udp_set_multicast_interface
 ---
 ---@param udp uv_udp_t
 ---@param on boolean
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_set_broadcast(udp, on) end
 uv_udp_t.set_broadcast = uv.udp_set_broadcast
 
@@ -1967,7 +1967,7 @@ uv_udp_t.set_broadcast = uv.udp_set_broadcast
 ---
 ---@param udp uv_udp_t
 ---@param ttl integer
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_set_ttl(udp, ttl) end
 uv_udp_t.set_ttl = uv.udp_set_ttl
 
@@ -1984,7 +1984,7 @@ local uv_udp_send_t = {}
 ---@param host string
 ---@param port integer
 ---@param callback fun(err?: string)
----@return uv_udp_send_t|nil, string?, string?
+---@return uv_udp_send_t|nil, string? err_name, string? err_msg
 function uv.udp_send(udp, data, host, port, callback) end
 uv_udp_t.send = uv.udp_send
 
@@ -1996,7 +1996,7 @@ uv_udp_t.send = uv.udp_send
 ---@param data buffer
 ---@param host string
 ---@param port integer
----@return integer|nil, string?, string?
+---@return integer|nil, string? err_name, string? err_msg
 function uv.udp_try_send(udp, data, host, port) end
 uv_udp_t.try_send = uv.udp_try_send
 
@@ -2007,7 +2007,7 @@ uv_udp_t.try_send = uv.udp_try_send
 ---
 ---@param udp uv_udp_t
 ---@param callback fun(err?: string, data?: string, add?: {ip: string, port: integer, family: network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_recv_start(udp, callback) end
 uv_udp_t.recv_start = uv.udp_recv_start
 
@@ -2015,7 +2015,7 @@ uv_udp_t.recv_start = uv.udp_recv_start
 ---Stop listening for incoming datagrams.
 ---
 ---@param udp uv_udp_t
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_recv_stop(udp) end
 uv_udp_t.recv_stop = uv.udp_recv_stop
 
@@ -2029,7 +2029,7 @@ uv_udp_t.recv_stop = uv.udp_recv_stop
 ---@param udp uv_udp_t
 ---@param host string
 ---@param port integer
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_connect(udp, host, port) end
 uv_udp_t.connect = uv.udp_connect
 
@@ -2046,7 +2046,7 @@ local uv_fs_event_t = {}
 ---
 ---Creates and initializes a new `uv_fs_event_t`. Returns the Lua userdata wrapping it.
 ---
----@return uv_fs_event_t|nil, string?, string?
+---@return uv_fs_event_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_fs_event() end
 
@@ -2058,21 +2058,21 @@ function uv.new_fs_event() end
 ---@param path string
 ---@param flags {watch_entry: boolean|nil, stat: boolean|nil, recursive: boolean|nil} # (all flags have default of `false`)
 ---@param callback fun(err?: string, filename: string, events: {change: boolean|nil, rename: boolean|nil})
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.fs_event_start(fs_event, path, flags, callback) end
 uv_fs_event_t.start = uv.fs_event_start
 
 ---
 ---Stop the handle, the callback will no longer be called.
 ---
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.fs_event_stop() end
 uv_fs_event_t.stop = uv.fs_event_stop
 
 ---
 ---Get the path being monitored by the handle.
 ---
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.fs_event_getpath() end
 uv_fs_event_t.getpath = uv.fs_event_getpath
@@ -2090,7 +2090,7 @@ local uv_fs_poll_t = {}
 ---
 ---Creates and initializes a new `uv_fs_poll_t`. Returns the Lua userdata wrapping it.
 ---
----@return uv_fs_poll_t|nil, string?, string?
+---@return uv_fs_poll_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_fs_poll() end
 
@@ -2104,21 +2104,21 @@ function uv.new_fs_poll() end
 ---@param path string
 ---@param interval integer
 ---@param callback fun(err?: string, prev: fs_stat_struct, curr: fs_stat_struct)
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.fs_poll_start(fs_event, path, interval, callback) end
 uv_fs_poll_t.start = uv.fs_poll_start
 
 ---
 ---Stop the handle, the callback will no longer be called.
 ---
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.fs_poll_stop() end
 uv_fs_poll_t.stop = uv.fs_poll_stop
 
 ---
 ---Get the path being monitored by the handle.
 ---
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.fs_poll_getpath() end
 uv_fs_poll_t.getpath = uv.fs_poll_getpath
@@ -2306,7 +2306,7 @@ function uv.fs_rmdir(path, callback) end
 ---@overload fun(path: string)
 ---@param path string
 ---@param callback fun(err: nil|string, success: uv_fs_t|nil)
----@return uv_fs_t|nil, string?, string?
+---@return uv_fs_t|nil, string? err_name, string? err_msg
 function uv.fs_scandir(path, callback) end
 
 ---
@@ -2318,7 +2318,7 @@ function uv.fs_scandir(path, callback) end
 ---its related functions for an asynchronous version.
 ---
 ---@param fs uv_fs_t
----@return string|nil, string|nil, string?, string?
+---@return string|nil, string|nil, string? err_name, string? err_msg
 function uv.fs_scandir_next(fs) end
 
 ---@alias fs_types
@@ -2662,7 +2662,7 @@ function uv.new_work(work_callback, after_work_callback) end
 ---
 ---@param work_ctx luv_work_ctx_t
 ---@param ... threadargs
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 function uv.queue_work(work_ctx, ...) end
 luv_work_ctx_t.queue = uv.queue_work
 
@@ -2679,7 +2679,7 @@ local uv_getaddrinfo_t = {}
 ---@param service string
 ---@param hints uv_getaddrinfo_hint?
 ---@param callback fun(err?: string, addresses?: uv_getaddrinfo_rtn)
----@return uv_getaddrinfo_t|nil, string?, string?
+---@return uv_getaddrinfo_t|nil, string? err_name, string? err_msg
 function uv.getaddrinfo(host, service, hints, callback) end
 
 ---@alias uv_getaddrinfo_hint {family: network_family|integer|nil, socktype: tcp_socket_type|nil, protocol: network_protocols|nil, addrconfig: boolean|nil, v4mapped: boolean|nil, all: boolean|nil, numberichost: boolean|nil, passive: boolean|nil, numericserv: boolean|nil, canonname: boolean|nil}
@@ -2694,7 +2694,7 @@ local uv_getnameinfo_t = {}
 ---@overload fun(address: {ip: string|nil, port: integer|nil, family: network_family|integer|nil}): string?, string?, string?
 ---@param address {ip: string|nil, port: integer|nil, family: network_family|integer|nil}
 ---@param callback fun(err?: string, host?: string, service?: string)
----@return uv_getnameinfo_t?, string?, string?
+---@return uv_getnameinfo_t?, string? err_name, string? err_msg
 function uv.getnameinfo(address, callback) end
 
 
@@ -2716,7 +2716,7 @@ local luv_thread_t = {}
 ---@param options? {stack_size?: integer}
 ---@param entry fun(...: threadargs)
 ---@vararg threadargs # varargs passed to `entry`
----@return luv_thread_t?, string?, string?
+---@return luv_thread_t?, string? err_name, string? err_msg
 function uv.new_thread(options, entry, ...) end
 
 ---
@@ -2739,7 +2739,7 @@ function uv.thread_self() end
 ---Waits for the `thread` to finish executing its entry function.
 ---
 ---@param thread luv_thread_t
----@return boolean?, string?, string?
+---@return boolean?, string? err_name, string? err_msg
 function uv.thread_join(thread) end
 luv_thread_t.join = uv.thread_join
 
@@ -2752,33 +2752,33 @@ function uv.sleep(msec) end
 ---
 ---Returns the executable path.
 ---
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.exepath() end
 
 ---
 ---Returns the current working directory.
 ---
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.cwd() end
 
 ---
 ---Sets the current working directory with the string `cwd`.
 ---
 ---@param cwd string
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.chdir(cwd) end
 
 ---
 ---Returns the title of the current process.
 ---
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.get_process_title() end
 
 ---
 ---Sets the title of the current process with the string `title`.
 ---
 ---@param title string
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.set_process_title(title) end
 
 ---
@@ -2805,20 +2805,20 @@ function uv.get_constrained_memory() end
 ---
 ---Returns the resident set size (RSS) for the current process.
 ---
----@return integer|nil, string?, string?
+---@return integer|nil, string? err_name, string? err_msg
 function uv.resident_set_memory() end
 
 ---
 ---Returns the resource usage.
 ---
----@return {utime: {sec: integer, usec: integer}, stime: {sec: integer, usec: integer}, maxrss: integer, ixrss: integer, idrss: integer, isrss: integer, minflt: integer, majflt: integer, nswap: integer, inblock: integer, oublock: integer, msgsnd: integer, msgrcv: integer, nsignals: integer, nvcsw: integer, nivcsw: integer}|nil, string?, string?
+---@return {utime: {sec: integer, usec: integer}, stime: {sec: integer, usec: integer}, maxrss: integer, ixrss: integer, idrss: integer, isrss: integer, minflt: integer, majflt: integer, nswap: integer, inblock: integer, oublock: integer, msgsnd: integer, msgrcv: integer, nsignals: integer, nvcsw: integer, nivcsw: integer}|nil, string? err_name, string? err_msg
 function uv.getrusage() end
 
 ---
 ---Returns information about the CPU(s) on the system as a table of tables for each
 ---CPU found.
 ---
----@return {[integer]: {modal: string, speed: number, times: {user: number, nice: number, sys: number, idle: number, irq: number}}}|nil, string?, string?
+---@return {[integer]: {modal: string, speed: number, times: {user: number, nice: number, sys: number, idle: number, irq: number}}}|nil, string? err_name, string? err_msg
 function uv.cpu_info() end
 
 ---
@@ -2872,7 +2872,7 @@ function uv.hrtime() end
 ---
 ---Returns the current system uptime in seconds.
 ---
----@return number|nil, string?, string?
+---@return number|nil, string? err_name, string? err_msg
 function uv.uptime() end
 
 ---
@@ -2926,7 +2926,7 @@ function uv.interface_addresses() end
 ---IPv6-capable implementation of `if_indextoname(3)`.
 ---
 ---@param ifindex integer
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.if_indextoname(ifindex) end
 
 ---
@@ -2935,7 +2935,7 @@ function uv.if_indextoname(ifindex) end
 ---platforms, `uv.if_indextoname()` is used.
 ---
 ---@param ifindex integer
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.if_indextoiid(ifindex) end
 
 ---
@@ -2967,7 +2967,7 @@ function uv.os_gethostname() end
 ---
 ---@param name string
 ---@param size integer # (default = `LUAL_BUFFERSIZE`)
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.os_getenv(name, size) end
 
 ---
@@ -2977,13 +2977,13 @@ function uv.os_getenv(name, size) end
 ---
 ---@param name string
 ---@param value string
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 function uv.os_setenv(name, value) end
 
 ---
 ---**Warning:** This function is not thread safe.
 ---
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 function uv.os_unsetenv() end
 
 ---
@@ -2998,13 +2998,13 @@ function uv.os_environ() end
 ---
 ---**Warning:** This function is not thread safe.
 ---
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.os_homedir() end
 
 ---
 ---**Warning:** This function is not thread safe.
 ---
----@return string|nil, string?, string?
+---@return string|nil, string? err_name, string? err_msg
 function uv.os_tmpdir() end
 
 ---
@@ -3029,7 +3029,7 @@ function uv.os_getppid() end
 ---Returns the scheduling priority of the process specified by `pid`.
 ---
 ---@param pid integer
----@return number|nil, string?, string?
+---@return number|nil, string? err_name, string? err_msg
 function uv.os_getpriority(pid) end
 
 ---
@@ -3038,7 +3038,7 @@ function uv.os_getpriority(pid) end
 ---
 ---@param pid integer
 ---@param priority integer
----@return boolean|nil, string?, string?
+---@return boolean|nil, string? err_name, string? err_msg
 function uv.os_setpriority(pid, priority) end
 
 ---
@@ -3057,7 +3057,7 @@ function uv.os_setpriority(pid, priority) end
 ---@param len integer
 ---@param flags nil
 ---@param callback fun(err?: string, bytes?: string)
----@return 0|nil, string?, string?
+---@return 0|nil success, string? err_name, string? err_msg
 function uv.random(len, flags, callback) end
 
 ---
