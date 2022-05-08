@@ -36,3 +36,5 @@ function utils.noop(err) end
 ---@return any|nil, Error?
 function utils.adapt(c, fn, ...) end
 
+return utils
+
