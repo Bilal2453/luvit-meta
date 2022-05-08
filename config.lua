@@ -1,8 +1,8 @@
 name = 'Luvit'
 words = {
-  'uv.%w+',
+  'uv%.%w+',
   'use%-luvit',
-  'coro-%w*',
+  'coro%-%w*',
   'luvit',
 }
 
