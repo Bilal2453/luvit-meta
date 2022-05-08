@@ -27,7 +27,7 @@ function uv.version() end
 ---Returns the libuv version number as a string. For example, this would be "1.2.3"
 ---in libuv 1.2.3. For non-release versions, the version suffix is included.
 ---
----@returns string
+---@return string
 ---@nodiscard
 function uv.version_string() end
 
