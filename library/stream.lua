@@ -170,6 +170,7 @@ function ReadableState:new(options, stream) end
 ---@class Readable: Stream
 ---@field _readableState ReadableState
 local Readable = {}
+module.Readable = Readable
 
 ---
 ---Manually shove something into the `read()` buffer.
