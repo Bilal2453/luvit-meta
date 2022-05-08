@@ -5,6 +5,7 @@
 ---
 ---A port of node.js's stream module for luvit.
 ---
+---@class luvit.stream
 local module = {}
 
 
@@ -14,13 +15,13 @@ local module = {}
 ---
 ---You will most likely not use this class. The only relevant part of this class, the pipe method, is overriden in Readable.
 ---
----@class Stream: Emitter
+---@class luvit.stream.Stream: luvit.core.Emitter
 ---@field initialize nil|function
 local Stream = {}
 module.Stream = Stream
 
 ---
----@generic T: Stream
+---@generic T: luvit.stream.Stream
 ---@param dest T
 ---@param options? {_end?: boolean}
 ---@return T pipe
@@ -31,17 +32,17 @@ function Stream:pipe(dest, options) end
 ---@alias Writable-Chunk nil|string|any
 
 ---
----@class WriteReq: Object
+---@class luvit.stream.WriteReq: luvit.core.Object
 ---@field chunk Writable-Chunk
----@field callback fun(err?: Error)
+---@field callback fun(err?: luvit.core.Error)
 local WriteReq = {}
 
 ---
 ---Creates a new instance and initialize it.
 ---
 ---@param chunk Writable-Chunk
----@param cb fun(err?: Error)
----@return WriteReq
+---@param cb fun(err?: luvit.core.Error)
+---@return luvit.stream.WriteReq
 ---@nodiscard
 function WriteReq:new(chunk, cb) end
 
@@ -50,7 +51,7 @@ function WriteReq:new(chunk, cb) end
 ---@alias Writable-State-Options {objectMode?: boolean, highWaterMark?: integer}
 
 ---
----@class WritableState: Object
+---@class luvit.stream.WritableState: luvit.core.Object
 ---@field objectMode boolean
 ---@field highWaterMark integer
 ---@field needDrain boolean
@@ -62,10 +63,10 @@ function WriteReq:new(chunk, cb) end
 ---@field corked integer
 ---@field sync boolean
 ---@field bufferProcessing boolean
----@field onwrite fun(er?: Error)
----@field writecb nil|fun(er?: Error)
+---@field onwrite fun(er?: luvit.core.Error)
+---@field writecb nil|fun(er?: luvit.core.Error)
 ---@field writelen integer
----@field buffer WriteReq[]
+---@field buffer luvit.stream.WriteReq[]
 ---@field pendingcb integer
 ---@field prefinished boolean
 ---@field errorEmitted boolean
@@ -75,8 +76,8 @@ local WritableState = {}
 ---Creates a new instance and initialize it.
 ---
 ---@param options? Writable-State-Options
----@param stream Writable
----@return WritableState
+---@param stream luvit.stream.Writable
+---@return luvit.stream.WritableState
 ---@nodiscard
 function WritableState:new(options, stream) end
 
@@ -86,8 +87,8 @@ function WritableState:new(options, stream) end
 ---The writable stream class
 ---Emits end when done
 ---
----@class Writable: Stream
----@field _writableState WritableState
+---@class luvit.stream.Writable: luvit.stream.Stream
+---@field _writableState luvit.stream.WritableState
 local Writable = {}
 module.Writable = Writable
 
@@ -96,7 +97,7 @@ module.Writable = Writable
 ---You can modify or set the writable state options here.
 ---
 ---@param options? Writable-State-Options
----@return Writable
+---@return luvit.stream.Writable
 ---@nodiscard
 function Writable:new(options) end
 
@@ -107,7 +108,7 @@ function Writable:pipe() end
 
 ---
 ---@param chunk Writable-Chunk
----@param cb fun(er?: Error)
+---@param cb fun(er?: luvit.core.Error)
 ---@return boolean
 function Writable:write(chunk, cb) end
 
@@ -121,19 +122,19 @@ function Writable:uncork() end
 
 ---
 ---@param chunk? Writable-Chunk
----@param cb fun(er?: Error)
+---@param cb fun(er?: luvit.core.Error)
 function Writable:_write(chunk, cb) end
 
 ---
----@overload fun(cb: fun(er?: Error))
+---@overload fun(cb: fun(er?: luvit.core.Error))
 ---@param chunk Writable-Chunk
----@param cb fun(er?: Error)
+---@param cb fun(er?: luvit.core.Error)
 function Writable:_end(chunk, cb) end
 
 
 
 ---
----@class ReadableState: Object
+---@class luvit.stream.ReadableState: luvit.core.Object
 ---@field highWaterMark integer
 ---@field buffer table
 ---@field length integer
@@ -159,16 +160,16 @@ local ReadableState = {}
 ---Creates a new instance and initialize it.
 ---
 ---@param options? Readable_State_Options
----@param stream Readable
----@return ReadableState
+---@param stream luvit.stream.Readable
+---@return luvit.stream.ReadableState
 ---@nodiscard
 function ReadableState:new(options, stream) end
 
 
 
 ---
----@class Readable: Stream
----@field _readableState ReadableState
+---@class luvit.stream.Readable: luvit.stream.Stream
+---@field _readableState luvit.stream.ReadableState
 local Readable = {}
 module.Readable = Readable
 
@@ -196,16 +197,16 @@ function Readable:unshift(chunk) end
 function Readable:read(n) end
 
 ---
----@generic T: Stream
+---@generic T: luvit.stream.Stream
 ---@param dest T
 ---@param pipeOpts? {_end?: boolean}
 ---@return T
 function Readable:pipe(dest, pipeOpts) end
 
 ---
----@generic T: Readable
+---@generic T: luvit.stream.Readable
 ---@param self T
----@param dest Stream
+---@param dest luvit.stream.Stream
 ---@return T self
 function Readable:unpipe(dest) end
 
@@ -215,7 +216,7 @@ Readable.addListener = Readable.on
 ---`pause()` and `resume()` are remnants of the legacy readable stream API
 ---If the user uses them, then switch into old mode.
 ---
----@generic T: Readable
+---@generic T: luvit.stream.Readable
 ---@param self T
 ---@return T self
 function Readable:resume() end
@@ -224,7 +225,7 @@ function Readable:resume() end
 ---`pause()` and `resume()` are remnants of the legacy readable stream API
 ---If the user uses them, then switch into old mode.
 ---
----@generic T: Readable
+---@generic T: luvit.stream.Readable
 ---@param self T
 ---@return T self
 function Readable:pause() end
@@ -235,8 +236,8 @@ function Readable:pause() end
 ---This is *not* part of the readable stream interface.
 ---It is an ugly unfortunate mess of history.
 ---
----@generic T: Readable
----@param stream Readable
+---@generic T: luvit.stream.Readable
+---@param stream luvit.stream.Readable
 ---@return T self
 function Readable:wrap(stream) end
 
@@ -245,13 +246,13 @@ function Readable:wrap(stream) end
 ---Length is the combined lengths of all the buffers in the list.
 ---
 ---@param n integer
----@param state ReadableState
+---@param state luvit.stream.ReadableState
 ---@return nil|string
 function Readable._fromList(n, state) end
 
 
 
----@class Duplex: Readable, Writable
+---@class luvit.stream.Duplex: luvit.stream.Readable, luvit.stream.Writable
 ---@field meta nil
 ---@field readable boolean
 ---@field writable boolean
@@ -266,31 +267,31 @@ module.Duplex = Duplex
 ---You can modify or set the Duplex options here, including writable and readable states.
 ---
 ---@param options Duplex_Options
----@return Duplex
+---@return luvit.stream.Duplex
 ---@nodiscard
 function Duplex:new(options) end
 
 
 
----@class TransformState: Object
+---@class luvit.stream.TransformState: luvit.core.Object
 ---@field needTransform boolean
 ---@field transforming boolean
----@field writecb nil|fun(er?: Error)
+---@field writecb nil|fun(er?: luvit.core.Error)
 ---@field writechunk nil|any
 local TransformState = {}
 
 ---
----@param er? Error
+---@param er? luvit.core.Error
 ---@param data? string
----@return nil|Transform
+---@return nil|luvit.stream.Transform
 function TransformState:afterTransform(er, data) end
 
 ---
 ---Creates a new instance and initialize it.
 ---
 ---@param options any # not internally implemented
----@param stream Transform
----@return TransformState
+---@param stream luvit.stream.Transform
+---@return luvit.stream.TransformState
 ---@nodiscard
 function TransformState:new(options, stream) end
 
@@ -337,9 +338,9 @@ function TransformState:new(options, stream) end
 ---would be consumed, and then the rest would wait (un-transformed) until
 ---the results of the previous transformed chunk were consumed.
 ---
----@class Transform: Duplex
----@field _transformState TransformState
----@field _flush nil|fun(er?: Error)
+---@class luvit.stream.Transform: luvit.stream.Duplex
+---@field _transformState luvit.stream.TransformState
+---@field _flush nil|fun(er?: luvit.core.Error)
 local Transform = {}
 module.Transform = Transform
 
@@ -349,7 +350,7 @@ module.Transform = Transform
 ---Creates a new instance and initialize it.
 ---
 ---@param options? Transform_Options
----@return Transform
+---@return luvit.stream.Transform
 ---@nodiscard
 function Transform:new(options) end
 
@@ -372,13 +373,13 @@ function Transform:push(chunk) end
 ---never call cb(), then you'll never get another chunk.
 ---
 ---@param chunk any
----@param cb fun(er?: Error, data?: string)
+---@param cb fun(er?: luvit.core.Error, data?: string)
 ---@return unknown
 function Transform:_transform(chunk, cb) end
 
 ---
 ---@param chunk any
----@param cb fun(er?: Error)
+---@param cb fun(er?: luvit.core.Error)
 function Transform:_write(chunk, cb) end
 
 function Transform:_read() end
@@ -388,7 +389,7 @@ function Transform:_read() end
 ---Basically just the most minimal sort of Transform stream.
 ---Every written chunk gets output as-is.
 ---
----@class PassThrough: Transform
+---@class PassThrough: luvit.stream.Transform
 local PassThrough = {}
 module.PassThrough = PassThrough
 
@@ -405,9 +406,9 @@ function PassThrough:new(options) end
 ---returns a new Readable stream that emits all data that passes through this
 ---stream. Streams created by `observe()` do not affect back-pressure.
 ---
----@class Observable: Transform
+---@class luvit.stream.Observable: luvit.stream.Transform
 ---@field options Transform_Options
----@field observers Readable[]
+---@field observers luvit.stream.Readable[]
 local Observable = {}
 module.Observable = Observable
 
@@ -415,12 +416,12 @@ module.Observable = Observable
 ---Creates a new instance and initialize it.
 ---
 ---@param options? Transform_Options
----@return Observable
+---@return luvit.stream.Observable
 ---@nodiscard
 function Observable:new(options) end
 
 ---
----@return Readable
+---@return luvit.stream.Readable
 function Observable:observe() end
 
 

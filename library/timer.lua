@@ -3,7 +3,7 @@
 ---
 ---Javascript style setTimeout and setInterval for luvit
 ---
----@class Timer: Object
+---@class luvit.timer.Timer: luvit.core.Object
 ---@field _handle uv_timer_t
 ---@field _active boolean
 local Timer = {}
@@ -37,6 +37,7 @@ Timer.now = uv.now
 
 -------
 
+---@class luvit.timer
 local timer_module = {}
 
 ---

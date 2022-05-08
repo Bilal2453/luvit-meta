@@ -5,29 +5,29 @@
 ---
 ---A lua value pretty printer and colorizer for terminals.
 ---
----@class pretty-print
+---@class luvit.prettyPrint
 ---@field theme table<colors_names, string> # The currently loaded theme.
 ---@field stdin  uv_stream_t|uv_pipe_t # stdin stream
 ---@field stdout uv_stream_t|uv_pipe_t # stdout stream
 ---@field stderr uv_stream_t|uv_pipe_t # stderr stream
-local pretty_print = {}
+local prettyPrint = {}
 
 ---
 ---@param str string
 ---@return string stripped
 ---@nodiscard
-function pretty_print.strip(str) end
+function prettyPrint.strip(str) end
 
 ---
 ---@param index? 16|265
 ---@return nil
-function pretty_print.loadColor(index) end
+function prettyPrint.loadColor(index) end
 
 ---
 ---@param colorName? colors_names
 ---@return string
 ---@nodiscard
-function pretty_print.color(colorName) end
+function prettyPrint.color(colorName) end
 
 ---
 ---@param colorName? colors_names
@@ -35,13 +35,13 @@ function pretty_print.color(colorName) end
 ---@param resetName? colors_names
 ---@return string
 ---@nodiscard
-function pretty_print.colorize(colorName, string, resetName) end
+function prettyPrint.colorize(colorName, string, resetName) end
 
 ---
 ---@param c number
 ---@return string
 ---@nodiscard
-function pretty_print.stringEscape(c) end
+function prettyPrint.stringEscape(c) end
 
 ---
 ---@param value any
@@ -49,21 +49,21 @@ function pretty_print.stringEscape(c) end
 ---@param nocolor? boolean # default false
 ---@return string
 ---@nodiscard
-function pretty_print.dump(value, recuse, nocolor) end
+function prettyPrint.dump(value, recuse, nocolor) end
 
 
 ---
 ---@param fs userdata
 ---@param s string
 ---@return nil
-function pretty_print.console_write(fs, s) end
+function prettyPrint.console_write(fs, s) end
 
 ---
 ---Pretty prints any number of arguments.
 ---@vararg any
 ---@return nil
-function pretty_print.prettyPrint(...) end
-p = pretty_print.prettyPrint
+function prettyPrint.prettyPrint(...) end
+p = prettyPrint.prettyPrint
 
 
 -- TODO: Continue themes
@@ -89,4 +89,4 @@ p = pretty_print.prettyPrint
 ---|"highlight"
 ---|string
 
-return pretty_print
+return prettyPrint

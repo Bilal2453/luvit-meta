@@ -4,12 +4,14 @@
 ---Core object model for luvit using simple prototypes and inheritance.
 ---
 ---This module is for various classes and utilities that don't need their own module.
+---
+---@class luvit.core
 local core = {}
 
 ---
 ---Returns whether `obj` is instance of `class` or not.
----@param obj Object   # An instance of some class
----@param class Object # The class to compare against
+---@param obj luvit.core.Object   # An instance of some class
+---@param class luvit.core.Object # The class to compare against
 ---@return boolean
 function core.instanceof(obj, class) end
 
@@ -18,13 +20,13 @@ function core.instanceof(obj, class) end
 ---This is the most basic object in Luvit. It provides simple prototypal
 -- inheritance and inheritable constructors. All other objects inherit from this.
 ---
----@class Object
+---@class luvit.core.Object
 ---@field meta table # A table value holding all metatables that will be applied on Object:create()
 local Object = {}
 core.Object = Object
 
 -- Create a new instance of this object
----@generic T: Object
+---@generic T: luvit.core.Object
 ---@param self T
 ---@return T instance # The created instance
 function Object:create() end
@@ -67,7 +69,7 @@ function Object:new(...) end
 ---end
 ---```
 ---
----@generic T: Object
+---@generic T: luvit.core.Object
 ---@param self T
 ---@return T
 function Object:extend()
@@ -106,7 +108,7 @@ end
 ---emitter:emit('end', 'a', 'b', 'c')
 ---```
 ---
----@class Emitter: Object
+---@class luvit.core.Emitter: luvit.core.Object
 ---@field handlers? table<string, function[]>     # A map of `event_name = listeners`, where listeners is an array of callbacks.
 ---@field addHandlerType? fun(event_name: string) # When assigned, the function value is called just before assigning `handlers[event_name] = {}`.
 local Emitter = Object:extend()
@@ -124,7 +126,7 @@ function Emitter:missingHandlerType(name, ...) end
 ---
 ---Same as `Emitter:on` except it de-registers itself after the first event.
 ---
----@generic T: Emitter
+---@generic T: luvit.core.Emitter
 ---@param self T
 ---@param name string            # The event name to listen on
 ---@param callback fun(...: any) # The callback to execute on event fire
@@ -135,7 +137,7 @@ function Emitter:once(name, callback) end
 ---Adds an event listener `callback` for the named event `name`.
 ---`callback` will receive whatever `Emitter:emit` passes as arguments.
 ---
----@generic T: Emitter
+---@generic T: luvit.core.Emitter
 ---@param self T
 ---@param name string            # The event name to listen on
 ---@param callback fun(...: any) # The callback to execute on event fire
@@ -153,7 +155,7 @@ function Emitter:listenerCount(name) end
 ---
 ---Emit a named event to all listeners with optional data argument(s).
 ---
----@generic T: Emitter
+---@generic T: luvit.core.Emitter
 ---@param self T
 ---@param name string
 ---@param ... any
@@ -206,7 +208,7 @@ function Emitter:wrap(name) end
 ---That is, it emits `eventName` on `target` Emitter whenever the same event is fired on current the instance.
 ---
 ---@param eventName string
----@param target Emitter
+---@param target luvit.core.Emitter
 function Emitter:propagate(eventName, target) end
 
 --[[ Error class ]]
@@ -214,7 +216,7 @@ function Emitter:propagate(eventName, target) end
 ---
 ---This is for code that wants structured error messages.
 ---
----@class Error: Object
+---@class luvit.core.Error: luvit.core.Object
 ---@field message? string # The error message
 ---@field code? number    # The error code. This is available if message is formated as `404: Not Found`.
 local Error = Object:extend()
@@ -223,7 +225,7 @@ core.Error = Error
 ---
 ---Make errors tostringable.
 ---
----@param table Error
+---@param table luvit.core.Error
 ---@return string message
 function Error.meta.__tostring(table) end
 

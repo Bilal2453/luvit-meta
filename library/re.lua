@@ -3,7 +3,7 @@
 ---
 ---The `re` module supports a somewhat conventional regex syntax for pattern usage within LPeg.
 ---
----@class re
+---@class relib
 local re = {}
 
 ---

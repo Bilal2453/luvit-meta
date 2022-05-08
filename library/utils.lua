@@ -1,6 +1,6 @@
 ---@meta
 
----@class utils: pretty-print
+---@class utils: luvit.prettyPrint
 local utils = {}
 
 -- TODO: description for assertResume
@@ -33,7 +33,7 @@ function utils.noop(err) end
 ---@param c? async fun(err?: string, ...: any)|thread # noop is used as a default
 ---@param fn function
 ---@param ... any
----@return any|nil, Error?
+---@return any|nil, luvit.core.Error?
 function utils.adapt(c, fn, ...) end
 
 return utils
