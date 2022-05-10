@@ -1,6 +1,7 @@
 ---@meta
 
 -- TODO: events for stream emitter class
+-- TODO: nodiscard
 
 ---
 ---A port of node.js's stream module for luvit.
