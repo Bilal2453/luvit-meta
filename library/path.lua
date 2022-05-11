@@ -322,8 +322,11 @@ local WindowsPath = {
 ---@nodiscard
 function WindowsPath:new() end
 
--- FIXME: path module is inheriting Path which is invalid. It is either WindowsPath or PosixPath
----But EmmyLua is missing a way of specifying a `class: A|B`
+---@type luvit.path.PosixPath|luvit.path.WindowsPath
+local path = {
+  ---@type luvit.path.PosixPath|luvit.path.WindowsPath
+  _internal = nil,
+}
 
 ---
 ---This module contains utilities for handling and transforming file paths.
@@ -332,15 +335,7 @@ function WindowsPath:new() end
 ---
 ---Use `require('path')` to use this module.
 ---
----@class luvit.path: luvit.path.Path
-local path = {
-  ---@type luvit.path.PosixPath|luvit.path.WindowsPath
-  _internal = nil,
-  normalizeSeparators = normalizeSeparators,
-  isDriveRelative = isDriveRelative,
-  isAbsolute = isAbsolute,
-  _makeLong = _makeLong,
-  isUNC = isUNC,
-}
+---@class luvit.path
+path = path
 
 return path
