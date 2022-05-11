@@ -52,6 +52,7 @@ function Object:create() end
 ---@param self T
 ---@param ... any
 ---@return T instance # The newly created instance
+---@nodiscard
 function Object:new(...) end
 
 -- FIXME: Object:extend() return does not contain all properties -

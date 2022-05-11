@@ -1,5 +1,12 @@
 ---@meta
 
+---
+---Node-style global process table for luvit
+---
+---```lua
+---local process = require('process')
+---```
+---
 ---@class luvit.process
 process = {}
 
@@ -78,10 +85,26 @@ local function cpuUsage(self, prevValue) end
 local UvStreamWritable = {}
 
 ---
+---Creates a new instance and initialize it.
+---
+---@param handle uv_pipe_t|uv_stream_t
+---@return luvit.process.UvStreamWritable
+---@nodiscard
+function UvStreamWritable:new(handle) end
+
+---
 ---@class luvit.process.UvStreamReadable: luvit.stream.Readable
 ---@field reading boolean
 ---@field handle uv_pipe_t|uv_stream_t
 local UvStreamReadable = {}
+
+---
+---Creates a new instance and initialize it.
+---
+---@param handle uv_pipe_t|uv_stream_t
+---@return luvit.process.UvStreamReadable
+---@nodiscard
+function UvStreamReadable:new(handle) end
 
 ---
 ---@type luvit.core.Emitter
