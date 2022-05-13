@@ -2483,13 +2483,22 @@ function uv.fs_access(path, mode, callback) end
 function uv.fs_access(path, mode) end
 
 ---@alias fs_access_mode
----|'"R"'
----|'"W"'
----|'"X"'
----|'"RW"'
----|'"RX"'
----|'"WX"'
----|'"WRX"'
+---Tests for readbility.
+---|'R'
+---Tests for writiblity.
+---|'W'
+---Tests for executibility.
+---|'X'
+---Tests for readbility and writiblity.
+---|'RW'
+---Tests for readbility and executibility.
+---|'RX'
+---Tests for writiblity and executibility.
+---|'WX'
+---Tests for writiblity and readbility and executibility.
+---|'WRX'
+---A bitwise OR mask.
+---|integer
 
 ---
 ---Equivalent to `chmod(2)`.
