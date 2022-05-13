@@ -1,6 +1,5 @@
 ---@meta
-
--- TODO: maybe consider defining more than one function for each overload?
+---@diagnostic disable: duplicate-set-field
 
 ---
 ---The [luv](https://github.com/luvit/luv/) project provides access to the multi-platform support library
@@ -643,7 +642,7 @@ local uv_async_t = {}
 ---the handle.
 ---
 ---@param callback fun(...: threadargs)|nil
----@return uv_async_t|nil, string? err_name, string? err_msg
+---@return uv_async_t|nil handle, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_async(callback) end
 
@@ -1019,7 +1018,7 @@ local uv_stream_t = {}
 ---
 ---@param stream uv_stream_t
 ---@param callback fun(err?: string)|nil
----@return uv_shutdown_t|nil, string? err_name, string? err_msg
+---@return uv_shutdown_t|nil stream, string? err_name, string? err_msg
 function uv.shutdown(stream, callback) end
 uv_stream_t.shutdown = uv.shutdown
 
@@ -1102,7 +1101,7 @@ uv_stream_t.read_stop = uv.read_stop
 ---@param stream uv_stream_t
 ---@param data buffer
 ---@param callback fun(err?: string)|nil
----@return uv_write_t|nil, string? err_name, string? err_msg
+---@return uv_write_t|nil stream, string? err_name, string? err_msg
 function uv.write(stream, data, callback) end
 uv_stream_t.write = uv.write
 
@@ -1121,7 +1120,7 @@ local uv_write_t = {}
 ---@param data buffer
 ---@param send_handle uv_tcp_t|uv_pipe_t
 ---@param callback function|nil
----@return uv_write_t|nil, string? err_name, string? err_msg
+---@return uv_write_t|nil stream, string? err_name, string? err_msg
 function uv.write2(stream, data, send_handle, callback) end
 uv_stream_t.write2 = uv.write2
 
@@ -1317,7 +1316,7 @@ uv_tcp_t.getsockname = uv.tcp_getsockname
 ---@param host string
 ---@param port integer
 ---@param callback fun(err?: string)
----@return uv_connect_t|nil, string? err_name, string? err_msg
+---@return uv_connect_t|nil stream, string? err_name, string? err_msg
 function uv.tcp_connect(tcp, host, port, callback) end
 uv_tcp_t.connect = uv.tcp_connect
 
@@ -1592,7 +1591,7 @@ uv_pipe_t.bind = uv.pipe_bind
 ---@param pipe uv_pipe_t
 ---@param name string
 ---@param callback fun(err?: string)|nil
----@return uv_connect_t|nil, string? err_name, string? err_msg
+---@return uv_connect_t|nil stream, string? err_name, string? err_msg
 function uv.pipe_connect(pipe, name, callback) end
 uv_pipe_t.connect = uv.pipe_connect
 
@@ -1986,7 +1985,7 @@ local uv_udp_send_t = {}
 ---@param host string
 ---@param port integer
 ---@param callback fun(err?: string)
----@return uv_udp_send_t|nil, string? err_name, string? err_msg
+---@return uv_udp_send_t|nil stream, string? err_name, string? err_msg
 function uv.udp_send(udp, data, host, port, callback) end
 uv_udp_t.send = uv.udp_send
 
@@ -2177,11 +2176,13 @@ local uv_fs_t = {}
 ---
 ---Equivalent to `close(2)`.
 ---
----@overload fun(fd: integer): boolean|nil, string?, string?
 ---@param fd integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_close(fd, callback) end
+---@param fd integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_close(fd) end
 
 ---
 ---Equivalent to `open(2)`.
@@ -2191,13 +2192,17 @@ function uv.fs_close(fd, callback) end
 ---opened in binary mode. Because of this, the `O_BINARY` and `O_TEXT` flags are
 ---not supported.
 ---
----@overload fun(path: string, flags: access_flags|integer, mode: integer): integer|nil, string?, string?
 ---@param path string
 ---@param flags access_flags|integer
 ---@param mode integer
 ---@param callback fun(err: nil|string, fd: integer|nil)
 ---@return uv_fs_t
 function uv.fs_open(path, flags, mode, callback) end
+---@param path string
+---@param flags access_flags|integer
+---@param mode integer
+---@return integer|nil fd, string? err_name, string? err_msg
+function uv.fs_open(path, flags, mode) end
 
 ---@alias access_flags
 ---|'"r"'
@@ -2226,23 +2231,33 @@ function uv.fs_open(path, flags, mode, callback) end
 ---
 ---**Note:** When `offset` is >= 0, the current file offset will not be updated by the read.
 ---
----@overload fun(fd: integer, size: integer, offset: integer|nil): string|nil, string?, string?
----@overload fun(fd: integer, size: integer, callback: fun(err: nil|string, data: string|nil)): uv_fs_t
 ---@param fd integer
 ---@param size integer
 ---@param offset integer|nil
 ---@param callback fun(err: nil|string, data: string|nil)
 ---@return uv_fs_t
 function uv.fs_read(fd, size, offset, callback) end
+---@param fd integer
+---@param size integer
+---@param callback fun(err: nil|string, data: string|nil)
+---@return uv_fs_t
+function uv.fs_read(fd, size, callback) end
+---@param fd integer
+---@param size integer
+---@param offset integer|nil
+---@return string|nil data, string? err_name, string? err_msg
+function uv.fs_read(fd, size, offset) end
 
 ---
 ---Equivalent to `unlink(2)`.
 ---
----@overload fun(path: string): boolean|nil, string?, string?
 ---@param path string
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_unlink(path, callback) end
+---@param path string
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_unlink(path) end
 
 ---
 ---Equivalent to `pwritev(2)`. Returns the number of bytes written.
@@ -2251,51 +2266,68 @@ function uv.fs_unlink(path, callback) end
 ---
 ---**Note:** When `offset` is >= 0, the current file offset will not be updated by the write.
 ---
----@overload fun(fd: integer, data: buffer, offset: integer|nil): integer|nil, string?, string?
----@overload fun(fd: integer, data: buffer, callback: fun(err: nil|string, bytes: integer|nil)): uv_fs_t
 ---@param fd integer
 ---@param data buffer
 ---@param offset integer|nil
 ---@param callback fun(err: nil|string, bytes: integer|nil)
 ---@return uv_fs_t
 function uv.fs_write(fd, data, offset, callback) end
+---@param fd integer
+---@param data buffer
+---@param callback fun(err: nil|string, bytes: integer|nil)
+---@return uv_fs_t
+function uv.fs_write(fd, data, callback) end
+---@param fd integer
+---@param data buffer
+---@param offset integer|nil
+---@return integer|nil bytes, string? err_name, string? err_msg
+function uv.fs_write(fd, data, offset) end
 
 ---
 ---Equivalent to `mkdir(2)`.
 ---
----@overload fun(path: string, mode: integer): boolean|nil, string?, string?
 ---@param path string
 ---@param mode integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_mkdir(path, mode, callback) end
+---@param path string
+---@param mode integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_mkdir(path, mode) end
 
 ---
 ---Equivalent to `mkdtemp(3)`.
 ---
----@overload fun(template: string): string|nil, string?, string?
 ---@param template string
 ---@param callback fun(err: nil|string, path: string|nil)
 ---@return uv_fs_t
 function uv.fs_mkdtemp(template, callback) end
+---@param template string
+---@return string|nil path, string? err_name, string? err_msg
+function uv.fs_mkdtemp(template) end
 
 ---
 ---Equivalent to `mkstemp(3)`. Returns a temporary file handle and filename.
 ---
----@overload fun(template: string): integer, string|nil, string?, string?
 ---@param template string
 ---@param callback fun(err: nil|string, fd: integer|nil, path: string|nil)
 ---@return uv_fs_t
 function uv.fs_mkstemp(template, callback) end
+---@param template string
+---@return integer|nil fd, string path_or_errname, string? err_msg
+function uv.fs_mkstemp(template) end
 
 ---
 ---Equivalent to `rmdir(2)`.
 ---
----@overload fun(path: string): boolean|nil, string?, string?
 ---@param path string
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_rmdir(path, callback) end
+---@param path string
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_rmdir(path) end
 
 ---
 ---Equivalent to `scandir(3)`, with a slightly different API. Returns a handle that
@@ -2305,11 +2337,13 @@ function uv.fs_rmdir(path, callback) end
 ---userdata is always synchronously returned regardless of whether a callback is
 ---provided and the same userdata is passed to the callback if it is provided.
 ---
----@overload fun(path: string)
 ---@param path string
 ---@param callback fun(err: nil|string, success: uv_fs_t|nil)
 ---@return uv_fs_t|nil, string? err_name, string? err_msg
 function uv.fs_scandir(path, callback) end
+---@param path string
+---@return uv_fs_t|nil success, string? err_name, string? err_msg
+function uv.fs_scandir(path) end
 
 ---
 ---Called on a `uv_fs_t` returned by `uv.fs_scandir()` to get the next directory
@@ -2337,72 +2371,87 @@ function uv.fs_scandir_next(fs) end
 ---
 ---Equivalent to `stat(2)`.
 ---
----@overload fun(path: string): fs_stat_struct|nil, string?, string?
 ---@param path string
 ---@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function uv.fs_stat(path, callback) end
+---@param path string
+---@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+function uv.fs_stat(path) end
 
 ---
 ---Equivalent to `fstat(2)`.
 ---
----@overload fun(fd: integer): fs_stat_struct|nil, string?, string?
 ---@param fd integer
 ---@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function uv.fs_fstat(fd, callback) end
+---@param fd integer
+---@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+function uv.fs_fstat(fd) end
 
 ---
 ---Equivalent to `lstat(2)`.
 ---
----@overload fun(fd: integer): fs_stat_struct|nil, string?, string?
 ---@param fd integer
 ---@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function uv.fs_lstat(fd, callback) end
+---@param fd integer
+---@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+function uv.fs_lstat(fd) end
 
 ---
 ---Equivalent to `rename(2)`.
 ---
----@overload fun(path: string, new_path: string): boolean|nil, string?, string?
 ---@param path string
 ---@param new_path string
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_rename(path, new_path, callback) end
+---@param path string
+---@param new_path string
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_rename(path, new_path) end
 
 ---
 ---Equivalent to `fsync(2)`.
 ---
----@overload fun(fd: integer): boolean|nil, string?, string?
 ---@param fd integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_fsync(fd, callback) end
+---@param fd integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_fsync(fd) end
 
 ---
 ---Equivalent to `fdatasync(2)`.
 ---
----@overload fun(fd: integer): boolean|nil, string?, string?
 ---@param fd integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_fdatasync(fd, callback) end
+---@param fd integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_fdatasync(fd) end
 
 ---
 ---Equivalent to `ftruncate(2)`.
 ---
----@overload fun(fd: integer, offset: integer): boolean|nil, string?, string?
 ---@param fd integer
 ---@param offset integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_ftruncate(fd, offset, callback) end
+---@param fd integer
+---@param offset integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_ftruncate(fd, offset) end
 
 ---
 ---Limited equivalent to `sendfile(2)`. Returns the number of bytes written.
 ---
----@overload fun(out_fd: integer, in_fd: integer, in_offset: integer, size: integer): integer|nil, string?, string?
 ---@param out_fd integer
 ---@param in_fd integer
 ---@param in_offset integer
@@ -2410,6 +2459,12 @@ function uv.fs_ftruncate(fd, offset, callback) end
 ---@param callback fun(err: nil|string, bytes: integer|nil)
 ---@return uv_fs_t
 function uv.fs_sendfile(out_fd, in_fd, in_offset, size, callback) end
+---@param out_fd integer
+---@param in_fd integer
+---@param in_offset integer
+---@param size integer
+---@return integer|nil bytes, string? err_name, string? err_msg
+function uv.fs_sendfile(out_fd, in_fd, in_offset, size) end
 
 ---
 ---Equivalent to `access(2)` on Unix. Windows uses `GetFileAttributesW()`. Access
@@ -2417,12 +2472,15 @@ function uv.fs_sendfile(out_fd, in_fd, in_offset, size, callback) end
 ---
 ---Returns `true` or `false` indicating access permission.
 ---
----@overload fun(path: string, mode: fs_access_mode|integer): boolean|nil, string?, string?
 ---@param path string
 ---@param mode fs_access_mode|integer
 ---@param callback fun(err: nil|string, permission: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_access(path, mode, callback) end
+---@param path string
+---@param mode fs_access_mode|integer
+---@return boolean|nil permission, string? err_name, string? err_msg
+function uv.fs_access(path, mode) end
 
 ---@alias fs_access_mode
 ---|'"R"'
@@ -2436,142 +2494,195 @@ function uv.fs_access(path, mode, callback) end
 ---
 ---Equivalent to `chmod(2)`.
 ---
----@overload fun(path: string, mode: integer): boolean|nil, string?, string?
 ---@param path string
 ---@param mode integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_chmod(path, mode, callback) end
+---@param path string
+---@param mode integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_chmod(path, mode) end
 
 ---
 ---Equivalent to `fchmod(2)`.
 ---
----@overload fun(fd: integer, mode: integer): boolean|nil, string?, string?
 ---@param fd integer
 ---@param mode integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_fchmod(fd, mode, callback) end
+---@param fd integer
+---@param mode integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_fchmod(fd, mode) end
 
 ---
 ---Equivalent to `utime(2)`.
 ---
----@overload fun(path: string, atime: number, mtime: number): boolean|nil, string?, string?
 ---@param path string
 ---@param atime number
 ---@param mtime number
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_utime(path, atime, mtime, callback) end
+---@param path string
+---@param atime number
+---@param mtime number
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_utime(path, atime, mtime) end
 
 ---
 ---Equivalent to `futime(2)`.
 ---
----@overload fun(fd: integer, atime: number, mtime: number): boolean|nil, string?, string?
 ---@param fd integer
 ---@param atime number
 ---@param mtime number
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_futime(fd, atime, mtime, callback) end
+---@param fd integer
+---@param atime number
+---@param mtime number
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_futime(fd, atime, mtime) end
 
 ---
 ---Equivalent to `lutime(2)`.
 ---
----@overload fun(path: string, atime: number, mtime: number): boolean|nil, string?, string?
 ---@param path string
 ---@param atime number
 ---@param mtime number
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_lutime(path, atime, mtime, callback) end
+---@param path string
+---@param atime number
+---@param mtime number
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_lutime(path, atime, mtime) end
 
 ---
 ---Equivalent to `link(2)`.
 ---
----@overload fun(path: string, new_path: string): boolean|nil, string?, string?
 ---@param path string
 ---@param new_path string
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_link(path, new_path, callback) end
+---@param path string
+---@param new_path string
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_link(path, new_path) end
 
 ---
 ---Equivalent to `symlink(2)`.
 ---If the `flags` parameter is omitted, then the 3rd parameter will be treated as the `callback`.
 ---
----@overload fun(path: string, new_path: string, flags: {dir: boolean, junction: boolean}): boolean|nil, string?, string?
----@overload fun(path: string, new_path: string, callback: fun(err: nil|string, success: boolean|nil)): uv_fs_t
 ---@param path string
 ---@param new_path string
 ---@param flags {dir: boolean, junction: boolean}
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_symlink(path, new_path, flags, callback) end
+---@param path string
+---@param new_path string
+---@param callback fun(err: nil|string, success: boolean|nil)
+---@return uv_fs_t
+function uv.fs_symlink(path, new_path, callback) end
+---@param path string
+---@param new_path string
+---@param flags? {dir: boolean, junction: boolean}
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_symlink(path, new_path, flags) end
 
 ---
 ---Equivalent to `readlink(2)`.
 ---
----@overload fun(path: string): string|nil, string?, string?
 ---@param path string
 ---@param callback fun(err: nil|string, path: string|nil)
 ---@return uv_fs_t
 function uv.fs_readlink(path, callback) end
+---@param path string
+---@return string|nil path, string? err_name, string? err_msg
+function uv.fs_readlink(path) end
 
 ---
 ---Equivalent to `realpath(3)`.
 ---
----@overload fun(path: string): string|nil, string?, string?
 ---@param path string
 ---@param callback fun(err: nil|string, path: string|nil)
 ---@return uv_fs_t
 function uv.fs_realpath(path, callback) end
+---@param path string
+---@return string|nil path, string? err_name, string? err_msg
+function uv.fs_realpath(path) end
 
 ---
 ---Equivalent to `chown(2)`.
 ---
----@overload fun(path: string, uid: integer, gid: integer): boolean|nil, string?, string?
 ---@param path string
 ---@param uid integer
 ---@param gid integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_chown(path, uid, gid, callback) end
+---@param path string
+---@param uid integer
+---@param gid integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_chown(path, uid, gid) end
 
 ---
 ---Equivalent to `fchown(2)`.
 ---
----@overload fun(fd: integer, uid: integer, gid: integer): boolean|nil, string?, string?
 ---@param fd integer
 ---@param uid integer
 ---@param gid integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_fchown(fd, uid, gid, callback) end
+---@param fd integer
+---@param uid integer
+---@param gid integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_fchown(fd, uid, gid) end
 
 ---
 ---Equivalent to `lchown(2)`.
 ---
----@overload fun(fd: integer, uid: integer, gid: integer): boolean|nil, string?, string?
 ---@param fd integer
 ---@param uid integer
 ---@param gid integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_lchown(fd, uid, gid, callback) end
+---@param fd integer
+---@param uid integer
+---@param gid integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_lchown(fd, uid, gid) end
 
 ---
 ---Copies a file from `path` to `new_path`.
 ---If the `flags` parameter is omitted, then the 3rd parameter will be treated as the `callback`.
 ---
----@overload fun(path: string, new_path: string, flags: {excl: boolean, ficlone: boolean, ficlone_force: boolean}): boolean|nil, string?, string?
----@overload fun(path: string, new_path: string, callback: fun(err: nil|string, success: boolean|nil)): uv_fs_t
 ---@param path string
 ---@param new_path string
 ---@param flags {excl: boolean, ficlone: boolean, ficlone_force: boolean}
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_copyfile(path, new_path, flags, callback) end
+---@param path string
+---@param new_path string
+---@param callback fun(err: nil|string, success: boolean|nil)
+---@return uv_fs_t
+function uv.fs_copyfile(path, new_path, callback) end
+---@param path string
+---@param new_path string
+---@param flags? {excl: boolean, ficlone: boolean, ficlone_force: boolean}
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_copyfile(path, new_path, flags) end
 
 ---@class uv_dir_t
 local uv_dir_t = {}
@@ -2581,12 +2692,15 @@ local uv_dir_t = {}
 ---`uv.fs_readdir()`. The `entries` parameter defines the maximum number of entries
 ---that should be returned by each call to `uv.fs_readdir()`.
 ---
----@overload fun(path: string, entries: integer|nil): uv_dir_t|nil, string?, string?
 ---@param path string
 ---@param entries integer|nil
 ---@param callback fun(err: nil|string, dir: uv_dir_t|nil)
 ---@return uv_fs_t
 function uv.fs_opendir(path, entries, callback) end
+---@param path string
+---@param entries integer|nil
+---@return uv_dir_t|nil dir, string? err_name, string? err_msg
+function uv.fs_opendir(path, entries) end
 
 ---
 ---Iterates over the directory stream `uv_dir_t` returned by a successful
@@ -2594,31 +2708,38 @@ function uv.fs_opendir(path, entries, callback) end
 ---of entries `n` is equal to or less than the `entries` parameter used in
 ---the associated `uv.fs_opendir()` call.
 ---
----@overload fun(dir: uv_dir_t): table|nil, string?, string?
 ---@param dir uv_dir_t
 ---@param callback fun(err: nil|string, entries: table|nil)
 ---@return uv_fs_t
 function uv.fs_readdir(dir, callback) end
+---@param dir uv_dir_t
+---@return table|nil entries, string? err_name, string? err_msg
+function uv.fs_readdir(dir) end
 uv_dir_t.readdir = uv.fs_readdir
+-- TODO: type the table return
 
 ---
 ---Closes a directory stream returned by a successful `uv.fs_opendir()` call.
 ---
----@overload fun(dir: uv_dir_t): boolean|nil, string?, string?
 ---@param dir uv_dir_t
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_closedir(dir, callback) end
+---@param dir uv_dir_t
+---@return boolean|nil success, string? err_name, string? err_msg
+function uv.fs_closedir(dir) end
 uv_dir_t.closedir = uv.fs_closedir
 
 ---
 ---Equivalent to `statfs(2)`.
 ---
----@overload fun(path: string)
 ---@param path string
 ---@param callback fun(err: nil|string, stats: table|nil)
----@return table, nil
+---@return uv_fs_t
 function uv.fs_statfs(path, callback) end
+---@param path string
+---@return table|nil stats, string? err_name, string? err_msg
+function uv.fs_statfs(path) end
 
 
 
@@ -2664,7 +2785,7 @@ function uv.new_work(work_callback, after_work_callback) end
 ---
 ---@param work_ctx luv_work_ctx_t
 ---@param ... threadargs
----@return boolean|nil, string? err_name, string? err_msg
+---@return boolean|nil success, string? err_name, string? err_msg
 function uv.queue_work(work_ctx, ...) end
 luv_work_ctx_t.queue = uv.queue_work
 
@@ -2676,13 +2797,17 @@ local uv_getaddrinfo_t = {}
 ---
 ---Equivalent to `getaddrinfo(3)`. Either `host` or `service` may be `nil` but not both.
 ---
----@overload fun(host: string, service: string, hints?: uv_getaddrinfo_hint): uv_getaddrinfo_rtn|nil, string?, string?
 ---@param host string
 ---@param service string
 ---@param hints uv_getaddrinfo_hint?
 ---@param callback fun(err?: string, addresses?: uv_getaddrinfo_rtn)
----@return uv_getaddrinfo_t|nil, string? err_name, string? err_msg
+---@return uv_getaddrinfo_t
 function uv.getaddrinfo(host, service, hints, callback) end
+---@param host string
+---@param service string
+---@param hints uv_getaddrinfo_hint?
+---@return uv_getaddrinfo_rtn|nil addresses, string? err_name, string? err_msg
+function uv.getaddrinfo(host, service, hints) end
 
 ---@alias uv_getaddrinfo_hint {family: network_family|integer|nil, socktype: tcp_socket_type|nil, protocol: network_protocols|nil, addrconfig: boolean|nil, v4mapped: boolean|nil, all: boolean|nil, numberichost: boolean|nil, passive: boolean|nil, numericserv: boolean|nil, canonname: boolean|nil}
 ---@alias uv_getaddrinfo_rtn {[integer]: {addr: string, family: network_family, port: integer|nil, socktype: tcp_socket_type, protocol: network_protocols, canonname: string|nil}}
@@ -2693,11 +2818,13 @@ local uv_getnameinfo_t = {}
 ---
 ---Equivalent to `getnameinfo(3)`.
 ---
----@overload fun(address: {ip: string|nil, port: integer|nil, family: network_family|integer|nil}): string?, string?, string?
 ---@param address {ip: string|nil, port: integer|nil, family: network_family|integer|nil}
 ---@param callback fun(err?: string, host?: string, service?: string)
----@return uv_getnameinfo_t?, string? err_name, string? err_msg
+---@return uv_getnameinfo_t
 function uv.getnameinfo(address, callback) end
+---@param address {ip: string|nil, port: integer|nil, family: network_family|integer|nil}
+---@return string|nil host, string service_or_errname, string? err_msg
+function uv.getnameinfo(address) end
 
 
 
@@ -2979,13 +3106,13 @@ function uv.os_getenv(name, size) end
 ---
 ---@param name string
 ---@param value string
----@return boolean|nil, string? err_name, string? err_msg
+---@return boolean|nil success, string? err_name, string? err_msg
 function uv.os_setenv(name, value) end
 
 ---
 ---**Warning:** This function is not thread safe.
 ---
----@return boolean|nil, string? err_name, string? err_msg
+---@return boolean|nil success, string? err_name, string? err_msg
 function uv.os_unsetenv() end
 
 ---
@@ -3040,7 +3167,7 @@ function uv.os_getpriority(pid) end
 ---
 ---@param pid integer
 ---@param priority integer
----@return boolean|nil, string? err_name, string? err_msg
+---@return boolean|nil success, string? err_name, string? err_msg
 function uv.os_setpriority(pid, priority) end
 
 ---
@@ -3055,12 +3182,15 @@ function uv.os_setpriority(pid, priority) end
 ---available. The asynchronous version may not ever finish when the system is
 ---low on entropy.
 ---
----@overload fun(len: integer, flags: nil): string|nil, string?, string?
 ---@param len integer
 ---@param flags nil
 ---@param callback fun(err?: string, bytes?: string)
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.random(len, flags, callback) end
+---@param len integer
+---@param flags nil
+---@return string|nil, string? err_name, string? err_msg
+function uv.random(len, flags) end
 
 ---
 ---Returns the libuv error message and error name (both in string form, see `err` and `name` in Error Handling) equivalent to the given platform dependent error code: POSIX error codes on Unix (the ones stored in errno), and Win32 error codes on Windows (those returned by GetLastError() or WSAGetLastError()).
