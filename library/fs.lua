@@ -1,34 +1,18 @@
 ---@meta
+---@diagnostic disable: duplicate-set-field
 
 ---
 ---@class luvit.fs
 local fs = {}
 
--- TODO: write type for ReadStream and WriteStream
 -- TODO: new overload for each function that accepts either function or thread as its callback
 -- TODO: new descriptions scraped from nodejs's fs module
-
-
----
----Close a file. No arguments other than a possible exception are given to the completion callback.
----
----@param fd integer
----@param callback? fun(err?: string) | thread
----@return uv_fs_t
-function fs.close(fd, callback) end
-
----
----Synchronous file close
----
----@param fd integer
----@return boolean|nil success, string? err_name, string? err_msg
-function fs.closeSync(fd) end
 
 ---@alias fs_open_flags
 ---Open file for reading.
 ---
 ---An exception occurs if the file does not exist.
----| 'r'
+---|>'r'
 ---Open file for reading and writing.
 ---
 ---An exception occurs if the file does not exist.
@@ -78,6 +62,25 @@ function fs.closeSync(fd) end
 ---Like `'a+'` but fails if `path` exists.
 ---| 'ax+'
 
+---@alias fs_mode string|integer
+
+
+
+---
+---Close a file. No arguments other than a possible exception are given to the completion callback.
+---
+---@param fd integer
+---@param callback? fun(err?: string) | thread
+---@return uv_fs_t
+function fs.close(fd, callback) end
+
+---
+---Synchronous file close
+---
+---@param fd integer
+---@return boolean|nil success, string? err_name, string? err_msg
+function fs.closeSync(fd) end
+
 ---
 ---Asynchronous file open. `flags` can be:
 ---
@@ -95,11 +98,21 @@ function fs.closeSync(fd) end
 --- the end of the file.
 ---
 ---@param path string
----@param flags? fs_open_flags
----@param mode? integer
+---@param flags? fs_open_flags # Default `'r'`.
+---@param mode? fs_mode # Default '0666'.
 ---@param callback? fun(err?: string, fd?: integer) | thread
 ---@return uv_fs_t
 function fs.open(path, flags, mode, callback) end
+---@param path string
+---@param callback fun(err?: string, fd?: integer) | thread
+---@return uv_fs_t
+function fs.open(path, callback) end
+---@param path string
+---@param flags fs_open_flags
+---@param callback fun(err?: string, fd?: integer) | thread
+---@return uv_fs_t
+function fs.open(path, flags, callback) end
+
 
 ---
 ---Synchronous version of `fs.open()`. Returns an integer representing the file
@@ -107,8 +120,9 @@ function fs.open(path, flags, mode, callback) end
 ---
 ---@param path string
 ---@param flags? fs_open_flags
----@param mode? integer
+---@param mode? string|integer # Default '0666'.
 ---@return integer|nil fd, string? err_name, string? err_msg
+---@nodiscard
 function fs.openSync(path, flags, mode) end
 
 ---
@@ -119,19 +133,29 @@ function fs.openSync(path, flags, mode) end
 ---`offset` is the offset in the buffer to start reading at.
 ---
 ---@param fd integer
----@param size? integer
----@param offset? integer
+---@param size? integer # Default `4096`.
+---@param offset? integer # Default `-1`.
 ---@param callback? fun(err?: nil, data?: string) | thread
 ---@return uv_fs_t
 function fs.read(fd, size, offset, callback) end
+---@param fd integer
+---@param callback fun(err?: nil, data?: string) | thread
+---@return uv_fs_t
+function fs.read(fd, callback) end
+---@param fd integer
+---@param size integer
+---@param callback fun(err?: nil, data?: string) | thread
+---@return uv_fs_t
+function fs.read(fd, size, callback) end
 
 ---
 ---Synchronous file read
 ---
 ---@param fd integer
----@param size? integer
----@param offset? integer
+---@param size? integer # Default `4096`.
+---@param offset? integer # Default `-1`.
 ---@return string|nil data, string? err_name, string? err_msg
+---@nodiscard
 function fs.readSync(fd, size, offset) end
 
 ---
@@ -154,19 +178,24 @@ function fs.unlinkSync(path) end
 ---`offset` is the offset in the buffer to start writing at.
 ---
 ---@param fd integer
----@param offset? integer
+---@param offset? integer # Default '-1' (append).
 ---@param data string|string[]
 ---@param callback? fun(err?: string, bytes?: integer) | thread
 ---@return uv_fs_t
 function fs.write(fd, offset, data, callback) end
+---@param fd integer
+---@param callback fun(err?: string, bytes?: integer) | thread
+---@param data string|string[]
+---@return uv_fs_t
+function fs.write(fd, callback, data) end
 
 ---
 ---Synchronous version of `fs.write` function
 ---
 ---@param fd integer
----@param offset? integer
+---@param offset? integer # Default '-1-' (append).
 ---@param data string|string[]
----@return uv_fs_t
+---@return integer bytes
 function fs.writeSync(fd, offset, data) end
 
 ---
@@ -174,23 +203,27 @@ function fs.writeSync(fd, offset, data) end
 ---Mode is the permissions set on the directory, defaults to octal 0777
 ---
 ---@param path string
----@param mode? integer
+---@param mode? string|integer # Default '0777'.
 ---@param callback? fun(err: nil|string, success: boolean|nil) | thread
 ---@return uv_fs_t
 function fs.mkdir(path, mode, callback) end
+---@param path string
+---@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@return uv_fs_t
+function fs.mkdir(path, callback) end
 
 ---
 ---Sync version of mkdir.
 ---
 ---@param path string
----@param mode? integer
+---@param mode? string|integer # Default '0777'.
 ---@return boolean|nil success, string? err_name, string? err_msg
 function fs.mkdirSync(path, mode) end
 
 ---
 ---
 ---@param path string
----@param mode integer
+---@param mode? string|integer # Default '0777'.
 ---@return boolean|nil success, string? err_msg
 function fs.mkdirpSync(path, mode) end
 
@@ -237,6 +270,7 @@ function fs.readdir(path, callback) end
 ---
 ---@param path string
 ---@return string[] files
+---@nodiscard
 function fs.readdirSync(path) end
 
 ---
@@ -254,6 +288,7 @@ function fs.scandir(path, callback) end
 ---
 ---@param path string
 ---@return fun(): string, string iterator
+---@nodiscard
 function fs.scandirSync(path) end
 
 ---
@@ -269,6 +304,7 @@ function fs.exists(path, callback) end
 ---
 ---@param path string
 ---@return boolean exists, string? reason
+---@nodiscard
 function fs.existsSync(path) end
 
 ---
@@ -295,6 +331,7 @@ function fs.stat(path, callback) end
 ---
 ---@param path string
 ---@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@nodiscard
 function fs.statSync(path) end
 
 ---
@@ -310,6 +347,7 @@ function fs.fstat(fd, callback) end
 ---
 ---@param fd integer
 ---@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@nodiscard
 function fs.fstatSync(fd) end
 
 ---
@@ -325,6 +363,7 @@ function fs.lstat(path, callback) end
 ---
 ---@param path string
 ---@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@nodiscard
 function fs.lstatSync(path) end
 
 ---
@@ -389,31 +428,39 @@ function fs.fdatasyncSync(fd) end
 ---If a FILE is larger than the specified size, the extra data is lost. If a FILE is shorter, it is extended and the extended part (hole) reads as zero bytes.
 ---
 ---@param fd integer
----@param offset? integer
+---@param offset? integer # Default '0'.
 ---@param callback? fun(err: nil|string, success: boolean|nil) | thread
 ---@return uv_fs_t
 function fs.ftruncate(fd, offset, callback) end
+---@param fd integer
+---@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@return uv_fs_t
+function fs.ftruncate(fd, callback) end
 
 ---
 ---
 ---@param fname string # the file path
----@param offset integer
+---@param offset? integer # Default `0`.
 ---@param callback? fun(err: nil|string, success: boolean|nil) | thread
 ---@return uv_fs_t
 function fs.truncate(fname, offset, callback) end
+---@param fname string # the file path
+---@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@return uv_fs_t
+function fs.truncate(fname, callback) end
 
 ---
 ---Sync truncate
 ---
 ---@param fd integer
----@param offset? integer
+---@param offset? integer # Default '0'.
 ---@return boolean|nil success, string? err_name, string? err_msg
 function fs.ftruncateSync(fd, offset) end
 
 ---
 ---
 ---@param fname string # the file path
----@param offset integer
+---@param offset? integer # Default '0'.
 ---@return boolean|nil success, string? err_name
 function fs.truncateSync(fname, offset) end
 
@@ -446,6 +493,10 @@ function fs.sendfileSync(outFd, inFd, offset, length) end
 ---@param callback? fun(err: nil|string, permission: boolean|nil) | thread
 ---@return uv_fs_t
 function fs.access(path, mode, callback) end
+---@param path string
+---@param callback fun(err: nil|string, permission: boolean|nil) | thread
+---@return uv_fs_t
+function fs.access(path, callback) end
 
 ---
 ---
@@ -458,7 +509,7 @@ function fs.accessSync(path, mode) end
 ---Asynchronous fchmod(2). No arguments other than a possible exception are given to the completion callback.
 ---
 ---@param path string
----@param mode integer
+---@param mode? string|integer
 ---@param callback? fun(err: nil|string, success: boolean|nil) | thread
 ---@return uv_fs_t
 function fs.chmod(path, mode, callback) end
@@ -467,7 +518,7 @@ function fs.chmod(path, mode, callback) end
 ---Sync chmod.
 ---
 ---@param path string
----@param mode integer
+---@param mode? string|integer
 ---@return boolean|nil success, string? err_name, string? err_msg
 function fs.chmodSync(path, mode) end
 
@@ -475,7 +526,7 @@ function fs.chmodSync(path, mode) end
 ---Asynchronous fchmod(2). No arguments other than a possible exception are given to the completion callback.
 ---
 ---@param fd integer
----@param mode integer
+---@param mode? string|integer
 ---@param callback? fun(err: nil|string, success: boolean|nil) | thread
 ---@return uv_fs_t
 function fs.fchmod(fd, mode, callback) end
@@ -484,7 +535,7 @@ function fs.fchmod(fd, mode, callback) end
 ---Sync fchmod
 ---
 ---@param fd integer
----@param mode integer
+---@param mode? string|integer
 ---@return boolean|nil success, string? err_name, string? err_msg
 function fs.fchmodSync(fd, mode) end
 
@@ -551,19 +602,24 @@ function fs.linkSync(path, newPath) end
 ---
 ---@param path string
 ---@param newPath string
----@param flags? {dir: boolean, junction: boolean}|integer
+---@param options? {dir: boolean, junction: boolean}|integer
 ---@param callback? fun(err: nil|string, success: boolean|nil) | thread
 ---@return uv_fs_t
-function fs.symlink(path, newPath, flags, callback) end
+function fs.symlink(path, newPath, options, callback) end
+---@param path string
+---@param newPath string
+---@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@return uv_fs_t
+function fs.symlink(path, newPath, callback) end
 
 ---
 ---Sync symlink
 ---
 ---@param path string
 ---@param newPath string
----@param flags? {dir: boolean, junction: boolean}|integer
----@return uv_fs_t
-function fs.symlinkSync(path, newPath, flags) end
+---@param options? {dir: boolean, junction: boolean}|integer
+---@return boolean|nil, string?, string?
+function fs.symlinkSync(path, newPath, options) end
 
 ---
 ---Asynchronous readlink(2). The callback gets two arguments (err, linkString).
@@ -579,6 +635,7 @@ function fs.readlink(path, callback) end
 ---
 ---@param path string
 ---@return string|nil path, string? err_name, string? err_msg
+---@nodiscard
 function fs.readlinkSync(path) end
 
 ---
@@ -631,6 +688,7 @@ function fs.readFile(path, callback) end
 ---
 ---@param path string
 ---@return string|nil chunk, string? err_name
+---@nodiscard
 function fs.readFileSync(path) end
 
 ---
@@ -650,14 +708,6 @@ function fs.writeFile(path, data, callback) end
 function fs.writeFileSync(path, data) end
 
 ---
----Function which creates and returns a new read stream instance with the set options and path
----
----@param path string
----@param options unknown
----@return unknown
-function fs.createReadStream(path, options) end
-
----
 ---Appends data to a file
 ---
 ---@param path string
@@ -672,6 +722,113 @@ function fs.appendFile(path, data, callback) end
 ---@param data string|string[]
 ---@return string? err_name
 function fs.appendFileSync(path, data) end
+
+---
+---Function which creates and returns a new WriteStream instance with the set options and path
+---
+---@param path string
+---@param options? WriteStream-Options
+---@return luvit.fs.WriteStream
+---@nodiscard
+function fs.createWriteStream(path, options) end
+
+---
+---Function which creates and returns a new read stream instance with the set options and path
+---
+---@param path string
+---@param options? ReadStream-Options
+---@return luvit.fs.ReadStream
+---@nodiscard
+function fs.createReadStream(path, options) end
+
+
+
+---@alias WriteStream-Options {fd?: integer, flags?: fs_open_flags, mode?: integer, start?: integer}
+
+---
+---@class luvit.fs.WriteStream: luvit.stream.Writable
+---@field options WriteStream-Options
+---@field path string
+---@field fd integer|nil
+---@field pos integer|nil
+---@field bytesWritten integer|0
+local WriteStream = {}
+fs.WriteStream = WriteStream
+
+---
+---Creates a new instance and initializes it.
+---
+---@param path string
+---@param options? WriteStream-Options
+---@return luvit.fs.WriteStream
+---@nodiscard
+function WriteStream:new(path, options) end
+
+---
+---@param callback? fun(err?: luvit.core.Error)
+function WriteStream:open(callback) end
+
+---
+---@param data string|string[]
+---@param callback? fun(err?: string, bytes?: integer)
+function WriteStream:_write(data, callback) end
+
+---
+---
+function WriteStream:close() end
+
+---
+---
+function WriteStream:destroy() end
+
+
+---
+---@class luvit.fs.WriteStreamSync: luvit.fs.WriteStream
+local WriteStreamSync = {}
+fs.WriteStreamSync = WriteStreamSync
+-- TODO: once we want to add descriptions, document the override fields of this
+
+
+
+---@alias ReadStream-Options {fd?: integer, mode?: fs_mode|'0666', offset?: integer|nil, chunkSize?: integer|65536, length?: integer|nil}
+
+---
+---@class luvit.fs.ReadStream: luvit.stream.Readable
+---@field fd integer|nil
+---@field mode fs_mode|'0666'
+---@field path string|nil
+---@field offset integer|nil
+---@field chunkSize integer|65536
+---@field length integer|nil
+---@field bytesRead integer
+---@field reading nil
+---@field flags 'r'
+local ReadStream = {}
+fs.ReadStream = ReadStream
+
+---
+---@param path string
+---@param options? ReadStream-Options
+---@return luvit.fs.ReadStream
+---@nodiscard
+function ReadStream:new(path, options) end
+
+---
+---@param callback? fun(err?: string)
+function fs.ReadStream:open(callback) end
+
+---
+---@param n? integer # How many byte to read. Defaults to `options.chunkSize`.
+function fs.ReadStream:_read(n) end
+
+---
+---
+function fs.ReadStream:close() end
+
+---
+---@param err? any # If passed, emit `error` event and pass `err` as an argument to the listener.
+function fs.ReadStream:destroy(err) end
+
 
 
 return fs
