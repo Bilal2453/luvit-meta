@@ -390,7 +390,7 @@ function Transform:_read() end
 ---Basically just the most minimal sort of Transform stream.
 ---Every written chunk gets output as-is.
 ---
----@class PassThrough: luvit.stream.Transform
+---@class luvit.stream.PassThrough: luvit.stream.Transform
 local PassThrough = {}
 module.PassThrough = PassThrough
 
@@ -398,7 +398,7 @@ module.PassThrough = PassThrough
 ---Creates a new instance and initialize it.
 ---
 ---@param options? Transform_Options
----@return PassThrough
+---@return luvit.stream.PassThrough
 ---@nodiscard
 function PassThrough:new(options) end
 
