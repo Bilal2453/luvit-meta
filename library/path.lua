@@ -9,7 +9,7 @@
 local Path = {}
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param root string
 ---@param sep string
@@ -298,7 +298,7 @@ local PosixPath = {
 }
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@return luvit.path.PosixPath
 ---@nodiscard
@@ -316,7 +316,7 @@ local WindowsPath = {
 }
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@return luvit.path.WindowsPath
 ---@nodiscard

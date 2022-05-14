@@ -85,7 +85,7 @@ local function cpuUsage(self, prevValue) end
 local UvStreamWritable = {}
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param handle uv_pipe_t|uv_stream_t
 ---@return luvit.process.UvStreamWritable
@@ -99,7 +99,7 @@ function UvStreamWritable:new(handle) end
 local UvStreamReadable = {}
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param handle uv_pipe_t|uv_stream_t
 ---@return luvit.process.UvStreamReadable

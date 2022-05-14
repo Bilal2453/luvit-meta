@@ -39,7 +39,7 @@ function Stream:pipe(dest, options) end
 local WriteReq = {}
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param chunk Writable-Chunk
 ---@param cb fun(err?: luvit.core.Error)
@@ -74,7 +74,7 @@ function WriteReq:new(chunk, cb) end
 local WritableState = {}
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param options? Writable-State-Options
 ---@param stream luvit.stream.Writable
@@ -158,7 +158,7 @@ local ReadableState = {}
 ---@alias Readable_State_Options {highWaterMark?: integer, objectMode?: boolean, readableObjectMode?: boolean}
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param options? Readable_State_Options
 ---@param stream luvit.stream.Readable
@@ -264,7 +264,7 @@ module.Duplex = Duplex
 ---@alias Duplex_Options {readable?: boolean, writable?: boolean, allowHalfOpen?: boolean, highWaterMark?: integer, objectMode?: boolean, readableObjectMode?: boolean}
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---You can modify or set the Duplex options here, including writable and readable states.
 ---
 ---@param options Duplex_Options
@@ -288,7 +288,7 @@ local TransformState = {}
 function TransformState:afterTransform(er, data) end
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param options any # not internally implemented
 ---@param stream luvit.stream.Transform
@@ -348,7 +348,7 @@ module.Transform = Transform
 ---@alias Transform_Options Duplex_Options
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param options? Transform_Options
 ---@return luvit.stream.Transform
@@ -395,7 +395,7 @@ local PassThrough = {}
 module.PassThrough = PassThrough
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param options? Transform_Options
 ---@return luvit.stream.PassThrough
@@ -414,7 +414,7 @@ local Observable = {}
 module.Observable = Observable
 
 ---
----Creates a new instance and initialize it.
+---Creates a new instance and initializes it.
 ---
 ---@param options? Transform_Options
 ---@return luvit.stream.Observable
