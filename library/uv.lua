@@ -2590,7 +2590,7 @@ function uv.fs_link(path, new_path) end
 ---
 ---@param path string
 ---@param new_path string
----@param flags {dir: boolean, junction: boolean}
+---@param flags {dir: boolean, junction: boolean}|integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_symlink(path, new_path, flags, callback) end
@@ -2601,7 +2601,7 @@ function uv.fs_symlink(path, new_path, flags, callback) end
 function uv.fs_symlink(path, new_path, callback) end
 ---@param path string
 ---@param new_path string
----@param flags? {dir: boolean, junction: boolean}
+---@param flags? {dir: boolean, junction: boolean}|integer
 ---@return boolean|nil success, string? err_name, string? err_msg
 function uv.fs_symlink(path, new_path, flags) end
 
