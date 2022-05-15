@@ -135,16 +135,16 @@ function fs.openSync(path, flags, mode) end
 ---@param fd integer
 ---@param size? integer # Default `4096`.
 ---@param offset? integer # Default `-1`.
----@param callback? fun(err?: nil, data?: string) | thread
+---@param callback? fun(err?: string, data?: string) | thread
 ---@return uv_fs_t
 function fs.read(fd, size, offset, callback) end
 ---@param fd integer
----@param callback fun(err?: nil, data?: string) | thread
+---@param callback fun(err?: string, data?: string) | thread
 ---@return uv_fs_t
 function fs.read(fd, callback) end
 ---@param fd integer
 ---@param size integer
----@param callback fun(err?: nil, data?: string) | thread
+---@param callback fun(err?: string, data?: string) | thread
 ---@return uv_fs_t
 function fs.read(fd, size, callback) end
 
@@ -162,7 +162,7 @@ function fs.readSync(fd, size, offset) end
 ---Asynchronous delete file.
 ---
 ---@param path string
----@param callback? fun(err?: nil, success?: string) | thread
+---@param callback? fun(err?: string, success?: string) | thread
 ---@return uv_fs_t
 function fs.unlink(path, callback) end
 
@@ -273,13 +273,14 @@ function fs.readdir(path, callback) end
 ---@nodiscard
 function fs.readdirSync(path) end
 
+---@alias fs_scandir_iterator fun(): string, string)
 ---
 ---Similar to readdir but the callback here gets a function instead of a table containing
 ---the list of files. Every time this function is invoked it returns the name of the file/dir
 ---and the type of the file/dir (either file or directory).
 ---
 ---@param path string
----@param callback? fun(err?: string, iterator?: fun(): string, string) | thread
+---@param callback? fun(err?: string, iterator?: fs_scandir_iterator | thread)
 function fs.scandir(path, callback) end
 
 ---
