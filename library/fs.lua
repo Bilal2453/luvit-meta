@@ -70,9 +70,13 @@ local fs = {}
 ---Close a file. No arguments other than a possible exception are given to the completion callback.
 ---
 ---@param fd integer
----@param callback? fun(err?: string) | thread
+---@param callback? fun(err?: string)
 ---@return uv_fs_t
 function fs.close(fd, callback) end
+---@param fd integer
+---@param thread thread
+---@return string? err
+function fs.close(fd, thread) end
 
 ---
 ---Synchronous file close
@@ -100,16 +104,23 @@ function fs.closeSync(fd) end
 ---@param path string
 ---@param flags? fs_open_flags # Default `'r'`.
 ---@param mode? fs_mode # Default '0666'.
----@param callback? fun(err?: string, fd?: integer) | thread
+---@param callback? fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, flags, mode, callback) end
 ---@param path string
----@param callback fun(err?: string, fd?: integer) | thread
+---@param flags? fs_open_flags # Default `'r'`.
+---@param mode? fs_mode # Default '0666'.
+---@param thread thread
+---@return string? err, integer? fd
+---@nodiscard
+function fs.open(path, flags, mode, thread) end
+---@param path string
+---@param callback fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, callback) end
 ---@param path string
 ---@param flags fs_open_flags
----@param callback fun(err?: string, fd?: integer) | thread
+---@param callback fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, flags, callback) end
 
@@ -135,16 +146,23 @@ function fs.openSync(path, flags, mode) end
 ---@param fd integer
 ---@param size? integer # Default `4096`.
 ---@param offset? integer # Default `-1`.
----@param callback? fun(err?: string, data?: string) | thread
+---@param callback? fun(err?: string, data?: string)
 ---@return uv_fs_t
 function fs.read(fd, size, offset, callback) end
 ---@param fd integer
----@param callback fun(err?: string, data?: string) | thread
+---@param size? integer # Default `4096`.
+---@param offset? integer # Default `-1`.
+---@param thread thread
+---@return string? err, string? data
+---@nodiscard
+function fs.read(fd, size, offset, thread) end
+---@param fd integer
+---@param callback fun(err?: string, data?: string)
 ---@return uv_fs_t
 function fs.read(fd, callback) end
 ---@param fd integer
 ---@param size integer
----@param callback fun(err?: string, data?: string) | thread
+---@param callback fun(err?: string, data?: string)
 ---@return uv_fs_t
 function fs.read(fd, size, callback) end
 
@@ -162,9 +180,14 @@ function fs.readSync(fd, size, offset) end
 ---Asynchronous delete file.
 ---
 ---@param path string
----@param callback? fun(err?: string, success?: string) | thread
+---@param callback? fun(err?: string, success?: string)
 ---@return uv_fs_t
 function fs.unlink(path, callback) end
+---@param path string
+---@param thread thread
+---@return string? err, string? success
+---@nodiscard
+function fs.unlink(path, thread) end
 
 ---
 ---Synchronous unlink.
@@ -180,11 +203,18 @@ function fs.unlinkSync(path) end
 ---@param fd integer
 ---@param offset? integer # Default '-1' (append).
 ---@param data string|string[]
----@param callback? fun(err?: string, bytes?: integer) | thread
+---@param callback? fun(err?: string, bytes?: integer)
 ---@return uv_fs_t
 function fs.write(fd, offset, data, callback) end
 ---@param fd integer
----@param callback fun(err?: string, bytes?: integer) | thread
+---@param offset? integer # Default '-1' (append).
+---@param data string|string[]
+---@param thread thread
+---@return string? err, integer? bytes
+---@nodiscard
+function fs.write(fd, offset, data, thread) end
+---@param fd integer
+---@param callback fun(err?: string, bytes?: integer)
 ---@param data string|string[]
 ---@return uv_fs_t
 function fs.write(fd, callback, data) end
@@ -204,11 +234,17 @@ function fs.writeSync(fd, offset, data) end
 ---
 ---@param path string
 ---@param mode? string|integer # Default '0777'.
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.mkdir(path, mode, callback) end
 ---@param path string
----@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@param mode? string|integer # Default '0777'.
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.mkdir(path, mode, thread) end
+---@param path string
+---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.mkdir(path, callback) end
 
@@ -231,9 +267,14 @@ function fs.mkdirpSync(path, mode) end
 ---Makes a directory from a template object
 ---
 ---@param template string
----@param callback? fun(err: nil|string, path: string|nil) | thread
+---@param callback? fun(err: nil|string, path: string|nil)
 ---@return uv_fs_t
 function fs.mkdtemp(template, callback) end
+---@param template string
+---@param thread thread
+---@return nil|string err, string|nil path
+---@nodiscard
+function fs.mkdtemp(template, thread) end
 
 ---
 ---Sync version of mkdtemp
@@ -246,9 +287,14 @@ function fs.mkdtempSync(template) end
 ---Removes a directory
 ---
 ---@param path string
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.rmdir(path, callback) end
+---@param path string
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.rmdir(path, thread) end
 
 ---
 ---Sync version of rmdir
@@ -262,8 +308,11 @@ function fs.rmdirSync(path) end
 ---This function is not recursive. Use the luvit-walk package for a recursive variant
 ---
 ---@param path string
----@param callback? fun(err_obj?: luvit.core.Error, files?: string[]) | thread
+---@param callback? fun(err_obj?: luvit.core.Error, files?: string[])
 function fs.readdir(path, callback) end
+---@param path string
+---@param thread thread
+function fs.readdir(path, thread) end
 
 ---
 ---Sync version of readdir. Will raise an exception on error.
@@ -280,8 +329,11 @@ function fs.readdirSync(path) end
 ---and the type of the file/dir (either file or directory).
 ---
 ---@param path string
----@param callback? fun(err?: string, iterator?: fs_scandir_iterator | thread)
+---@param callback? fun(err?: string, iterator?: fs_scandir_iterator)
 function fs.scandir(path, callback) end
+---@param path string
+---@param thread thread
+function fs.scandir(path, thread) end
 
 ---
 ---Simply returns the iterator function retrieved in the async scandirs callback.
@@ -296,8 +348,11 @@ function fs.scandirSync(path) end
 ---Checks if a file exists.
 ---
 ---@param path string
----@param callback? fun(err?: string, exists?: boolean) | thread
+---@param callback? fun(err?: string, exists?: boolean)
 function fs.exists(path, callback) end
+---@param path string
+---@param thread thread
+function fs.exists(path, thread) end
 
 ---
 ---Sync version of exists.
@@ -323,9 +378,14 @@ function fs.existsSync(path) end
 ---```
 ---
 ---@param path string
----@param callback? fun(err: nil|string, stat: fs_stat_struct|nil) | thread
+---@param callback? fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function fs.stat(path, callback) end
+---@param path string
+---@param thread thread
+---@return nil|string err, fs_stat_struct|nil stat
+---@nodiscard
+function fs.stat(path, thread) end
 
 ---
 ---Sync version of fs.stat. Returns either an error or the stat object
@@ -339,9 +399,14 @@ function fs.statSync(path) end
 ---Similar to stat but expects a file descriptor as retrieved from open or read instead of a path
 ---
 ---@param fd integer
----@param callback? fun(err: nil|string, stat: fs_stat_struct|nil) | thread
+---@param callback? fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function fs.fstat(fd, callback) end
+---@param fd integer
+---@param thread thread
+---@return nil|string err, fs_stat_struct|nil stat
+---@nodiscard
+function fs.fstat(fd, thread) end
 
 ---
 ---Sync fstat
@@ -355,9 +420,14 @@ function fs.fstatSync(fd) end
 ---lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
 ---
 ---@param path string
----@param callback? fun(err: nil|string, stat: fs_stat_struct|nil) | thread
+---@param callback? fun(err: nil|string, stat: fs_stat_struct|nil)
 ---@return uv_fs_t
 function fs.lstat(path, callback) end
+---@param path string
+---@param thread thread
+---@return nil|string err, fs_stat_struct|nil stat
+---@nodiscard
+function fs.lstat(path, thread) end
 
 ---
 ---Sync lstat
@@ -373,9 +443,15 @@ function fs.lstatSync(path) end
 ---
 ---@param path string
 ---@param newPath string
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.rename(path, newPath, callback) end
+---@param path string
+---@param newPath string
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.rename(path, newPath, thread) end
 
 ---
 ---Sync version of rename
@@ -393,9 +469,14 @@ function fs.renameSync(path, newPath) end
 ---Calling fsync() does not necessarily ensure that the entry in the directory containing the file has also reached disk. For that an explicit fsync() on a file descriptor for the directory is also needed.
 ---
 ---@param fd integer
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.fsync(fd, callback) end
+---@param fd integer
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.fsync(fd, thread) end
 
 ---
 ---Sync version of fsync
@@ -410,9 +491,14 @@ function fs.fsyncSync(fd) end
 ---The aim of fdatasync() is to reduce disk activity for applications that do not require all metadata to be synchronized with the disk.
 ---
 ---@param fd integer
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.fdatasync(fd, callback) end
+---@param fd integer
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.fdatasync(fd, thread) end
 
 ---
 ---Sync fdatasync
@@ -430,11 +516,17 @@ function fs.fdatasyncSync(fd) end
 ---
 ---@param fd integer
 ---@param offset? integer # Default '0'.
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.ftruncate(fd, offset, callback) end
 ---@param fd integer
----@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@param offset? integer # Default '0'.
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.ftruncate(fd, offset, thread) end
+---@param fd integer
+---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.ftruncate(fd, callback) end
 
@@ -442,11 +534,17 @@ function fs.ftruncate(fd, callback) end
 ---
 ---@param fname string # the file path
 ---@param offset? integer # Default `0`.
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.truncate(fname, offset, callback) end
 ---@param fname string # the file path
----@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@param offset? integer # Default `0`.
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.truncate(fname, offset, thread) end
+---@param fname string # the file path
+---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.truncate(fname, callback) end
 
@@ -472,9 +570,16 @@ function fs.truncateSync(fname, offset) end
 ---@param inFd integer
 ---@param offset integer
 ---@param length integer
----@param callback? fun(err: nil|string, bytes: integer|nil) | thread
+---@param callback? fun(err: nil|string, bytes: integer|nil)
 ---@return uv_fs_t
 function fs.sendfile(outFd, inFd, offset, length, callback) end
+---@param outFd integer
+---@param inFd integer
+---@param offset integer
+---@param length integer
+---@param thread thread
+---@return string? err, integer? bytes
+function fs.sendfile(outFd, inFd, offset, length, thread) end
 
 ---
 ---Sync sendfile
@@ -491,11 +596,17 @@ function fs.sendfileSync(outFd, inFd, offset, length) end
 ---
 ---@param path string
 ---@param mode? fs_access_mode
----@param callback? fun(err: nil|string, permission: boolean|nil) | thread
+---@param callback? fun(err: nil|string, permission: boolean|nil)
 ---@return uv_fs_t
 function fs.access(path, mode, callback) end
 ---@param path string
----@param callback fun(err: nil|string, permission: boolean|nil) | thread
+---@param mode? fs_access_mode
+---@param thread thread
+---@return nil|string err, boolean|nil permission
+---@nodiscard
+function fs.access(path, mode, thread) end
+---@param path string
+---@param callback fun(err: nil|string, permission: boolean|nil)
 ---@return uv_fs_t
 function fs.access(path, callback) end
 
@@ -511,9 +622,15 @@ function fs.accessSync(path, mode) end
 ---
 ---@param path string
 ---@param mode? string|integer
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.chmod(path, mode, callback) end
+---@param path string
+---@param mode? string|integer
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.chmod(path, mode, thread) end
 
 ---
 ---Sync chmod.
@@ -528,9 +645,15 @@ function fs.chmodSync(path, mode) end
 ---
 ---@param fd integer
 ---@param mode? string|integer
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.fchmod(fd, mode, callback) end
+---@param fd integer
+---@param mode? string|integer
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.fchmod(fd, mode, thread) end
 
 ---
 ---Sync fchmod
@@ -546,9 +669,16 @@ function fs.fchmodSync(fd, mode) end
 ---@param path string
 ---@param atime number
 ---@param mtime number
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.utime(path, atime, mtime, callback) end
+---@param path string
+---@param atime number
+---@param mtime number
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.utime(path, atime, mtime, thread) end
 
 ---
 ---Sync utime
@@ -565,9 +695,16 @@ function fs.utimeSync(path, atime, mtime) end
 ---@param fd integer
 ---@param atime number
 ---@param mtime number
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.futime(fd, atime, mtime, callback) end
+---@param fd integer
+---@param atime number
+---@param mtime number
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.futime(fd, atime, mtime, thread) end
 
 ---
 ---Sync futime
@@ -586,9 +723,15 @@ function fs.futimeSync(fd, atime, mtime) end
 ---
 ---@param path string
 ---@param newPath string
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.link(path, newPath, callback) end
+---@param path string
+---@param newPath string
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.link(path, newPath, thread) end
 
 ---
 ---Sync link
@@ -604,12 +747,19 @@ function fs.linkSync(path, newPath) end
 ---@param path string
 ---@param newPath string
 ---@param options? {dir: boolean, junction: boolean}|integer
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.symlink(path, newPath, options, callback) end
 ---@param path string
 ---@param newPath string
----@param callback fun(err: nil|string, success: boolean|nil) | thread
+---@param options? {dir: boolean, junction: boolean}|integer
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.symlink(path, newPath, options, thread) end
+---@param path string
+---@param newPath string
+---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.symlink(path, newPath, callback) end
 
@@ -627,9 +777,14 @@ function fs.symlinkSync(path, newPath, options) end
 ---Prints value of a symbolic link or canonical file name
 ---
 ---@param path string
----@param callback? fun(err: nil|string, path: string|nil) | thread
+---@param callback? fun(err: nil|string, path: string|nil)
 ---@return uv_fs_t
 function fs.readlink(path, callback) end
+---@param path string
+---@param thread thread
+---@return nil|string err, string|nil path
+---@nodiscard
+function fs.readlink(path, thread) end
 
 ---
 ---Sync readlink
@@ -645,9 +800,16 @@ function fs.readlinkSync(path) end
 ---@param path string
 ---@param uid integer
 ---@param gid integer
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.chown(path, uid, gid, callback) end
+---@param path string
+---@param uid integer
+---@param gid integer
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.chown(path, uid, gid, thread) end
 
 ---
 ---Sync chown
@@ -664,9 +826,16 @@ function fs.chownSync(path, uid, gid) end
 ---@param fd integer
 ---@param uid integer
 ---@param gid integer
----@param callback? fun(err: nil|string, success: boolean|nil) | thread
+---@param callback? fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function fs.fchown(fd, uid, gid, callback) end
+---@param fd integer
+---@param uid integer
+---@param gid integer
+---@param thread thread
+---@return nil|string err, boolean|nil success
+---@nodiscard
+function fs.fchown(fd, uid, gid, thread) end
 
 ---
 ---Sync fchown
@@ -681,8 +850,11 @@ function fs.fchownSync(fd, uid, gid) end
 ---Reads a file to a string buffer which is returned as the second argument in the callback. Works with virtual filesystems as well
 ---
 ---@param path string
----@param callback? fun(err?: string, chunk?: string) | thread
+---@param callback? fun(err?: string, chunk?: string)
 function fs.readFile(path, callback) end
+---@param path string
+---@param thread thread
+function fs.readFile(path, thread) end
 
 ---
 ---Sync readFile
@@ -697,8 +869,12 @@ function fs.readFileSync(path) end
 ---
 ---@param path string
 ---@param data string|string[]
----@param callback? fun(err?: string) | thread
+---@param callback? fun(err?: string)
 function fs.writeFile(path, data, callback) end
+---@param path string
+---@param data string|string[]
+---@param thread thread
+function fs.writeFile(path, data, thread) end
 
 ---
 ---Sync writeFile
@@ -713,8 +889,13 @@ function fs.writeFileSync(path, data) end
 ---
 ---@param path string
 ---@param data string|string[]
----@param callback? fun(err?: string, bytes?: integer) | thread
+---@param callback? fun(err?: string, bytes?: integer)
 function fs.appendFile(path, data, callback) end
+---@param path string
+---@param data string|string[]
+---@param thread thread
+---@return string? err, integer? bytes
+function fs.appendFile(path, data, thread) end
 
 ---
 ---Sync version of append file.
