@@ -5,7 +5,6 @@
 ---@class luvit.fs
 local fs = {}
 
--- TODO: new overload for each function that accepts either function or thread as its callback
 -- TODO: new descriptions scraped from nodejs's fs module
 
 ---@alias fs_open_flags
