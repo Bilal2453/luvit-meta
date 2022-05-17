@@ -12,6 +12,7 @@ local re = {}
 ---@param string string
 ---@param defs? table
 ---@return lpeg-pattern
+---@nodiscard
 function re.compile(string, defs) end
 
 ---
@@ -24,6 +25,7 @@ function re.compile(string, defs) end
 ---@param init? number
 ---@return number? start  # The index at which the find begins.
 ---@return number? finish # The index at which the find finishes.
+---@nodiscard
 function re.find(subject, pattern, init) end
 
 ---
@@ -33,6 +35,7 @@ function re.find(subject, pattern, init) end
 ---@param pattern pattern
 ---@param replacement string
 ---@return string
+---@nodiscard
 function re.gsub(subject, pattern, replacement) end
 
 ---
@@ -42,6 +45,7 @@ function re.gsub(subject, pattern, replacement) end
 ---@param pattern pattern
 ---@return number|string|table|nil
 ---@return ...? any
+---@nodiscard
 function re.match(subject, pattern) end
 
 ---

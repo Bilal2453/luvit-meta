@@ -16,6 +16,7 @@ local lpeg = {}
 ---Returns a string with the running version of LPeg.
 ---
 ---@return string
+---@nodiscard
 function lpeg.version() end
 
 ---
@@ -23,6 +24,7 @@ function lpeg.version() end
 ---
 ---@param value any
 ---@return string|nil
+---@nodiscard
 function lpeg.type(value) end
 
 ---
@@ -49,6 +51,7 @@ function lpeg.setmaxstack(max) end
 ---@param subject string
 ---@param init? number
 ---@return number|string|nil
+---@nodiscard
 function lpeg.match(pattern, subject, init) end
 
 ---
@@ -70,6 +73,7 @@ function lpeg.match(pattern, subject, init) end
 ---
 ---@param value pattern
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.P(value) end
 
 ---
@@ -79,6 +83,7 @@ function lpeg.P(value) end
 ---
 ---@param patt pattern
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.B(patt) end
 
 ---
@@ -88,6 +93,7 @@ function lpeg.B(patt) end
 ---
 ---@param range? string
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.R(range) end
 
 ---
@@ -99,6 +105,7 @@ function lpeg.R(range) end
 ---
 ---@param string string
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.S(string) end
 
 ---
@@ -106,6 +113,7 @@ function lpeg.S(string) end
 ---
 ---@param v pattern
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.V(v) end
 
 ---
@@ -138,6 +146,7 @@ function lpeg.pcode(patt) end
 ---
 ---@param patt pattern
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.C(patt) end
 
 ---
@@ -145,6 +154,7 @@ function lpeg.C(patt) end
 ---
 ---@param n number
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Carg(n) end
 
 ---
@@ -156,6 +166,7 @@ function lpeg.Carg(n) end
 ---
 ---@param name any
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Cb(name) end
 
 ---
@@ -164,6 +175,7 @@ function lpeg.Cb(name) end
 ---@param value? any
 ---@vararg any
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Cc(value, ...) end
 
 ---
@@ -191,6 +203,8 @@ function lpeg.Cc(value, ...) end
 ---
 ---@param patt pattern
 ---@param func function
+---@return lpeg-pattern
+---@nodiscard
 function lpeg.Cf(patt, func) end
 
 ---
@@ -201,12 +215,14 @@ function lpeg.Cf(patt, func) end
 ---@param patt pattern
 ---@param name? any
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Cg(patt, name) end
 
 ---
 ---Creates a *position capture*. It matches the empty string and captures the position in the subject where the match occurs. The captured value is a number.
 ---
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Cp() end
 
 ---
@@ -214,6 +230,7 @@ function lpeg.Cp() end
 ---
 ---@param patt pattern
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Cs(patt) end
 
 ---
@@ -221,6 +238,7 @@ function lpeg.Cs(patt) end
 ---
 ---@param patt pattern
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Ct(patt) end
 
 ---
@@ -235,6 +253,7 @@ function lpeg.Ct(patt) end
 ---@param patt pattern
 ---@param func function
 ---@return lpeg-pattern
+---@nodiscard
 function lpeg.Cmt(patt, func) end
 
 ---@class lpeg-pattern
