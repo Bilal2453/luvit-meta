@@ -77,8 +77,6 @@ local function memoryUsage(self) end
 ---@nodiscard
 local function cpuUsage(self, prevValue) end
 
--- TODO: UvStreamWritable and UVStreamReadable.handle can also be a fs.ReadStream
-
 ---
 ---@class luvit.process.UvStreamWritable: luvit.stream.Writable
 ---@field handle uv_pipe_t|uv_stream_t
@@ -120,6 +118,7 @@ local global_proccess_rtn = {
   exit = exit,
   memoryUsage = memoryUsage,
   cpuUsage = cpuUsage,
+  ---@type luvit.process.UvStreamReadable | luvit.fs.ReadStream
   stdin = UvStreamReadable,
   stdout = UvStreamWritable,
   stderr = UvStreamWritable,
