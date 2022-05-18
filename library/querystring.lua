@@ -9,11 +9,13 @@ local querystring = {}
 ---
 ---@param str string
 ---@return string decoded
+---@nodiscard
 function querystring.urldecode(str) end
 
 ---
 ---@param str string
 ---@return string encoded
+---@nodiscard
 function querystring.urlencode(str) end
 
 ---
@@ -31,6 +33,7 @@ function querystring.urlencode(str) end
 ---@param sep? string # The substring used to delimit key and value pairs in the query string. Default: `&`.
 ---@param eq? string The substring used to delimit keys and values in the query string. # Default: `=`.
 ---@return string result
+---@nodiscard
 function querystring.stringify(params, sep, eq) end
 
 ---
@@ -48,6 +51,7 @@ function querystring.stringify(params, sep, eq) end
 ---@param sep? string # The substring used to delimit key and value pairs in the query string. Default: `&`.
 ---@param eq? string # The substring used to delimit keys and values in the query string. Default: `=`.
 ---@return table<string, string|string[]> result
+---@nodiscard
 function querystring.parse(str, sep, eq) end
 
 return querystring
