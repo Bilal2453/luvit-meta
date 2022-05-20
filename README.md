@@ -2,7 +2,7 @@
 
 This project is a collection of meta definitions for the platform [Luvit](https://github.com/Luvit/Luvit). The meta definitions provide typing for returns, parameters, constants and classes; It does as well provide documentation comments where possible, either by scraping the Luvit-docs, Nodejs docs, luv docs or manually written in some places.
 
-Some of those definitions are scraped off of code/docs and then some manual work is done to figure types out. For those the used scraper is located under [[scrapers]], the scraper outputs to a file in the same directory. From there the output is manually copied over to the actual library definition.
+Some of those definitions are scraped off of code/docs and then some manual work is done to figure types out. For those the used scraper is located under [scrapers](/scrapers), the scraper outputs to a file in the same directory. From there the output is manually copied over to the actual library definition.
 Other defintions -and most of them- are completely manually written, I have not written a scraper for those mostly because the automated part is really not worth it. That is, the automated part would be a single copy-paste operation then delete anything between `function x()` and `end`. Something I prefer doing manually so I can actually catch some of the weird stuff.
 
 ### How does it work?
@@ -30,48 +30,48 @@ In steps, how to install it when using VScode, Sumneko's Language Server:
 
 It should automatically detect when you are using Luvit, and prompt you for using its definitions with something similar to the following:
 
-[To Be Done]
+![image](https://user-images.githubusercontent.com/38175840/169589684-c5770fc0-7026-4d13-b957-f776966b676d.png)
 
 Although, if that does not happen, you can manually trigger it by typing `-- use-luvit` in a Lua file inside your VSCode workspace, save the file, then reload your workspace. It should now prompt you with something similar to the previous picture. Once you apply the settings, you can remove `-- use-luvit`.
 
 ### What modules have been completed and what not?
 
-[ ] buffer
-[ ] childprocess
-[-] codec
-[-] core
-[-] dgram
-[ ] dns
-[-] env
-[-] fs
-[-] helpful
-[-] hooks
-[-] http
-[-] http-codec
-[-] http-header
-[ ] https
-[-] json
-[-] los
-[-] lpeg
-[-] net
-[-] path
-[-] pathjoin
-[-] pretty-print
-[-] process
-[-] querystring
-[-] re
-[ ] readline
-[ ] repl
-[-] require
-[ ] resources
-[-] stream
-[ ] thread
-[-] timer
-[ ] tls
-[-] url
-[-] ustring
-[-] utils
-[-] uv
+- [ ] buffer
+- [ ] childprocess
+- [x] codec
+- [x] core
+- [x] dgram
+- [ ] dns
+- [x] env
+- [x] fs
+- [x] helpful
+- [x] hooks
+- [x] http
+- [x] http-codec
+- [x] http-header
+- [ ] https
+- [x] json
+- [x] los
+- [x] lpeg
+- [x] net
+- [x] path
+- [x] pathjoin
+- [x] pretty-print
+- [x] process
+- [x] querystring
+- [x] re
+- [ ] readline
+- [ ] repl
+- [x] require
+- [ ] resources
+- [x] stream
+- [ ] thread
+- [x] timer
+- [ ] tls
+- [x] url
+- [x] ustring
+- [x] utils
+- [x] uv
 
 ### Why basic, table and string built-ins have been overwritten?
 
@@ -81,4 +81,4 @@ There is also [the difference between LuaJIT and Luvi](https://github.com/Luvit/
 
 ## License
 
-This exhausting project is licensed under Apache License 2.0, see [[LICENSE]] for more information. Feel free to fork and/or PR changes.
+This exhausting project is licensed under Apache License 2.0, see [LICENSE](/LICENSE) for more information. Feel free to fork and/or PR changes.
