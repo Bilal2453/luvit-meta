@@ -15,7 +15,7 @@ local url = {}
 ---**Use with caution.**
 ---
 ---@param url string # The URL string to parse.
----@param parseQueryString boolean # If `true`, the `query` property will always be set to an object returned by the `querystring` module's `parse()` method. If `false`, the `query` property on the returned URL object will be an unparsed, undecoded string. Default: `false`.
+---@param parseQueryString? boolean # If `true`, the `query` property will always be set to an object returned by the `querystring` module's `parse()` method. If `false`, the `query` property on the returned URL object will be an unparsed, undecoded string. Default: `false`.
 ---@return url_parsed result
 ---@nodiscard
 function url.parse(url, parseQueryString) end
