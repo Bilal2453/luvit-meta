@@ -64,8 +64,8 @@ function WriteReq:new(chunk, cb) end
 ---@field corked integer
 ---@field sync boolean
 ---@field bufferProcessing boolean
----@field onwrite fun(er?: luvit.core.Error)
----@field writecb nil|fun(er?: luvit.core.Error)
+---@field onwrite fun(err?: luvit.core.Error)
+---@field writecb nil|fun(err?: luvit.core.Error)
 ---@field writelen integer
 ---@field buffer luvit.stream.WriteReq[]
 ---@field pendingcb integer
@@ -109,7 +109,7 @@ function Writable:pipe() end
 
 ---
 ---@param chunk Writable-Chunk
----@param cb fun(er?: luvit.core.Error)
+---@param cb fun(err?: luvit.core.Error)
 ---@return boolean
 function Writable:write(chunk, cb) end
 
@@ -123,13 +123,13 @@ function Writable:uncork() end
 
 ---
 ---@param chunk? Writable-Chunk
----@param cb fun(er?: luvit.core.Error)
+---@param cb fun(err?: luvit.core.Error)
 function Writable:_write(chunk, cb) end
 
 ---
----@overload fun(cb: fun(er?: luvit.core.Error))
+---@overload fun(cb: fun(err?: luvit.core.Error))
 ---@param chunk Writable-Chunk
----@param cb fun(er?: luvit.core.Error)
+---@param cb fun(err?: luvit.core.Error)
 function Writable:_end(chunk, cb) end
 
 
@@ -277,15 +277,15 @@ function Duplex:new(options) end
 ---@class luvit.stream.TransformState: luvit.core.Object
 ---@field needTransform boolean
 ---@field transforming boolean
----@field writecb nil|fun(er?: luvit.core.Error)
+---@field writecb nil|fun(err?: luvit.core.Error)
 ---@field writechunk nil|any
 local TransformState = {}
 
 ---
----@param er? luvit.core.Error
+---@param err? luvit.core.Error
 ---@param data? string
 ---@return nil|luvit.stream.Transform
-function TransformState:afterTransform(er, data) end
+function TransformState:afterTransform(err, data) end
 
 ---
 ---Creates a new instance and initializes it.
@@ -341,7 +341,7 @@ function TransformState:new(options, stream) end
 ---
 ---@class luvit.stream.Transform: luvit.stream.Duplex
 ---@field _transformState luvit.stream.TransformState
----@field _flush nil|fun(er?: luvit.core.Error)
+---@field _flush nil|fun(err?: luvit.core.Error)
 local Transform = {}
 module.Transform = Transform
 
@@ -374,13 +374,13 @@ function Transform:push(chunk) end
 ---never call cb(), then you'll never get another chunk.
 ---
 ---@param chunk any
----@param cb fun(er?: luvit.core.Error, data?: string)
+---@param cb fun(err?: luvit.core.Error, data?: string)
 ---@return unknown
 function Transform:_transform(chunk, cb) end
 
 ---
 ---@param chunk any
----@param cb fun(er?: luvit.core.Error)
+---@param cb fun(err?: luvit.core.Error)
 function Transform:_write(chunk, cb) end
 
 function Transform:_read() end
