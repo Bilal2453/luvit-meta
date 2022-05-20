@@ -9,9 +9,13 @@ Other defintions -and most of them- are completely manually written, I have not 
 
 Here are some samples of it working:
 
-[To Be Done]
+https://user-images.githubusercontent.com/38175840/169595790-80305ae3-c4fc-478a-af59-6bfa2acb2635.mp4
 
-### Where to expect this working?
+
+https://user-images.githubusercontent.com/38175840/169615756-f9946531-d943-4942-9124-f819783bc180.mp4
+
+
+### Where to expect it to working?
 
 Those metafiles where specifically generated to work with [Sumneko's Lua Language Server](https://github.com/sumneko/lua-language-server/), although it *may* work with other EmmyLua supported Language Servers. While the latter is not a goal of this project, minimum care was taken while writing the definitions.
 
@@ -36,7 +40,7 @@ Once it prompts you this, choose "Apply and modify settings". You should now see
 
 If it does not prompt you automatically, you can manually trigger it by typing `-- use-luvit` in a Lua file inside your VSCode workspace somewhere, save the file, then reload your workspace. It should now prompt you with something similar to the previous picture. Once you apply the settings, you can remove the `-- use-luvit`.
 
-### What modules have been completed and what not?
+### What modules have definitions?
 
 - [ ] buffer
 - [ ] childprocess
