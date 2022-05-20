@@ -44,6 +44,8 @@ function http_header.toHeaders(tbl) end
 ---}
 ---```
 ---
+---Note: Duplicate string keys will overwrite eachother, with the last duplicate
+---key of the last table taking precedence
 function http_header.combineHeaders(...) end
 
 ---
