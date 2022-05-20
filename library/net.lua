@@ -1,4 +1,5 @@
 ---@meta
+---@diagnostic disable: duplicate-set-field
 
 ---
 ---@class luvit.net
@@ -147,19 +148,22 @@ function Server:destroy(err, callback) end
 ---
 ---@generic self: luvit.net.Server
 ---@param self self
+---@param port string|number
 ---@param ip string
 ---@param callback fun()
 ---@return self self
-function Server:listen(ip, callback) end
+function Server:listen(port, ip, callback) end
 ---@generic self: luvit.net.Server
 ---@param self self
+---@param port string|number
 ---@param callback fun()
 ---@return self self
-function Server:listen(callback) end
+function Server:listen(port, callback) end
 ---@generic self: luvit.net.Server
+---@param port string|number
 ---@param self self
 ---@return self self
-function Server:listen() end
+function Server:listen(port) end
 
 ---
 ---@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
