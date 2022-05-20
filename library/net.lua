@@ -80,12 +80,12 @@ function Socket:getSendBufferSize() end
 function Socket:getRecvBufferSize() end
 
 ---
----@param size? integer # (default: `0`)
+---@param size? integer # has to be higher than `0`. (default: `0`).
 ---@return integer|nil, string? err_name, string? err_msg
 function Socket:setSendBufferSize(size) end
 
 ---
----@param size? integer # (default: `0`)
+---@param size? integer # has to be higher than `0`. (default: `0`).
 ---@return integer|nil, string? err_name, string? err_msg
 function Socket:setRecvBufferSize(size) end
 
