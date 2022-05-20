@@ -32,7 +32,9 @@ It should automatically detect when you are using Luvit, and prompt you for usin
 
 ![image](https://user-images.githubusercontent.com/38175840/169589684-c5770fc0-7026-4d13-b957-f776966b676d.png)
 
-Although, if that does not happen, you can manually trigger it by typing `-- use-luvit` in a Lua file inside your VSCode workspace, save the file, then reload your workspace. It should now prompt you with something similar to the previous picture. Once you apply the settings, you can remove `-- use-luvit`.
+Once it prompts you this, choose "Apply and modify settings". You should now see a new `.vscode` folder in your main workspace directory, and modules such as `http` have their fields show in completion tab. If you don't see this, make sure you have opened your project as VSCode Workspace.
+
+If it does not prompt you automatically, you can manually trigger it by typing `-- use-luvit` in a Lua file inside your VSCode workspace somewhere, save the file, then reload your workspace. It should now prompt you with something similar to the previous picture. Once you apply the settings, you can remove the `-- use-luvit`.
 
 ### What modules have been completed and what not?
 
