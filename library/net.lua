@@ -128,6 +128,7 @@ function Socket:getsockname() end
 ---@field _handle luvit.net.Socket|nil
 ---@field _connectionListener function|nil
 local Server = {}
+net.Server = Server
 
 ---
 ---@param options {handle?: luvit.net.Socket}
