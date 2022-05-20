@@ -244,7 +244,7 @@ local http_codec = {}
 ---| 'PATCH'
 ---| string
 
----@alias httpCodec_item {version?: number, method?: httpCodec_method, path?: string, reason?: httpCodec_reason,  code?: httpCodec_code, [integer]: table<string, string>}
+---@alias httpCodec_item {version?: number, method?: httpCodec_method, path?: string, reason?: httpCodec_reason,  code?: httpCodec_code, [integer]: table<string, string>}|string
 
 ---@return fun(item: httpCodec_item): string
 ---@nodiscard
