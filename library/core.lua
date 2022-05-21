@@ -112,6 +112,10 @@ end
 ---@class luvit.core.Emitter: luvit.core.Object
 ---@field handlers? table<string, function[]>     # A map of `event_name = listeners`, where listeners is an array of callbacks.
 ---@field addHandlerType? fun(event_name: string) # When assigned, the function value is called just before assigning `handlers[event_name] = {}`.
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.core.Emitter, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.core.Emitter, name: 'error', callback: fun(err: string|luvit.core.Error))
 local Emitter = Object:extend()
 core.Emitter = Emitter
 
@@ -129,8 +133,8 @@ function Emitter:missingHandlerType(name, ...) end
 ---
 ---@generic T: luvit.core.Emitter
 ---@param self T
----@param name string            # The event name to listen on
----@param callback fun(...: any) # The callback to execute on event fire
+---@param name string       # The event name to listen on
+---@param callback function # The callback to execute on event fire
 ---@return T self
 function Emitter:once(name, callback) end
 
@@ -140,8 +144,8 @@ function Emitter:once(name, callback) end
 ---
 ---@generic T: luvit.core.Emitter
 ---@param self T
----@param name string            # The event name to listen on
----@param callback fun(...: any) # The callback to execute on event fire
+---@param name string       # The event name to listen on
+---@param callback function # The callback to execute on event fire
 ---@return T self
 function Emitter:on(name, callback) end
 
