@@ -11,6 +11,38 @@ local net = {}
 ---@field _connecting boolean
 ---@field _reading boolean
 ---@field _destroyed boolean
+--Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.net.Socket, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.net.Socket, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.net.Socket, name: 'pipe', callback: fun(source: luvit.net.Socket))
+---@field once fun(self: luvit.net.Socket, name: 'pipe', callback: fun(source: luvit.net.Socket))
+---@field on fun(self: luvit.net.Socket, name: 'drain', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'drain', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'finish', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'finish', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'end', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'end', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'data', callback: fun(chunk: string))
+---@field once fun(self: luvit.net.Socket, name: 'data', callback: fun(chunk: string))
+---@field on fun(self: luvit.net.Socket, name: 'readable', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'readable', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'unpipe', callback: fun(source: luvit.net.Socket))
+---@field once fun(self: luvit.net.Socket, name: 'unpipe', callback: fun(source: luvit.net.Socket))
+---@field on fun(self: luvit.net.Socket, name: 'resume', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'resume', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'pause', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'pause', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: '_socketEnd', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: '_socketEnd', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'connect', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'connect', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'close', callback: fun())
+---@field once fun(self: luvit.net.Socket, name: 'close', callback: fun())
+---@field on fun(self: luvit.net.Socket, name: 'connection', callback: fun(connection: luvit.net.Socket))
+---@field once fun(self: luvit.net.Socket, name: 'connection', callback: fun(connection: luvit.net.Socket))
 local Socket = {}
 net.Socket = Socket
 
@@ -128,6 +160,12 @@ function Socket:getsockname() end
 ---@class luvit.net.Server: luvit.core.Emitter
 ---@field _handle luvit.net.Socket|nil
 ---@field _connectionListener function|nil
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.net.Server, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.net.Server, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.net.Server, name: 'connection', callback: fun(client: luvit.net.Socket))
+---@field once fun(self: luvit.net.Server, name: 'connection', callback: fun(client: luvit.net.Socket))
 local Server = {}
 net.Server = Server
 
