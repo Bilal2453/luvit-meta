@@ -15,6 +15,38 @@ local http = {}
 ---@field statusCode? httpCodec_code
 ---@field statusMessage? httpCodec_reason
 ---@field socket luvit.net.Socket
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.http.IncomingMessage, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.http.IncomingMessage, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.http.IncomingMessage, name: 'pipe', callback: fun(source: luvit.http.IncomingMessage))
+---@field once fun(self: luvit.http.IncomingMessage, name: 'pipe', callback: fun(source: luvit.http.IncomingMessage))
+---@field on fun(self: luvit.http.IncomingMessage, name: 'drain', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'drain', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'finish', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'finish', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'end', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'end', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'data', callback: fun(chunk: string))
+---@field once fun(self: luvit.http.IncomingMessage, name: 'data', callback: fun(chunk: string))
+---@field on fun(self: luvit.http.IncomingMessage, name: 'readable', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'readable', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'unpipe', callback: fun(source: luvit.http.IncomingMessage))
+---@field once fun(self: luvit.http.IncomingMessage, name: 'unpipe', callback: fun(source: luvit.http.IncomingMessage))
+---@field on fun(self: luvit.http.IncomingMessage, name: 'resume', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'resume', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'pause', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'pause', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: '_socketEnd', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: '_socketEnd', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'connect', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'connect', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'close', callback: fun())
+---@field once fun(self: luvit.http.IncomingMessage, name: 'close', callback: fun())
+---@field on fun(self: luvit.http.IncomingMessage, name: 'connection', callback: fun(connection: luvit.net.Socket))
+---@field once fun(self: luvit.http.IncomingMessage, name: 'connection', callback: fun(connection: luvit.net.Socket))
 local IncomingMessage = {}
 
 ---
@@ -42,6 +74,20 @@ function IncomingMessage:_read() end
 ---@field statusCode httpCodec_code
 ---@field keepAlive? boolean
 ---@field hasBody? boolean
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.http.ServerResponse, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.http.ServerResponse, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.http.ServerResponse, name: 'pipe', callback: fun(source: luvit.http.ServerResponse))
+---@field once fun(self: luvit.http.ServerResponse, name: 'pipe', callback: fun(source: luvit.http.ServerResponse))
+---@field on fun(self: luvit.http.ServerResponse, name: 'drain', callback: fun())
+---@field once fun(self: luvit.http.ServerResponse, name: 'drain', callback: fun())
+---@field on fun(self: luvit.http.ServerResponse, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.http.ServerResponse, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.http.ServerResponse, name: 'finish', callback: fun())
+---@field once fun(self: luvit.http.ServerResponse, name: 'finish', callback: fun())
+---@field on fun(self: luvit.http.ServerResponse, name: 'end', callback: fun())
+---@field once fun(self: luvit.http.ServerResponse, name: 'end', callback: fun())
 local ServerResponse = {
   encode = httpCodec.encoder()
 }
@@ -119,6 +165,28 @@ function http.createServer(onRequest) end
 ---@field ended boolean
 ---@field headers_sent boolean
 ---@field _defaultUserAgent? 'luvit/http luvi/?'
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.http.ClientRequest, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.http.ClientRequest, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.http.ClientRequest, name: 'pipe', callback: fun(source: luvit.http.ClientRequest))
+---@field once fun(self: luvit.http.ClientRequest, name: 'pipe', callback: fun(source: luvit.http.ClientRequest))
+---@field on fun(self: luvit.http.ClientRequest, name: 'drain', callback: fun())
+---@field once fun(self: luvit.http.ClientRequest, name: 'drain', callback: fun())
+---@field on fun(self: luvit.http.ClientRequest, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.http.ClientRequest, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.http.ClientRequest, name: 'finish', callback: fun())
+---@field once fun(self: luvit.http.ClientRequest, name: 'finish', callback: fun())
+---@field on fun(self: luvit.http.ClientRequest, name: 'end', callback: fun())
+---@field once fun(self: luvit.http.ClientRequest, name: 'end', callback: fun())
+---@field on fun(self: luvit.http.ClientRequest, name: 'socket', callback: fun(socket: luvit.net.Socket))
+---@field once fun(self: luvit.http.ClientRequest, name: 'socket', callback: fun(socket: luvit.net.Socket))
+---@field on fun(self: luvit.http.ClientRequest, name: 'connect', callback: fun(res: luvit.http.IncomingMessage, socket: luvit.net.Socket, head: httpCodec_head))
+---@field once fun(self: luvit.http.ClientRequest, name: 'connect', callback: fun(res: luvit.http.IncomingMessage, socket: luvit.net.Socket, head: httpCodec_head))
+---@field on fun(self: luvit.http.ClientRequest, name: 'upgrade', callback: fun(res: luvit.http.IncomingMessage, socket: luvit.net.Socket, head: httpCodec_head))
+---@field once fun(self: luvit.http.ClientRequest, name: 'upgrade', callback: fun(res: luvit.http.IncomingMessage, socket: luvit.net.Socket, head: httpCodec_head))
+---@field on fun(self: luvit.http.ClientRequest, name: 'response', callback: fun(res: luvit.http.IncomingMessage))
+---@field once fun(self: luvit.http.ClientRequest, name: 'response', callback: fun(res: luvit.http.IncomingMessage))
 local ClientRequest = {
   encode = httpCodec.encoder(),
   decode = httpCodec.decoder(),
