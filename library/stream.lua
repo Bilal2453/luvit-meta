@@ -18,6 +18,12 @@ local module = {}
 ---
 ---@class luvit.stream.Stream: luvit.core.Emitter
 ---@field initialize nil|function
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.core.Emitter, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.core.Emitter, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.stream.Stream, name: 'pipe', callback: fun(source: luvit.stream.Stream))
+---@field once fun(self: luvit.stream.Stream, name: 'pipe', callback: fun(source: luvit.stream.Stream))
 local Stream = {}
 module.Stream = Stream
 
@@ -90,6 +96,20 @@ function WritableState:new(options, stream) end
 ---
 ---@class luvit.stream.Writable: luvit.stream.Stream
 ---@field _writableState luvit.stream.WritableState
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.stream.Writable, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.stream.Writable, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.stream.Writable, name: 'pipe', callback: fun(source: luvit.stream.Writable))
+---@field once fun(self: luvit.stream.Writable, name: 'pipe', callback: fun(source: luvit.stream.Writable))
+---@field on fun(self: luvit.stream.Writable, name: 'drain', callback: fun())
+---@field once fun(self: luvit.stream.Writable, name: 'drain', callback: fun())
+---@field on fun(self: luvit.stream.Writable, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.stream.Writable, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.stream.Writable, name: 'finish', callback: fun())
+---@field once fun(self: luvit.stream.Writable, name: 'finish', callback: fun())
+---@field on fun(self: luvit.stream.Writable, name: 'end', callback: fun())
+---@field once fun(self: luvit.stream.Writable, name: 'end', callback: fun())
 local Writable = {}
 module.Writable = Writable
 
@@ -155,12 +175,12 @@ function Writable:_end(chunk, cb) end
 ---@field readingMore boolean
 local ReadableState = {}
 
----@alias Readable_State_Options {highWaterMark?: integer, objectMode?: boolean, readableObjectMode?: boolean}
+---@alias Readable-State-Options {highWaterMark?: integer, objectMode?: boolean, readableObjectMode?: boolean}
 
 ---
 ---Creates a new instance and initializes it.
 ---
----@param options? Readable_State_Options
+---@param options? Readable-State-Options
 ---@param stream luvit.stream.Readable
 ---@return luvit.stream.ReadableState
 ---@nodiscard
@@ -171,8 +191,36 @@ function ReadableState:new(options, stream) end
 ---
 ---@class luvit.stream.Readable: luvit.stream.Stream
 ---@field _readableState luvit.stream.ReadableState
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.stream.Readable, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.stream.Readable, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.stream.Readable, name: 'pipe', callback: fun(source: luvit.stream.Readable))
+---@field once fun(self: luvit.stream.Readable, name: 'pipe', callback: fun(source: luvit.stream.Readable))
+---@field on fun(self: luvit.stream.Readable, name: 'data', callback: fun(chunk: string))
+---@field once fun(self: luvit.stream.Readable, name: 'data', callback: fun(chunk: string))
+---@field on fun(self: luvit.stream.Readable, name: 'readable', callback: fun())
+---@field once fun(self: luvit.stream.Readable, name: 'readable', callback: fun())
+---@field on fun(self: luvit.stream.Readable, name: 'unpipe', callback: fun(source: luvit.stream.Readable))
+---@field once fun(self: luvit.stream.Readable, name: 'unpipe', callback: fun(source: luvit.stream.Readable))
+---@field on fun(self: luvit.stream.Readable, name: 'resume', callback: fun())
+---@field once fun(self: luvit.stream.Readable, name: 'resume', callback: fun())
+---@field on fun(self: luvit.stream.Readable, name: 'pause', callback: fun())
+---@field once fun(self: luvit.stream.Readable, name: 'pause', callback: fun())
+---@field on fun(self: luvit.stream.Readable, name: 'end', callback: fun())
+---@field once fun(self: luvit.stream.Readable, name: 'end', callback: fun())
 local Readable = {}
 module.Readable = Readable
+
+---
+---Creates a new instance and initialize it
+---You can modify or set the readale state options here.
+---
+---@param options? Readable-State-Options
+---@param stream? luvit.stream.Stream
+---@return luvit.stream.Readable
+---@nodiscard
+function Readable:new(options, stream) end
 
 ---
 ---Manually shove something into the `read()` buffer.
@@ -258,6 +306,30 @@ function Readable._fromList(n, state) end
 ---@field readable boolean
 ---@field writable boolean
 ---@field allowHalfOpen boolean
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.stream.Duplex, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.stream.Duplex, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.stream.Duplex, name: 'pipe', callback: fun(source: luvit.stream.Duplex))
+---@field once fun(self: luvit.stream.Duplex, name: 'pipe', callback: fun(source: luvit.stream.Duplex))
+---@field on fun(self: luvit.stream.Duplex, name: 'drain', callback: fun())
+---@field once fun(self: luvit.stream.Duplex, name: 'drain', callback: fun())
+---@field on fun(self: luvit.stream.Duplex, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.stream.Duplex, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.stream.Duplex, name: 'finish', callback: fun())
+---@field once fun(self: luvit.stream.Duplex, name: 'finish', callback: fun())
+---@field on fun(self: luvit.stream.Duplex, name: 'end', callback: fun())
+---@field once fun(self: luvit.stream.Duplex, name: 'end', callback: fun())
+---@field on fun(self: luvit.stream.Duplex, name: 'data', callback: fun(chunk: string))
+---@field once fun(self: luvit.stream.Duplex, name: 'data', callback: fun(chunk: string))
+---@field on fun(self: luvit.stream.Duplex, name: 'readable', callback: fun())
+---@field once fun(self: luvit.stream.Duplex, name: 'readable', callback: fun())
+---@field on fun(self: luvit.stream.Duplex, name: 'unpipe', callback: fun(source: luvit.stream.Duplex))
+---@field once fun(self: luvit.stream.Duplex, name: 'unpipe', callback: fun(source: luvit.stream.Duplex))
+---@field on fun(self: luvit.stream.Duplex, name: 'resume', callback: fun())
+---@field once fun(self: luvit.stream.Duplex, name: 'resume', callback: fun())
+---@field on fun(self: luvit.stream.Duplex, name: 'pause', callback: fun())
+---@field once fun(self: luvit.stream.Duplex, name: 'pause', callback: fun())
 local Duplex = {}
 module.Duplex = Duplex
 
@@ -267,7 +339,7 @@ module.Duplex = Duplex
 ---Creates a new instance and initializes it.
 ---You can modify or set the Duplex options here, including writable and readable states.
 ---
----@param options Duplex_Options
+---@param options? Duplex_Options
 ---@return luvit.stream.Duplex
 ---@nodiscard
 function Duplex:new(options) end
@@ -342,6 +414,30 @@ function TransformState:new(options, stream) end
 ---@class luvit.stream.Transform: luvit.stream.Duplex
 ---@field _transformState luvit.stream.TransformState
 ---@field _flush nil|fun(err?: luvit.core.Error)
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.stream.Transform, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.stream.Transform, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.stream.Transform, name: 'pipe', callback: fun(source: luvit.stream.Transform))
+---@field once fun(self: luvit.stream.Transform, name: 'pipe', callback: fun(source: luvit.stream.Transform))
+---@field on fun(self: luvit.stream.Transform, name: 'drain', callback: fun())
+---@field once fun(self: luvit.stream.Transform, name: 'drain', callback: fun())
+---@field on fun(self: luvit.stream.Transform, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.stream.Transform, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.stream.Transform, name: 'finish', callback: fun())
+---@field once fun(self: luvit.stream.Transform, name: 'finish', callback: fun())
+---@field on fun(self: luvit.stream.Transform, name: 'end', callback: fun())
+---@field once fun(self: luvit.stream.Transform, name: 'end', callback: fun())
+---@field on fun(self: luvit.stream.Transform, name: 'data', callback: fun(chunk: string))
+---@field once fun(self: luvit.stream.Transform, name: 'data', callback: fun(chunk: string))
+---@field on fun(self: luvit.stream.Transform, name: 'readable', callback: fun())
+---@field once fun(self: luvit.stream.Transform, name: 'readable', callback: fun())
+---@field on fun(self: luvit.stream.Transform, name: 'unpipe', callback: fun(source: luvit.stream.Transform))
+---@field once fun(self: luvit.stream.Transform, name: 'unpipe', callback: fun(source: luvit.stream.Transform))
+---@field on fun(self: luvit.stream.Transform, name: 'resume', callback: fun())
+---@field once fun(self: luvit.stream.Transform, name: 'resume', callback: fun())
+---@field on fun(self: luvit.stream.Transform, name: 'pause', callback: fun())
+---@field once fun(self: luvit.stream.Transform, name: 'pause', callback: fun())
 local Transform = {}
 module.Transform = Transform
 
@@ -391,6 +487,30 @@ function Transform:_read() end
 ---Every written chunk gets output as-is.
 ---
 ---@class luvit.stream.PassThrough: luvit.stream.Transform
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.stream.PassThrough, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.stream.PassThrough, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.stream.PassThrough, name: 'pipe', callback: fun(source: luvit.stream.PassThrough))
+---@field once fun(self: luvit.stream.PassThrough, name: 'pipe', callback: fun(source: luvit.stream.PassThrough))
+---@field on fun(self: luvit.stream.PassThrough, name: 'drain', callback: fun())
+---@field once fun(self: luvit.stream.PassThrough, name: 'drain', callback: fun())
+---@field on fun(self: luvit.stream.PassThrough, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.stream.PassThrough, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.stream.PassThrough, name: 'finish', callback: fun())
+---@field once fun(self: luvit.stream.PassThrough, name: 'finish', callback: fun())
+---@field on fun(self: luvit.stream.PassThrough, name: 'end', callback: fun())
+---@field once fun(self: luvit.stream.PassThrough, name: 'end', callback: fun())
+---@field on fun(self: luvit.stream.PassThrough, name: 'data', callback: fun(chunk: string))
+---@field once fun(self: luvit.stream.PassThrough, name: 'data', callback: fun(chunk: string))
+---@field on fun(self: luvit.stream.PassThrough, name: 'readable', callback: fun())
+---@field once fun(self: luvit.stream.PassThrough, name: 'readable', callback: fun())
+---@field on fun(self: luvit.stream.PassThrough, name: 'unpipe', callback: fun(source: luvit.stream.PassThrough))
+---@field once fun(self: luvit.stream.PassThrough, name: 'unpipe', callback: fun(source: luvit.stream.PassThrough))
+---@field on fun(self: luvit.stream.PassThrough, name: 'resume', callback: fun())
+---@field once fun(self: luvit.stream.PassThrough, name: 'resume', callback: fun())
+---@field on fun(self: luvit.stream.PassThrough, name: 'pause', callback: fun())
+---@field once fun(self: luvit.stream.PassThrough, name: 'pause', callback: fun())
 local PassThrough = {}
 module.PassThrough = PassThrough
 
@@ -410,6 +530,30 @@ function PassThrough:new(options) end
 ---@class luvit.stream.Observable: luvit.stream.Transform
 ---@field options Transform_Options
 ---@field observers luvit.stream.Readable[]
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field on fun(self: luvit.stream.Observable, name: 'error', callback: fun(err: string|luvit.core.Error))
+---Emitted on error, as well as on `Emitter:wrap()`.
+---@field once fun(self: luvit.stream.Observable, name: 'error', callback: fun(err: string|luvit.core.Error))
+---@field on fun(self: luvit.stream.Observable, name: 'pipe', callback: fun(source: luvit.stream.Observable))
+---@field once fun(self: luvit.stream.Observable, name: 'pipe', callback: fun(source: luvit.stream.Observable))
+---@field on fun(self: luvit.stream.Observable, name: 'drain', callback: fun())
+---@field once fun(self: luvit.stream.Observable, name: 'drain', callback: fun())
+---@field on fun(self: luvit.stream.Observable, name: 'prefinish', callback: fun())
+---@field once fun(self: luvit.stream.Observable, name: 'prefinish', callback: fun())
+---@field on fun(self: luvit.stream.Observable, name: 'finish', callback: fun())
+---@field once fun(self: luvit.stream.Observable, name: 'finish', callback: fun())
+---@field on fun(self: luvit.stream.Observable, name: 'end', callback: fun())
+---@field once fun(self: luvit.stream.Observable, name: 'end', callback: fun())
+---@field on fun(self: luvit.stream.Observable, name: 'data', callback: fun(chunk: string))
+---@field once fun(self: luvit.stream.Observable, name: 'data', callback: fun(chunk: string))
+---@field on fun(self: luvit.stream.Observable, name: 'readable', callback: fun())
+---@field once fun(self: luvit.stream.Observable, name: 'readable', callback: fun())
+---@field on fun(self: luvit.stream.Observable, name: 'unpipe', callback: fun(source: luvit.stream.Observable))
+---@field once fun(self: luvit.stream.Observable, name: 'unpipe', callback: fun(source: luvit.stream.Observable))
+---@field on fun(self: luvit.stream.Observable, name: 'resume', callback: fun())
+---@field once fun(self: luvit.stream.Observable, name: 'resume', callback: fun())
+---@field on fun(self: luvit.stream.Observable, name: 'pause', callback: fun())
+---@field once fun(self: luvit.stream.Observable, name: 'pause', callback: fun())
 local Observable = {}
 module.Observable = Observable
 
