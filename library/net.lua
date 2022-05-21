@@ -11,7 +11,7 @@ local net = {}
 ---@field _connecting boolean
 ---@field _reading boolean
 ---@field _destroyed boolean
---Emitted on error, as well as on `Emitter:wrap()`.
+---Emitted on error, as well as on `Emitter:wrap()`.
 ---@field on fun(self: luvit.net.Socket, name: 'error', callback: fun(err: string|luvit.core.Error))
 ---Emitted on error, as well as on `Emitter:wrap()`.
 ---@field once fun(self: luvit.net.Socket, name: 'error', callback: fun(err: string|luvit.core.Error))
