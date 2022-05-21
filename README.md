@@ -15,6 +15,9 @@ https://user-images.githubusercontent.com/38175840/169595790-80305ae3-c4fc-478a-
 https://user-images.githubusercontent.com/38175840/169615756-f9946531-d943-4942-9124-f819783bc180.mp4
 
 
+https://user-images.githubusercontent.com/38175840/169663522-5aed02c1-1308-49d6-8d63-3de23a872ef7.mp4
+
+
 ### Where to expect it to working?
 
 Those metafiles where specifically generated to work with [Sumneko's Lua Language Server](https://github.com/sumneko/lua-language-server/), although it *may* work with other EmmyLua supported Language Servers. While the latter is not a goal of this project, minimum care was taken while writing the definitions.
