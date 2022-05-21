@@ -43,7 +43,6 @@ local timer_module = {}
 ---
 ---@param delay integer # millisecond
 ---@param thread? thread
----@return any
 function timer_module.sleep(delay, thread) end
 
 ---
@@ -51,6 +50,7 @@ function timer_module.sleep(delay, thread) end
 ---@param delay integer # millisecond
 ---@param callback fun(...: T)
 ---@param ... T
+---@return uv_timer_t
 function timer_module.setTimeout(delay, callback, ...) end
 
 ---
@@ -58,6 +58,7 @@ function timer_module.setTimeout(delay, callback, ...) end
 ---@param interval integer # millisecond
 ---@param callback fun(...: T)
 ---@param ... T
+---@return uv_timer_t
 function timer_module.setInterval(interval, callback, ...) end
 
 ---
@@ -73,16 +74,16 @@ timer_module.clearTimer = timer_module.clearInterval
 function timer_module.setImmediate(callback, ...) end
 
 ---
----@param item table
+---@param item luvit.core.Emitter|table
 function timer_module.unenroll(item) end
 
 ---
----@param item table
+---@param item luvit.core.Emitter|table
 ---@param msecs number # millisecond
 function timer_module.enroll(item, msecs) end
 
 ---
----@param item table
+---@param item luvit.core.Emitter|table
 function timer_module.active(item) end
 
 return timer_module
