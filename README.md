@@ -55,7 +55,7 @@ If it does not prompt you automatically, you can manually trigger it by typing `
 - [x] http
 - [x] http-codec
 - [x] http-header
-- [ ] https
+- [x] https
 - [x] json
 - [x] los
 - [x] lpeg
@@ -73,7 +73,7 @@ If it does not prompt you automatically, you can manually trigger it by typing `
 - [x] stream
 - [ ] thread
 - [x] timer
-- [ ] tls
+- [x] tls
 - [x] url
 - [x] ustring
 - [x] utils
