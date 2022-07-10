@@ -15,50 +15,25 @@
 ---@return unknown
 function require(modname) end
 
----
----
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package"])
----
+---#DES 'package'
 ---@class packagelib
----
----The path used by `require` to search for a C loader.
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.cpath"])
----
+---#DES 'package.cpath'
 ---@field cpath     string
----
----A table used by `require` to control which modules are already loaded.
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.loaded"])
----
+---#DES 'package.loaded'
 ---@field loaded    table
----
----The path used by `require` to search for a Lua loader.
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.path"])
----
+---#DES 'package.path'
 ---@field path      string
----
----A table to store loaders for specific modules.
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.preload"])
----
+---#DES 'package.preload'
 ---@field preload   table<string, function>
 package = {}
 
----
----A string describing some compile-time configurations for packages.
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.config"])
----
+---#DES 'package.config'
 package.config = [[
 /
 ;
 ?
 !
--
-]]
+-]]
 
 ---@version <5.1,JIT
 ---
@@ -68,30 +43,18 @@ package.config = [[
 ---@type function[]
 package.loaders = {}
 
----
----Dynamically links the host program with the C library `libname`.
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.loadlib"])
----
+---#DES 'package.loadlib'
 ---@param libname string
 ---@param funcname string
 ---@return any
 function package.loadlib(libname, funcname) end
 
----
----A table used by `require` to control how to load modules.
----
----[View documents](command:extension.lua.doc?["en-us/52/manual.html/pdf-package.searchers"])
----
+---#DES 'package.searchers'
 ---@version >5.2,JIT
 ---@type {[number]: fun(modname: string): function?, string?}
 package.searchers = {}
 
----
----Searches for the given `name` in the given `path`.
----
----[View documents](command:extension.lua.doc?["en-us/52/manual.html/pdf-package.searchpath"])
----
+---#DES 'package.searchpath'
 ---@version >5.2,JIT
 ---@param name string
 ---@param path string
@@ -102,11 +65,7 @@ package.searchers = {}
 ---@nodiscard
 function package.searchpath(name, path, sep, rep) end
 
----
----Sets a metatable for `module` with its `__index` field referring to the global environment, so that this module inherits values from the global environment. To be used as an option to function `module` .
----
----[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.seeall"])
----
+---#DES 'package.seeall'
 ---@version <5.1,JIT
 ---@param module table
 function package.seeall(module) end
