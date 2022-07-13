@@ -321,7 +321,7 @@ function fs.readdir(path, thread) end
 ---@nodiscard
 function fs.readdirSync(path) end
 
----@alias fs_scandir_iterator fun(): string, string)
+---@alias fs_scandir_iterator fun(): string, fs_types)
 ---
 ---Similar to readdir but the callback here gets a function instead of a table containing
 ---the list of files. Every time this function is invoked it returns the name of the file/dir
@@ -339,7 +339,7 @@ function fs.scandir(path, thread) end
 ---Do note, on error this will still return the iterator, which when called will raise the error.
 ---
 ---@param path string
----@return fun(): string, string iterator
+---@return fun(): string, fs_types iterator
 ---@nodiscard
 function fs.scandirSync(path) end
 
