@@ -50,7 +50,7 @@ function error(message, level) end
 _G = {}
 
 ---#DES 'getfenv'
----@param f? async fun()
+---@param f? integer|async fun()
 ---@return table
 ---@nodiscard
 function getfenv(f) end

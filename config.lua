@@ -28,6 +28,16 @@ configs = {
     value  = 'deps/?.lua',
   },
   {
+    key    = 'Lua.runtime.path',
+    action = 'add',
+    value  = 'libs/?.lua',
+  },
+  {
+    key    = 'Lua.runtime.path',
+    action = 'add',
+    value  = 'libs/?.lua',
+  },
+  {
     key    = 'Lua.workspace.library',
     action = 'add',
     value  = '../deps',

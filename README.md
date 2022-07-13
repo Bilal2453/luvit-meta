@@ -24,12 +24,19 @@ Those metafiles where specifically generated to work with [Sumneko's Lua Languag
 
 ### How to install it?
 
-To install this into your language server, all you have to do is clone the git tree into the extension meta folder. In case of Sumneko's Language Server on VSCode, this will be `vscode/extensions/sumneko.lua-x-y-z/server/meta/3rd/Luvit`.
+To install this into your language server, all you have to do is clone the git tree into the extension meta folder. In case of Sumneko's Language Server on VSCode, this will be `vscode/extensions/sumneko.lua-x-y-z/server/meta/3rd/Luvit`, where x-y-z is the extension version you have.
 
-In steps, how to install it when using VScode, Sumneko's Language Server:
+The exact path of VSCode's extension folder will depend on your system and how you installed VSCode, usually speaking although:
+  - On Windows: `%USERPROFILE%\.vscode\extensions`.
+  - On MacOS: `~/.vscode/extensions`.
+  - On Linux: `~/.vscode/extensions`.
+Again, it highly depends on how you installed VSCode and how you configure it. So figure this bit out.
+
+
+Here is how to install this step by step on VSCode, Sumneko's Language Server:
 
 1. Open your terminal of choice up.
-2. Execute `cd {PATH}`; where `{PATH}` is replaced with the `vscode/extensions/sumneko.lua-x-y-z/server/meta/3rd/` directory (the exact path will depend on your system).
+2. Execute `cd {PATH}`; where `{PATH}` is replaced with the `vscode/extensions/sumneko.lua-x-y-z/server/meta/3rd/` directory (the exact path will depend on your system, see above).
 3. Execute the following command: `git clone https://github.com/Bilal2453/luvit-sumneko-meta.git ./Luvit`.
 4. You shall now see a new folder called `Luvit`, inside of it you shall see a `library` folder. This means the installation is done.
 
@@ -42,6 +49,51 @@ It should automatically detect when you are using Luvit, and prompt you for usin
 Once it prompts you this, choose "Apply and modify settings". You should now see a new `.vscode` folder in your main workspace directory, and modules such as `http` have their fields show in completion tab. If you don't see this, make sure you have opened your project as VSCode Workspace.
 
 If it does not prompt you automatically, you can manually trigger it by typing `-- use-luvit` in a Lua file inside your VSCode workspace somewhere, save the file, then reload your workspace. It should now prompt you with something similar to the previous picture. Once you apply the settings, you can remove the `-- use-luvit`.
+
+### Advanced configurations
+
+When you click on "Apply and modify settings" the extension would create a `.vscode` folder in your current directory (if you didn't already have one) which contains a `settings.json` file.  That file is where all the workspace settings goes into.
+
+By default that file looks something like this:
+
+```json
+{
+  "Lua.runtime.path": [
+    "?.lua",
+    "?/init.lua",
+    "deps/?/init.lua",
+    "deps/?.lua",
+    "libs/?.lua",
+    "libs/?/init.lua"
+  ],
+  "Lua.workspace.library": [
+    "${3rd}/Luvit/library",
+    "../deps",
+    "../libs"
+  ],
+  "Lua.runtime.builtin": {
+    "basic": "disable",
+    "package": "disable",
+    "string": "disable",
+    "table": "disable"
+  },
+  "Lua.diagnostics.globals": [
+    "p",
+    "args"
+  ],
+  "Lua.workspace.checkThirdParty": false
+}
+```
+
+If and for whatever reason "Apply and modify settings" does not work properly, you can create this manually and it should start working.  You can as well do a bit more advanced configurations here (also available from the extension settings GUI on VSCode).
+
+To explain what and why each field exists:
+
+  - `Lua.runtime.path`: We define this to make sure Sumneko's LSP can resolve modules in Luvit's special `deps`/`libs` folders. It makes things such as `require('discordia')` actually resolve to the module file.
+  - `Lua.workspace.library`: Those are the directories that contain meta definitions. `${3rd}/Luvit/library` is where this meta library should be installed at. `../deps` and `../libs` is a hopeless try from me to somewhat support the recursive `require` Luvit can have.
+  - `Lua.runtime.builtin`: This makes sure to disable the built-in meta files we are overriding. This prevents duplicates entries for stuff like `getfenv`.
+  - `Lua.diagnostics.globals`: At first I used this to imply globals. But this should be totally safe to remove. It is unneeded and I may remove it in the future.
+  - `Lua.workspace.checkThirdParty`: This stop any further 3rd libraries checking, to make sure it does not keep annoying you with the prompt.
 
 ### What modules have definitions?
 
@@ -87,6 +139,12 @@ If it does not prompt you automatically, you can manually trigger it by typing `
 Since [Luvi](https://github.com/Luvit/Luvi)/[Luvit](https://github.com/Luvit/Luvit) come with Lua 5.2 compat (and even some Lua 5.3 stuff), the Language Server thinks they are not defined for the JIT environment giving away many annoying warnings. Thus I had to manually overwrite the built-in definitions and include the `JIT` version.
 
 There is also [the difference between LuaJIT and Luvi](https://github.com/Luvit/Luvi#integration-with-cs-main-function) when it comes to `args` vs `arg`. The only way for me to tell the Language Server "hey, there is nothing such as `args`" is by overwriting the built-in definition.
+
+### My Luvit/library suddenly dissappeared!
+
+Sadly, when you update the extension a new folder for the new extension version is created and the old one is deleted.  So whenever you update the extension this will break and you iwll have to reinstall it.
+
+One possible solution is to install the luvit-meta in a different folder, and point the LSP to it by setting `Lua.workspace.library`. Note that if you do this there may be other configurations to set.
 
 ## License
 
