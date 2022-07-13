@@ -37,8 +37,8 @@ Here is how to install this step by step on VSCode, Sumneko's Language Server:
 
 1. Open your terminal of choice up.
 2. Execute `cd {PATH}`; where `{PATH}` is replaced with the `vscode/extensions/sumneko.lua-x-y-z/server/meta/3rd/` directory (the exact path will depend on your system, see above).
-3. Execute the following command: `git clone https://github.com/Bilal2453/luvit-sumneko-meta.git ./Luvit`.
-4. You shall now see a new folder called `Luvit`, inside of it you shall see a `library` folder. This means the installation is done.
+3. Execute the following command: `git clone https://github.com/Bilal2453/luvit-meta.git ./Luvit`.
+4. You shall now see a new folder called `Luvit`, inside of that there should be a `library` folder. This means the installation is done.
 
 ### How to use it?
 
@@ -142,7 +142,7 @@ There is also [the difference between LuaJIT and Luvi](https://github.com/Luvit/
 
 ### My Luvit/library suddenly dissappeared!
 
-Sadly, when you update the extension a new folder for the new extension version is created and the old one is deleted.  So whenever you update the extension this will break and you iwll have to reinstall it.
+Sadly, when you update the extension a new folder for the new extension version is created and the old one is deleted.  So whenever you update the extension this will break and you will have to reinstall it.
 
 One possible solution is to install the luvit-meta in a different folder, and point the LSP to it by setting `Lua.workspace.library`. Note that if you do this there may be other configurations to set.
 
