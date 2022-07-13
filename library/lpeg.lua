@@ -50,7 +50,7 @@ function lpeg.setmaxstack(max) end
 ---@param pattern pattern
 ---@param subject string
 ---@param init? number
----@return number|string|nil
+---@return any|nil
 ---@nodiscard
 function lpeg.match(pattern, subject, init) end
 
