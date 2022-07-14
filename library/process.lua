@@ -8,7 +8,7 @@
 ---```
 ---
 ---@class luvit.process
-process = {}
+local process = {}
 
 ---@type uv
 local uv
@@ -49,7 +49,7 @@ lenv.__pairs = lenv.iterate
 local function kill(pid, signal) end
 
 ---
----@param self luvit.core.Emitter # The process instance
+---@param self luvit.GlobalProcess # The process instance
 ---@param code? integer # Process's exit code
 local function exit(self, code) end
 
@@ -60,7 +60,7 @@ local function exit(self, code) end
 ---where rss is the resident set size for the current process,
 ---and heapUsed is the memory used by the Lua VM
 ---
----@param self luvit.core.Emitter # The proccess instance
+---@param self luvit.GlobalProcess # The proccess instance
 ---@return {rss: number, heapUsed: number} memoryUsage
 ---@nodiscard
 local function memoryUsage(self) end
@@ -71,7 +71,7 @@ local function memoryUsage(self) end
 ---The result of a previous call to process:cpuUsage() can optionally be passed as 
 ---an argument to get a diff reading
 ---
----@param self luvit.core.Emitter # The proccess instance
+---@param self luvit.GlobalProcess # The proccess instance
 ---@param prevValue? number # Previous CPU time
 ---@return {user: integer, system: integer}
 ---@nodiscard
@@ -105,7 +105,7 @@ local UvStreamReadable = {}
 function UvStreamReadable:new(handle) end
 
 ---
----@type luvit.core.Emitter
+---@class luvit.GlobalProcess: luvit.core.Emitter
 local global_proccess_rtn = {
   argv = args,
   ---@type integer
@@ -126,5 +126,7 @@ local global_proccess_rtn = {
 
 ---
 function process.globalProcess() return global_proccess_rtn end
+
+_G.process = process.globalProcess()
 
 return process
