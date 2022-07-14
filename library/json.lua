@@ -38,9 +38,10 @@ local json = {}
 ---
 ---When `state.buffer` was set, the return value will be `true` on success. Without `state.buffer` the return value will be a string.
 ---
+---@overload fun(object: table|string|number|nil|luvit.json.null): string
 ---@param object table|string|number|nil|luvit.json.null
----@param state? json_encode_state
----@return string|true result
+---@param state json_encode_state
+---@return string|boolean result
 ---@nodiscard
 function json.encode(object, state) end
 json.stringify = json.encode
