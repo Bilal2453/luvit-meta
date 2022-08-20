@@ -971,7 +971,7 @@ function uv.disable_stdio_inheritance() end
 ---
 ---@param path string
 ---@param options table
----@param on_exit fun(code: integer, signal: integer)
+---@param on_exit fun(code: integer, signal: integer)?
 ---@return uv_process_t, integer
 function uv.spawn(path, options, on_exit) end
 
