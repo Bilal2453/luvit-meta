@@ -3,7 +3,7 @@
 This project is a collection of meta definitions for the platform [Luvit](https://github.com/Luvit/Luvit). The meta definitions provide typing for returns, parameters, constants and classes; It does as well provide documentation comments where possible, either by scraping the Luvit-docs, Nodejs docs, luv docs or manually written in some places.
 
 Some of those definitions are scraped off of code/docs and then some manual work is done to figure types out. For those the used scraper is located under [scrapers](/scrapers), the scraper outputs to a file in the same directory. From there the output is manually copied over to the actual library definition.
-Other defintions -and most of them- are completely manually written, I have not written a scraper for those mostly because the automated part is really not worth it. That is, the automated part would be a single copy-paste operation then delete anything between `function x()` and `end`. Something I prefer doing manually so I can actually catch some of the weird stuff.
+Other definitions -and most of them- are completely manually written, I have not written a scraper for those mostly because the automated part is really not worth it. That is, the automated part would be a single copy-paste operation then delete anything between `function x()` and `end`. Something I prefer doing manually so I can actually catch some of the weird stuff.
 
 ### How does it work?
 
@@ -20,7 +20,7 @@ https://user-images.githubusercontent.com/38175840/169663522-5aed02c1-1308-49d6-
 
 ### Where to expect it to working?
 
-Those metafiles where specifically generated to work with [Sumneko's Lua Language Server](https://github.com/sumneko/lua-language-server/), although it *may* work with other EmmyLua supported Language Servers. While the latter is not a goal of this project, minimum care was taken while writing the definitions.
+These meta-files were specifically generated to work with [Sumneko's Lua Language Server](https://github.com/sumneko/lua-language-server/), although it *may* work with other EmmyLua supported Language Servers.
 
 ### How to install it?
 
@@ -133,6 +133,7 @@ To explain what and why each field exists:
 - [x] ustring
 - [x] utils
 - [x] uv
+- [x] coro-http
 
 ### Why basic, table and string built-ins have been overwritten?
 
@@ -140,7 +141,7 @@ Since [Luvi](https://github.com/Luvit/Luvi)/[Luvit](https://github.com/Luvit/Luv
 
 There is also [the difference between LuaJIT and Luvi](https://github.com/Luvit/Luvi#integration-with-cs-main-function) when it comes to `args` vs `arg`. The only way for me to tell the Language Server "hey, there is nothing such as `args`" is by overwriting the built-in definition.
 
-### My Luvit/library suddenly dissappeared!
+### My Luvit/library suddenly disappeared!
 
 Sadly, when you update the extension a new folder for the new extension version is created and the old one is deleted.  So whenever you update the extension this will break and you will have to reinstall it.
 

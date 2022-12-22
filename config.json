@@ -1,0 +1,88 @@
+{
+  "GLOBALS": [
+    "p",
+    "args"
+  ],
+  "configs": [
+    {
+      "action": "set",
+      "key": "Lua.runtime.version",
+      "value": "LuaJIT"
+    },
+    {
+      "action": "set",
+      "key": "Lua.completion.requireSeparator",
+      "value": "/"
+    },
+    {
+      "action": "add",
+      "key": "Lua.runtime.path",
+      "value": "deps/?/init.lua"
+    },
+    {
+      "action": "add",
+      "key": "Lua.runtime.path",
+      "value": "deps/?.lua"
+    },
+    {
+      "action": "add",
+      "key": "Lua.runtime.path",
+      "value": "libs/?.lua"
+    },
+    {
+      "action": "add",
+      "key": "Lua.runtime.path",
+      "value": "libs/?.lua"
+    },
+    {
+      "action": "add",
+      "key": "Lua.workspace.library",
+      "value": "../deps"
+    },
+    {
+      "action": "add",
+      "key": "Lua.workspace.library",
+      "value": "../libs"
+    },
+    {
+      "action": "prop",
+      "key": "Lua.runtime.builtin",
+      "prop": "basic",
+      "value": "disable"
+    },
+    {
+      "action": "prop",
+      "key": "Lua.runtime.builtin",
+      "prop": "package",
+      "value": "disable"
+    },
+    {
+      "action": "prop",
+      "key": "Lua.runtime.builtin",
+      "prop": "string",
+      "value": "disable"
+    },
+    {
+      "action": "prop",
+      "key": "Lua.runtime.builtin",
+      "prop": "table",
+      "value": "disable"
+    },
+    {
+      "action": "add",
+      "key": "Lua.diagnostics.globals",
+      "value": "p"
+    },
+    {
+      "action": "add",
+      "key": "Lua.diagnostics.globals",
+      "value": "args"
+    }
+  ],
+  "name": "Luvit",
+  "words": [
+    "use%-?luvit",
+    "coro%-%w*",
+    "luvit"
+  ]
+}
