@@ -23,6 +23,12 @@ local childprocess = {}
 ---@field pid integer
 ---@field exitCode integer?
 ---@field signal string
+---@field on fun(self: luvit.childprocess.ChildProcess, name: 'error', err: string|luvit.core.Error)
+---@field once fun(self: luvit.childprocess.ChildProcess, name: 'error', err: string|luvit.core.Error)
+---@field on fun(self: luvit.childprocess.ChildProcess, name: 'exit', exitCode: integer, signal: integer?)
+---@field once fun(self: luvit.childprocess.ChildProcess, name: 'exit', exitCode: integer, signal: integer?)
+---@field on fun(self: luvit.childprocess.ChildProcess, name: 'close', exitCode: integer, signal: integer)
+---@field once fun(self: luvit.childprocess.ChildProcess, name: 'close', exitCode: integer, signal: integer)
 local ChildProcess = {}
 
 ---
