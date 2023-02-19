@@ -27,7 +27,7 @@
     {
       "action": "add",
       "key": "Lua.runtime.path",
-      "value": "libs/?.lua"
+      "value": "libs/?/init.lua"
     },
     {
       "action": "add",
@@ -67,16 +67,6 @@
       "key": "Lua.runtime.builtin",
       "prop": "table",
       "value": "disable"
-    },
-    {
-      "action": "add",
-      "key": "Lua.diagnostics.globals",
-      "value": "p"
-    },
-    {
-      "action": "add",
-      "key": "Lua.diagnostics.globals",
-      "value": "args"
     }
   ],
   "name": "Luvit",
