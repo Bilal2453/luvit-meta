@@ -117,7 +117,7 @@ function uv.loop_configure(option, ...) end
 ---If the loop is running, returns a string indicating the mode in use. If the loop
 ---is not running, `nil` is returned instead.
 ---
----@return string|nil
+---@return uv_run_mode|nil
 ---@nodiscard
 function uv.loop_mode() end
 
@@ -970,9 +970,9 @@ function uv.disable_stdio_inheritance() end
 ---When the child process exits, `on_exit` is called with an exit code and signal.
 ---
 ---@param path string
----@param options table
+---@param options {args?: string[], stdio?: table<integer, integer|uv_stream_t|nil>, env?: table<string, any>, cwd?: string, uid?: integer, gid?: integer, verbatim?: boolean, detached?: boolean, hide?: boolean}
 ---@param on_exit fun(code: integer, signal: integer)?
----@return uv_process_t, integer
+---@return uv_process_t|nil, integer|string, string?
 function uv.spawn(path, options, on_exit) end
 
 ---
@@ -1827,7 +1827,7 @@ local uv_udp_t = {}
 ---When it is an integer, it will be used directly as the `flags` parameter when
 ---calling `uv_udp_init_ex`.
 ---
----@param flags {family: network_family, mmsgs: integer}|nil # (mmsgs default: `1`)
+---@param flags {family: network_family, mmsgs: integer}|network_family|integer|nil # (mmsgs default: `1`)
 ---@return uv_udp_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_udp(flags) end

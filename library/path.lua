@@ -3,9 +3,9 @@
 ---
 ---@class luvit.path.Path: luvit.core.Object
 ---The root path, on Posix this is `/`, on Windows this is `c:\`.
----@field root '/'|'c:\'
+---@field root '/'|'C:\\'
 ---The path separator used by the platform.
----@field sep '/'|'\'
+---@field sep '/'|'\\'
 local Path = {}
 
 ---
@@ -18,6 +18,7 @@ local Path = {}
 function Path:new(root, sep) end
 
 ---
+---@private
 ---@param key string
 ---@return any
 function Path:_get(key) end
@@ -57,6 +58,7 @@ function Path.pathsEqual(a, b) end
 ---
 ---Split a filename into [root, dir, basename].
 ---
+---@protected
 ---@param filename string
 ---@return string root
 ---@return string dir
@@ -67,11 +69,13 @@ function Path:_splitPath(filename) end
 ---
 ---Modifies an array of path parts in place by interpreting "." and ".." segments
 ---
+---@protected
 ---@param parts string[]
 ---@param isrelative? boolean
 function Path:_normalizeArray(parts, isrelative) end
 
 ---
+---@protected
 ---@param filepath string
 ---@return string[]
 ---@nodiscard
@@ -102,18 +106,21 @@ function Path:_splitBySeparators(filepath) end
 function Path.normalize(path) end
 
 ---
+---@protected
 ---@param parts string[]
 ---@return string[]
 ---@nodiscard
 function Path:_filterparts(parts) end
 
 ---
+---@protected
 ---@param parts string[]
 ---@return string
 ---@nodiscard
 function Path:_rawjoin(parts) end
 
 ---
+---@protected
 ---@param ...? string[]
 ---@return string joined
 ---@return string[] filtered_parts
@@ -152,6 +159,7 @@ function Path.resolve(...) end
 ---
 ---Returns the common parts of the given paths or `{}` if no common parts were found.
 ---
+---@protected
 ---@param ...? string
 ---@return string[]
 ---@nodiscard
@@ -281,6 +289,7 @@ local function isDriveRelative(path) end
 local function normalizeSeparators(path) end
 
 ---
+---@protected
 ---@param filepath string
 ---@return string
 ---@nodiscard
@@ -293,9 +302,10 @@ local PosixPath = {
   normalizeSeparators = normalizeSeparators,
   isDriveRelative = isDriveRelative,
   isAbsolute = isAbsolute,
-  _makeLong = _makeLong,
   isUNC = isUNC,
 }
+---@protected
+PosixPath._makeLong = _makeLong
 
 ---
 ---Creates a new instance and initializes it.
@@ -311,9 +321,10 @@ local WindowsPath = {
   normalizeSeparators = normalizeSeparators,
   isDriveRelative = isDriveRelative,
   isAbsolute = isAbsolute,
-  _makeLong = _makeLong,
   isUNC = isUNC,
 }
+---@protected
+WindowsPath._makeLong = _makeLong
 
 ---
 ---Creates a new instance and initializes it.
@@ -322,12 +333,6 @@ local WindowsPath = {
 ---@nodiscard
 function WindowsPath:new() end
 
----@type luvit.path.PosixPath|luvit.path.WindowsPath
-local path = {
-  ---@type luvit.path.PosixPath|luvit.path.WindowsPath
-  _internal = nil,
-}
-
 ---
 ---This module contains utilities for handling and transforming file paths.
 ---Almost all these methods perform only string transformations. The file system is not consulted to check whether paths are valid.
@@ -335,7 +340,8 @@ local path = {
 ---
 ---Use `require('path')` to use this module.
 ---
----@class luvit.path
-path = path
+---@class luvit.path: luvit.path.PosixPath, luvit.path.WindowsPath
+---@field protected _internal {root: string, sep: string}
+local path = {}
 
 return path

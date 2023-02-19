@@ -129,7 +129,7 @@ function Writable:pipe() end
 
 ---
 ---@param chunk Writable-Chunk
----@param cb fun(err?: luvit.core.Error)
+---@param cb? fun(err?: luvit.core.Error)
 ---@return boolean
 function Writable:write(chunk, cb) end
 
