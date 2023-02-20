@@ -97,12 +97,12 @@ To explain what and why each field exists:
 
 ### What modules have definitions?
 
-- [ ] buffer
-- [ ] childprocess
+- [x] buffer
+- [x] childprocess
 - [x] codec
 - [x] core
 - [x] dgram
-- [ ] dns
+- [x] dns
 - [x] env
 - [x] fs
 - [x] helpful
@@ -121,12 +121,12 @@ To explain what and why each field exists:
 - [x] process
 - [x] querystring
 - [x] re
-- [ ] readline
-- [ ] repl
+- [x] readline
+- [x] repl
 - [x] require
-- [ ] resources
+- [x] resource
 - [x] stream
-- [ ] thread
+- [x] thread
 - [x] timer
 - [x] tls
 - [x] url
