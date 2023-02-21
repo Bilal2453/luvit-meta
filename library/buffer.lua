@@ -27,7 +27,7 @@ local buffer = {}
 ---```
 ---
 ---@class luvit.buffer.Buffer: luvit.core.Object
----@field initialize fun(lengthOrString: string|integer)|nil
+---@field initialize fun(length: string|integer)|nil
 ---A pointer to the memory allocated for the buffer as returned by `calloc`.
 ---@field ctype ffi.cdata*
 local Buffer = {}
@@ -36,10 +36,10 @@ buffer.Buffer = Buffer
 ---
 ---Creates a new instance and initializes it.
 ---
----@param lengthOrString string|integer
+---@param length string|integer
 ---@return self
 ---@nodiscard
-function Buffer:new(lengthOrString) end
+function Buffer:new(length) end
 
 ---
 ---Inspect the contents of a buffer.
