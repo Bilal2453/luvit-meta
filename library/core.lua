@@ -10,9 +10,11 @@ local core = {}
 
 ---
 ---Returns whether `obj` is instance of `class` or not.
+---
 ---@param obj luvit.core.Object   # An instance of some class
 ---@param class luvit.core.Object # The class to compare against
 ---@return boolean
+---@nodiscard
 function core.instanceof(obj, class) end
 
 
@@ -21,14 +23,18 @@ function core.instanceof(obj, class) end
 -- inheritance and inheritable constructors. All other objects inherit from this.
 ---
 ---@class luvit.core.Object
----@field meta table # A table value holding all metatables that will be applied on Object:create()
+---A table value holding all metatables that will be applied on `Object:create()`.
+---@field meta {super?: luvit.core.Object, __index: table, [string]: function?}
 local Object = {}
 core.Object = Object
 
--- Create a new instance of this object
+---
+---Create a new instance of this object without calling `obj:initialize()`.
+---
 ---@generic T: luvit.core.Object
 ---@param self T
 ---@return T instance # The created instance
+---@nodiscard
 function Object:create() end
 
 ---
@@ -48,15 +54,12 @@ function Object:create() end
 ---p(rect:getArea())
 ---```
 ---
----@generic T
+---@generic T: luvit.core.Object
 ---@param self T
 ---@param ... any
 ---@return T instance # The newly created instance
 ---@nodiscard
 function Object:new(...) end
-
--- FIXME: Object:extend() return does not contain all properties -
--- FIXME: `self` inside Object:extend() is not recognized as an Object
 
 ---
 ---Creates a new sub-class.
@@ -110,8 +113,10 @@ end
 ---```
 ---
 ---@class luvit.core.Emitter: luvit.core.Object
----@field handlers? table<string, function[]>     # A map of `event_name = listeners`, where listeners is an array of callbacks.
----@field addHandlerType? fun(event_name: string) # When assigned, the function value is called just before assigning `handlers[event_name] = {}`.
+---A map of `event_name = listeners`, where listeners is an array of callbacks.
+---@field handlers? table<string, function[]>
+---When assigned, the function value is called just before assigning `handlers[event_name] = {}`.
+---@field addHandlerType? fun(event_name: string)
 ---Emitted on error, as well as on `Emitter:wrap()`.
 ---@field on fun(self: luvit.core.Emitter, name: 'error', callback: fun(err: string|luvit.core.Error))
 ---Emitted on error, as well as on `Emitter:wrap()`.
@@ -120,7 +125,8 @@ local Emitter = Object:extend()
 core.Emitter = Emitter
 
 ---
----If `name` is `"error"`, and `process` has an event handler for error, fire an `error` event on the process handler.
+---If `name` is `"error"`, and `process` has an event handler for error,
+---fire an `error` event on the process handler.
 ---
 ---This is mostly just for internal use.
 ---
@@ -154,7 +160,8 @@ function Emitter:on(name, callback) end
 ---
 ---@overload fun(): 0
 ---@param name string
----@return number count
+---@return integer count
+---@nodiscard
 function Emitter:listenerCount(name) end
 
 ---
@@ -168,25 +175,26 @@ function Emitter:listenerCount(name) end
 function Emitter:emit(name, ...) end
 
 ---
----Remove a listener so that it no longer catches events.
+---Removes a previously registered listener `callback`.
 ---Returns the number of listeners removed, or nil if none were removed.
 ---
 ---@param name string       # The event name of which the listener belongs to
----@param callback function # The callback of the listener you want to remove
----@return number|nil count # How many argument removed, if any
+---@param callback function # The callback of the listener previously registered
+---@return number|nil count # How many listener were removed, nil if none
 function Emitter:removeListener(name, callback) end
 
 ---
----If no `name` is provided, remove all listeners for all events, otherwise remove all listeners for provided event.
+---If `name` is not provided removes all registered listeners for all the events.
+---Otherwise removes all listeners for provided event `name`.
 ---
----@param name? string # optional event name
+---@param name? string
 function Emitter:removeAllListeners(name) end
 
 ---
 ---Get all listeners for `name` event.
 ---
 ---@param name string # The event's name
----@return function[] # An array of callbacks
+---@return function[] # An array of the callbacks
 function Emitter:listeners(name) end
 
 ---
@@ -238,7 +246,17 @@ function Error.meta.__tostring(table) end
 ---**NOT** for end-users. Please use `Error:new(message)` instead of this.
 ---Initialize a new Error instance.
 ---
+---@protected
 ---@param message? string # The error message
+---@nodiscard
 function Error:initialize(message) end
+
+---
+---Creates a new instance of this class.
+---
+---@param message? string # The error message
+---@return self
+---@nodiscard
+function Error:new(message) end
 
 return core
