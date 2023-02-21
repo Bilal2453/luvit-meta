@@ -1,6 +1,6 @@
 ---@meta
 
----@class luvit.repl.REPL
+---@class luvit.repl.repl
 local REPL = {}
 
 ---
@@ -13,6 +13,7 @@ function REPL.evaluateLine(line) end
 ---@param onSaveHistoryLines? fun(historyDump: string)
 function REPL.start(historyLines, onSaveHistoryLines) end
 
+---
 ---Implementation of a read-execute-print-loop in Luvit. Used by the Luvit repl 
 ---which is returned when the Luvit binary is executed without args.
 ---
@@ -25,10 +26,11 @@ function REPL.start(historyLines, onSaveHistoryLines) end
 ---
 ---All the luvit deps are injected into the repl at runtime to make it easier 
 ---to try and experiment with the luvit ecosystem.
+---
 ---@param stdin luvit.stream.Readable
 ---@param stdout luvit.stream.Writable
 ---@param greeting string
----@return luvit.repl.REPL
+---@return luvit.repl.repl
 local function repl(stdin, stdout, greeting) end
 
 return repl
