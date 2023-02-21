@@ -43,38 +43,38 @@ local dns = {
 ---@field ttl integer
 
 ---
----@class luvit.dns.AddressQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.AddressQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type 1 | 28
 ---@field address string
 
 ---
----@class luvit.dns.NameServerQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.NameServerQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type 2
 ---@field nsdname string
 
 ---
----@class luvit.dns.CanonicalNameQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.CanonicalNameQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type 5
 ---@field cname string
 
 ---
----@class luvit.dns.PointerQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.PointerQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type 12
 ---@field ptrdname string
 
 ---
----@class luvit.dns.MailExchangeQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.MailExchangeQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type 15
 ---@field preference integer
 ---@field exchange string
 
 ---
----@class luvit.dns.TextQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.TextQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type 16
 ---@field txt string
 
 ---
----@class luvit.dns.ServerQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.ServerQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type 33
 ---@field priority integer
 ---@field weight integer
@@ -82,7 +82,7 @@ local dns = {
 ---@field target string
 
 ---
----@class luvit.dns.RawQueryAnswer : luvit.dns.BaseQueryAnswer
+---@class luvit.dns.RawQueryAnswer: luvit.dns.BaseQueryAnswer
 ---@field type integer
 ---@field rdata string
 
@@ -143,9 +143,12 @@ function dns.setServers(servers) end
 ---@param timeout number
 function dns.setTimeout(timeout) end
 
+---
 ---Sets the timeout to the default timeout of 2 seconds
+---
 function dns.setDefaultTimeout() end
 
+---
 ---Sets the list of servers to the default list
 ---
 ---```lua
@@ -162,24 +165,25 @@ function dns.setDefaultTimeout() end
 ---  },
 ---}
 ---```
+---
 function dns.setDefaultServers() end
 
 ---
----@nodiscard
 ---@param options? any -- unused
 ---@return luvit.dns.ServerAddress[] servers
+---@nodiscard
 function dns.loadResolverWin(options) end
 
 ---
----@nodiscard
 ---@param options? { file: string }
 ---@return luvit.dns.ServerAddress[] servers
+---@nodiscard
 function dns.loadResolverUnix(options) end
 
 ---
----@nodiscard
 ---@param options? { file: string }
 ---@return luvit.dns.ServerAddress[] servers
+---@nodiscard
 function dns.loadResolver(options) end
 
 return dns
