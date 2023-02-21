@@ -44,6 +44,7 @@ function History:updateLastLine(line) end
 ---@return luvit.readline.History
 function History.new() end
 
+
 ---
 ---@class luvit.readline.Editor
 local Editor = {}
@@ -118,28 +119,27 @@ function Editor:onKey(key) end
 ---@param callback fun(err?: string, success?: boolean, reason?: string): ...any
 function Editor:readLine(prompt, callback) end
 
----
----@class luvit.readline.EditorOptions
----@field history? luvit.readline.History
----@field stdin? luvit.stream.Readable
----@field stdout? luvit.stream.Writable
----@field wordPattern? string
----@field completionCallback? fun(line: string): (string|string[]|nil)
----@field cover? string
+---@alias luvit.readline.Editor-Options {}
+---@alias luvit.readline.Editor-Options.history luvit.readline.History?
+---@alias luvit.readline.Editor-Options.stdin luvit.stream.Readable?
+---@alias luvit.readline.Editor-Options.stdout luvit.stream.Writable?
+---@alias luvit.readline.Editor-Options.wordPattern string?
+---@alias luvit.readline.Editor-Options.completionCallback fun(line: string): (string|string[]|nil)?
+---@alias luvit.readline.Editor-Options.cover string?
 
 ---
 ---@nodiscard
----@param options? luvit.readline.EditorOptions
+---@param options? luvit.readline.Editor-Options
 ---@return luvit.readline.Editor
 function Editor.new(options) end
 
 ---
 ---@param prompt string
----@param options luvit.readline.EditorOptions
+---@param options luvit.readline.Editor-Options
 ---@param callback fun(err?: string, success?: boolean, reason?: string)
 ---@return luvit.readline.Editor
 ---@overload fun(prompt: string, callback: fun(err?: string, success?: boolean, reason?: string)): luvit.readline.Editor
----@overload fun(prompt: string, options: luvit.readline.EditorOptions): luvit.readline.Editor
+---@overload fun(prompt: string, options: luvit.readline.Editor-Options): luvit.readline.Editor
 ---@overload fun(prompt: string): luvit.readline.Editor
 function readline.readLine(prompt, options, callback) end
 
