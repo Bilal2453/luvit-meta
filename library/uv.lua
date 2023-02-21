@@ -761,6 +761,42 @@ uv_poll_t.start = uv.poll_start
 function uv.poll_stop(poll) end
 uv_poll_t.stop = uv.poll_stop
 
+---@alias uv_signals
+---| "sigabrt"    Abort signal from abort(3)
+---| "sigalrm"    Timer signal from alarm(2)
+---| "sigbus"     Bus error (bad memory access)
+---| "sigchld"    Child stopped or terminated
+---| "sigcont"    Continue if stopped
+---| "sigfpe"     Floating-point exception
+---| "sighup"     Hangup detected on controlling terminal or death of controlling process
+---| "sigill"     Illegal Instruction
+---| "sigint"     Interrupt from keyboard
+---| "sigio"      I/O now possible (4.2BSD)
+---| "sigiot"     IOT trap. A synonym for sigabrt
+---| "sigkill"    Kill signal
+---| "sigpipe"    Broken pipe: write to pipe with no readers; see pipe(7)
+---| "sigpoll"    Pollable event (Sys V); synonym for sigIO
+---| "sigprof"    Profiling timer expired
+---| "sigpwr"     Power failure (System V)
+---| "sigquit"    Quit from keyboard
+---| "sigsegv"    Invalid memory reference
+---| "sigstkflt"  Stack fault on coprocessor
+---| "sigstop"    Stop process
+---| "sigtstp"    Stop typed at terminal
+---| "sigsys"     Bad system call (SVr4); see also seccomp(2)
+---| "sigterm"    Termination signal
+---| "sigtrap"    Trace/breakpoint trap
+---| "sigttin"    Terminal input for background process
+---| "sigttou"    Terminal output for background process
+---| "sigurg"     Urgent condition on socket (4.2BSD)
+---| "sigusr1"    User-defined signal 1
+---| "sigusr2"    User-defined signal 2
+---| "sigvtalrm"  Virtual alarm clock (4.2BSD)
+---| "sigxcpu"    CPU time limit exceeded (4.2BSD); see setrlimit(2)
+---| "sigxfsz"    File size limit exceeded (4.2BSD);see setrlimit(2)
+---| "sigwinch"   Window resize signal (4.3BSD, Sun)
+---| "sigbreak"   CTRL + BREAK has been pressed
+---| "siglost"    File lock lost
 
 ---
 ---Signal handles implement Unix style signal handling on a per-event loop bases.
@@ -812,7 +848,8 @@ uv_poll_t.stop = uv.poll_stop
 local uv_signal_t = {}
 
 ---
----Creates and initializes a new `uv_signal_t`. Returns the Lua userdata wrapping it.
+---Creates and initializes a new `uv_signal_t`.
+---Returns the Lua userdata wrapping it.
 ---
 ---@return uv_signal_t|nil, string? err_name, string? err_msg
 ---@nodiscard
@@ -822,8 +859,8 @@ function uv.new_signal() end
 ---Start the handle with the given callback, watching for the given signal.
 ---
 ---@param signal uv_signal_t
----@param signum integer|string
----@param callback? fun(signum: string)
+---@param signum integer|uv_signals
+---@param callback? fun(signum: uv_signals)
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.signal_start(signal, signum, callback) end
 uv_signal_t.start = uv.signal_start
@@ -832,8 +869,8 @@ uv_signal_t.start = uv.signal_start
 ---Same functionality as `uv.signal_start()` but the signal handler is reset the moment the signal is received.
 ---
 ---@param signal uv_signal_t
----@param signum integer|string
----@param callback? fun(signum: string)
+---@param signum integer|uv_signals
+---@param callback? fun(signum: uv_signals)
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.signal_start_oneshot(signal, signum, callback) end
 uv_signal_t.start_oneshot = uv.signal_start_oneshot
@@ -976,21 +1013,19 @@ function uv.disable_stdio_inheritance() end
 function uv.spawn(path, options, on_exit) end
 
 ---
----Sends the specified signal to the given process handle. Check the documentation
----on `uv_signal_t` for signal support, specially on Windows.
+---Sends the specified signal to the given process handle.
 ---
 ---@param process uv_process_t
----@param signum integer|string
+---@param signum integer|uv_signals
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.process_kill(process, signum) end
 uv_process_t.kill = uv.process_kill
 
 ---
----Sends the specified signal to the given PID. Check the documentation on
----`uv_signal_t` for signal support, specially on Windows.
+---Sends the specified signal to the given PID.
 ---
 ---@param pid integer
----@param signum integer|string
+---@param signum integer|uv_signals
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.kill(pid, signum) end
 
@@ -3221,6 +3256,9 @@ function uv.translate_sys_error(errcode) end
 ---
 ---@return number
 function uv.metrics_idle_time() end
+
+-- TODO: should constants have their values removed and replaced
+-- with an integer type?  Those constants change from system to another
 
 uv.constants = {
   O_RDONLY = 0, O_WRONLY = 1, O_RDWR = 2, O_APPEND = 1024, O_CREAT = 64,
