@@ -43,7 +43,7 @@ function uv.version_string() end
 ---has it's own Lua state with its corresponding own uv loop. This loop is not
 ---directly exposed to users in the Lua module.
 ---
----@class uv_loop_t
+---@class uv_loop_t: userdata
 local uv_loop_t = {}
 
 ---
@@ -197,7 +197,7 @@ function uv.walk(callback) end
 ---
 ---`uv_req_t` is the base type for all libuv request types.
 ---
----@class uv_req_t
+---@class uv_req_t: userdata
 local uv_req_t = {}
 
 ---
@@ -226,7 +226,7 @@ uv_req_t.get_type = uv.req_get_type
 ---`uv_handle_t` is the base type for all libuv handle types. All API functions
 ---defined here work with any handle type.
 ---
----@class uv_handle_t
+---@class uv_handle_t: userdata
 local uv_handle_t = {}
 
 ---@alias handle_types
@@ -2007,7 +2007,7 @@ uv_udp_t.set_broadcast = uv.udp_set_broadcast
 function uv.udp_set_ttl(udp, ttl) end
 uv_udp_t.set_ttl = uv.udp_set_ttl
 
----@class uv_udp_send_t
+---@class uv_udp_send_t: userdata
 local uv_udp_send_t = {}
 
 ---
@@ -2728,8 +2728,8 @@ function uv.fs_copyfile(path, new_path, callback) end
 ---@return boolean|nil success, string? err_name, string? err_msg
 function uv.fs_copyfile(path, new_path, flags) end
 
----@class uv_dir_t
-local uv_dir_t = {}
+---@class luv_dir_t: userdata
+local luv_dir_t = {}
 
 ---
 ---Opens path as a directory stream. Returns a handle that the user can pass to
@@ -2738,12 +2738,12 @@ local uv_dir_t = {}
 ---
 ---@param path string
 ---@param entries integer|nil
----@param callback fun(err: nil|string, dir: uv_dir_t|nil)
+---@param callback fun(err: nil|string, dir: luv_dir_t|nil)
 ---@return uv_fs_t
 function uv.fs_opendir(path, entries, callback) end
 ---@param path string
 ---@param entries integer|nil
----@return uv_dir_t|nil dir, string? err_name, string? err_msg
+---@return luv_dir_t|nil dir, string? err_name, string? err_msg
 function uv.fs_opendir(path, entries) end
 
 ---
@@ -2752,27 +2752,27 @@ function uv.fs_opendir(path, entries) end
 ---of entries `n` is equal to or less than the `entries` parameter used in
 ---the associated `uv.fs_opendir()` call.
 ---
----@param dir uv_dir_t
+---@param dir luv_dir_t
 ---@param callback fun(err: nil|string, entries: table|nil)
 ---@return uv_fs_t
 function uv.fs_readdir(dir, callback) end
----@param dir uv_dir_t
+---@param dir luv_dir_t
 ---@return table|nil entries, string? err_name, string? err_msg
 function uv.fs_readdir(dir) end
-uv_dir_t.readdir = uv.fs_readdir
+luv_dir_t.readdir = uv.fs_readdir
 -- TODO: type the table return
 
 ---
 ---Closes a directory stream returned by a successful `uv.fs_opendir()` call.
 ---
----@param dir uv_dir_t
+---@param dir luv_dir_t
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_closedir(dir, callback) end
----@param dir uv_dir_t
+---@param dir luv_dir_t
 ---@return boolean|nil success, string? err_name, string? err_msg
 function uv.fs_closedir(dir) end
-uv_dir_t.closedir = uv.fs_closedir
+luv_dir_t.closedir = uv.fs_closedir
 
 ---
 ---Equivalent to `statfs(2)`.
@@ -2808,15 +2808,15 @@ function uv.fs_statfs(path) end
 ----- output: "The result is: 3"
 ---```
 ---
----@class luv_work_ctx_t
+---@class luv_work_ctx_t: userdata
 local luv_work_ctx_t = {}
 
 ---
 ---Creates and initializes a new `luv_work_ctx_t` (not `uv_work_t`). Returns the
 ---Lua userdata wrapping it.
 ---
----@param work_callback threadargs # passed to/from `uv.queue_work(work_ctx, ...)`
----@param after_work_callback fun(...: threadargs)
+---@param work_callback fun(...: threadargs) # passed to/from `uv.queue_work(work_ctx, ...)`
+---@param after_work_callback fun(...: threadargs) # returned from `work_callback`
 ---@return luv_work_ctx_t
 ---@nodiscard
 function uv.new_work(work_callback, after_work_callback) end
@@ -2876,7 +2876,7 @@ function uv.getnameinfo(address) end
 ---Libuv provides cross-platform implementations for multiple threading an
 --- synchronization primitives. The API largely follows the pthreads API.
 ---
----@class luv_thread_t
+---@class luv_thread_t: userdata
 local luv_thread_t = {}
 
 ---
