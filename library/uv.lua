@@ -2209,24 +2209,93 @@ uv_fs_poll_t.getpath = uv.fs_poll_getpath
 local uv_fs_t = {}
 
 ---@alias fs_access_flags
----|'"r"'   # O_RDONLY
----|'"rs"'  # O_RDONLY + O_SYNC
----|'"sr"'  # O_RDONLY + O_SYNC
----|'"r+"'  # O_RDWR
----|'"rs+"' # O_RDWR + O_SYNC
----|'"sr+"' # O_RDWR + O_SYNC
----|'"w"'   # O_TRUNC + O_CREAT + O_WRONLY
----|'"wx"'  # O_TRUNC + O_CREAT + O_WRONLY + O_EXCL
----|'"xw"'  # O_TRUNC + O_CREAT + O_WRONLY + O_EXCL
----|'"w+"'  # O_TRUNC + O_CREAT + O_RDWR
----|'"wx+"' # O_TRUNC + O_CREAT + O_RDWR + O_EXCL
----|'"xw+"' # O_TRUNC + O_CREAT + O_RDWR + O_EXCL
----|'"a"'   # O_APPEND + O_CREAT + O_WRONLY
----|'"ax"'  # O_APPEND + O_CREAT + O_WRONLY + O_EXCL
----|'"xa"'  # O_APPEND + O_CREAT + O_WRONLY + O_EXCL
----|'"a+"'  # O_APPEND + O_CREAT + O_RDWR
----|'"ax+"' # O_APPEND + O_CREAT + O_RDWR + O_EXCL
----|'"xa+"' # O_APPEND + O_CREAT + O_RDWR + O_EXCL
+---Open file for reading.
+---
+---Fails if the file does not exist.
+---
+---Mode: O_RDONLY.
+---|'"r"'
+---Open file for reading in synchronous mode.
+---Instructs the operating system to bypass the local file system cache.
+---
+---This is primarily useful for opening files on NFS mounts as it allows you to
+---skip the potentially stale local cache. It has a very real impact on I/O
+---performance so don't use this flag unless you need it.
+---
+---Note that this doesn't turn this call into a synchronous blocking call.
+---
+---Mode: O_RDONLY + O_SYNC.
+---|'"rs"'
+---Same as `'rs'`.
+---|'"sr"'
+---Open file for reading and writing.
+---
+---Fails if the file does not exist.
+---
+---Mode: O_RDWR.
+---|'"r+"'
+---Open file for reading and writing, telling the OS to open it synchronously.
+---
+---See notes for `'rs'` about using this with caution.
+---
+---Mode: O_RDWR + O_SYNC.
+---|'"rs+"'
+---Same as `'rs+'`.
+---|'"sr+"'
+---Open file for writing.
+---
+---The file is created (if it does not exist) or truncated (if it exists).
+---
+---Mode: O_TRUNC + O_CREAT + O_WRONLY.
+---|'"w"'
+---Open file for writing.
+---
+---Fails if the file exists.
+---
+---Mode: O_TRUNC + O_CREAT + O_WRONLY + O_EXCL.
+---|'"wx"'
+---Same as `'wx'`.
+---|'"xw"'
+---Open file for reading and writing.
+---
+---The file is created (if it does not exist) or truncated (if it exists).
+---
+---Mode: O_TRUNC + O_CREAT + O_RDWR.
+---|'"w+"'
+---Open file for reading and writing.
+---
+---Fails if file exists.
+---
+---Mode: O_TRUNC + O_CREAT + O_RDWR + O_EXCL.
+---|'"wx+"'
+---Same as `'wx+'`.
+---|'"xw+"'
+---Open file for appending.
+---
+---The file is created if it does not exist.
+---
+---Mode: O_APPEND + O_CREAT + O_WRONLY.
+---|'"a"'
+---Open file for appending.
+---
+---Fails if the file exists.
+---
+---Mode: O_APPEND + O_CREAT + O_WRONLY + O_EXCL.
+---|'"ax"'
+---Same as `'ax'`.
+---|'"xa"'
+---Open file for reading and appending.
+---
+---The file is created if it does not exist.
+---
+---Mode: O_APPEND + O_CREAT + O_RDWR.
+---|'"a+"'
+---Like `'a+'` but fails if `path` exists.
+---
+---Mode: O_APPEND + O_CREAT + O_RDWR + O_EXCL
+---|'"ax+"'
+---Same as `'ax+'`.
+---|'"xa+"'
 
 ---@alias fs_stat_types
 ---|'"file"'

@@ -1,65 +1,10 @@
 ---@meta
 ---@diagnostic disable: duplicate-set-field
+-- TODO: new descriptions scraped from nodejs's fs module
 
 ---
 ---@class luvit.fs
 local fs = {}
-
--- TODO: new descriptions scraped from nodejs's fs module
-
----@alias fs_open_flags
----Open file for reading.
----
----An exception occurs if the file does not exist.
----|>'r'
----Open file for reading and writing.
----
----An exception occurs if the file does not exist.
----| 'r+'
----Open file for reading in synchronous mode.
----Instructs the operating system to bypass the local file system cache.
----
----This is primarily useful for opening files on NFS mounts as it allows you to
----skip the potentially stale local cache. It has a very real impact on I/O
----performance so don't use this flag unless you need it.
----
----Note that this doesn't turn `fs.open()` (or what is accepting the flag) into a synchronous blocking call.
----If that's what you want then you should be using `fs.openSync()` (or the sync version of your call)
----| 'rs'
----Open file for reading and writing, telling the OS to open it synchronously.
----
----See notes for `'rs'` about using this with caution.
----| 'rs+'
----Open file for writing.
----
----The file is created (if it does not exist) or truncated (if it exists).
----| 'w'
----Open file for writing.
----
----Fails if the file exists.
----| 'wx'
----Open file for reading and writing.
----
----The file is created (if it does not exist) or truncated (if it exists).
----| 'w+'
----Open file for reading and writing.
----
----Fails if file exists.
----| 'wx+'
----Open file for appending.
----
----The file is created if it does not exist.
----| 'a'
----Open file for appending.
----
----Fails if the file exists.
----| 'ax'
----Open file for reading and appending.
----
----The file is created if it does not exist.
----| 'a+'
----Like `'a+'` but fails if `path` exists.
----| 'ax+'
 
 ---@alias fs_mode string|integer
 
@@ -85,11 +30,10 @@ function fs.close(fd, thread) end
 function fs.closeSync(fd) end
 
 ---
----Asynchronous file open. `flags` can be:
+---Asynchronous file open.
 ---
 ---`mode` sets the file mode (permission and sticky bits), but only if the file was created.
 --- It defaults to `0666`, readable and writeable.
----
 ---
 ---The exclusive flag `'x'` (`O_EXCL` flag in open(2)) ensures that `path` is newly
 --- created. On POSIX systems, `path` is considered to exist even if it is a symlink
@@ -101,13 +45,13 @@ function fs.closeSync(fd) end
 --- the end of the file.
 ---
 ---@param path string
----@param flags? fs_open_flags # Default `'r'`.
+---@param flags? fs_access_flags # Default `'r'`.
 ---@param mode? fs_mode # Default '0666'.
 ---@param callback? fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, flags, mode, callback) end
 ---@param path string
----@param flags? fs_open_flags # Default `'r'`.
+---@param flags? fs_access_flags # Default `'r'`.
 ---@param mode? fs_mode # Default '0666'.
 ---@param thread thread
 ---@return string? err, integer? fd
@@ -118,7 +62,7 @@ function fs.open(path, flags, mode, thread) end
 ---@return uv_fs_t
 function fs.open(path, callback) end
 ---@param path string
----@param flags fs_open_flags
+---@param flags fs_access_flags
 ---@param callback fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, flags, callback) end
@@ -129,7 +73,7 @@ function fs.open(path, flags, callback) end
 ---descriptor.
 ---
 ---@param path string
----@param flags? fs_open_flags
+---@param flags? fs_access_flags # Default `'r'`.
 ---@param mode? string|integer # Default '0666'.
 ---@return integer|nil fd, string? err_name, string? err_msg
 ---@nodiscard
@@ -924,7 +868,7 @@ function fs.createReadStream(path, options) end
 
 
 
----@alias WriteStream-Options {fd?: integer, flags?: fs_open_flags, mode?: integer, start?: integer}
+---@alias WriteStream-Options {fd?: integer, flags?: fs_access_flags, mode?: integer, start?: integer}
 
 ---
 ---@class luvit.fs.WriteStream: luvit.stream.Writable
