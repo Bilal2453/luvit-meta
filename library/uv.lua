@@ -2139,7 +2139,7 @@ function uv.new_fs_poll() end
 ---@param fs_event uv_fs_event_t
 ---@param path string
 ---@param interval integer
----@param callback fun(err?: string, prev: fs_stat_struct, curr: fs_stat_struct)
+---@param callback fun(err?: string, prev: fs_stat_table, curr: fs_stat_table)
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.fs_poll_start(fs_event, path, interval, callback) end
 uv_fs_poll_t.start = uv.fs_poll_start
@@ -2208,6 +2208,245 @@ uv_fs_poll_t.getpath = uv.fs_poll_getpath
 ---@class uv_fs_t: uv_req_t
 local uv_fs_t = {}
 
+---@alias fs_access_flags
+---|'"r"'   # O_RDONLY
+---|'"rs"'  # O_RDONLY + O_SYNC
+---|'"sr"'  # O_RDONLY + O_SYNC
+---|'"r+"'  # O_RDWR
+---|'"rs+"' # O_RDWR + O_SYNC
+---|'"sr+"' # O_RDWR + O_SYNC
+---|'"w"'   # O_TRUNC + O_CREAT + O_WRONLY
+---|'"wx"'  # O_TRUNC + O_CREAT + O_WRONLY + O_EXCL
+---|'"xw"'  # O_TRUNC + O_CREAT + O_WRONLY + O_EXCL
+---|'"w+"'  # O_TRUNC + O_CREAT + O_RDWR
+---|'"wx+"' # O_TRUNC + O_CREAT + O_RDWR + O_EXCL
+---|'"xw+"' # O_TRUNC + O_CREAT + O_RDWR + O_EXCL
+---|'"a"'   # O_APPEND + O_CREAT + O_WRONLY
+---|'"ax"'  # O_APPEND + O_CREAT + O_WRONLY + O_EXCL
+---|'"xa"'  # O_APPEND + O_CREAT + O_WRONLY + O_EXCL
+---|'"a+"'  # O_APPEND + O_CREAT + O_RDWR
+---|'"ax+"' # O_APPEND + O_CREAT + O_RDWR + O_EXCL
+---|'"xa+"' # O_APPEND + O_CREAT + O_RDWR + O_EXCL
+
+---@alias fs_stat_types
+---|'"file"'
+---|'"directory"'
+---|'"link"'
+---|'"fifo"'
+---|'"socket"'
+---|'"char"'
+---|'"block"'
+
+---@alias fs_stat_table {gen: integer, flags: integer, atime: {nsec: integer, sec: integer}, ctime: {nsec: integer, sec: integer}, birthtime: {nsec: integer, sec: integer}, uid: integer, gid: integer, mtime: {nsec: integer, sec: integer}, size: integer, type?: fs_stat_types, nlink: integer, dev: integer, mode: integer, rdev: integer, ino: integer, blksize: integer, blocks: integer}
+
+---@alias fs_types
+---|'"file"'
+---|'"directory"'
+---|'"link"'
+---|'"fifo"'
+---|'"socket"'
+---|'"char"'
+---|'"block"'
+---|'"unknown"'
+
+---@alias fs_access_mode
+---Tests for readbility.
+---|'R'
+---Tests for writiblity.
+---|'W'
+---Tests for executibility.
+---|'X'
+---Tests for readbility and writiblity.
+---|'RW'
+---Tests for readbility and executibility.
+---|'RX'
+---Tests for writiblity and executibility.
+---|'WX'
+---Tests for writiblity and readbility and executibility.
+---|'WRX'
+---A bitwise OR mask.
+---|integer
+
+---@alias fs_readdir_entries {type: fs_types, name: string}
+
+---@alias fs_symlink_flags {dir: boolean, junction: boolean}
+
+---@alias fs_copyfile_flags {excl: boolean, ficlone: boolean, ficlone_force: boolean}
+
+---@alias fs_statfs_stats_type
+---Always 0 on Windows, sun, MVS, OpenBSD, NetBSD, HAIKU, QNK.
+---|0
+---ADFS_SUPER_MAGIC = 0xadf5
+---|44533
+---AFFS_SUPER_MAGIC = 0xadff
+---|44543
+---AFS_SUPER_MAGIC = 0x5346414f
+---|1397113167
+---ANON_INODE_FS_MAGIC = 0x09041934 | Anonymous inode FS (for pseudofiles that have no name; e.g., epoll, signalfd, bpf)
+---|151263540
+---AUTOFS_SUPER_MAGIC = 0x0187
+---|391
+---BDEVFS_MAGIC = 0x62646576
+---|1650746742
+---BEFS_SUPER_MAGIC = 0x42465331
+---|1111905073
+---BFS_MAGIC = 0x1badface
+---|464386766
+---BINFMTFS_MAGIC = 0x42494e4d
+---|1112100429
+---BPF_FS_MAGIC = 0xcafe4a11
+---|3405662737
+---BTRFS_SUPER_MAGIC = 0x9123683e
+---|2435016766
+---BTRFS_TEST_MAGIC = 0x73727279
+---|1936880249
+---CGROUP_SUPER_MAGIC = 0x27e0eb | Cgroup pseudo FS
+---|2613483
+---CGROUP2_SUPER_MAGIC = 0x63677270 | Cgroup v2 pseudo FS
+---|1667723888
+---CIFS_MAGIC_NUMBER = 0xff534d42
+---|4283649346
+---CODA_SUPER_MAGIC = 0x73757245
+---|1937076805
+---COH_SUPER_MAGIC = 0x012ff7b7
+---|19920823
+---CRAMFS_MAGIC = 0x28cd3d45
+---|684539205
+---DEBUGFS_MAGIC = 0x64626720
+---|1684170528
+---DEVFS_SUPER_MAGIC = 0x1373 | Linux 2.6.17 and earlier
+---|4979
+---DEVPTS_SUPER_MAGIC =	0x1cd1
+---|7377
+---ECRYPTFS_SUPER_MAGIC	=	0xf15f
+---|61791
+---EFIVARFS_MAGIC	=	0xde5e81e4
+---|3730735588
+---EFS_SUPER_MAGIC =	0x00414a53
+---|4278867
+---EXT_SUPER_MAGIC = 0x137d | Linux 2.0 and earlier
+---|4989
+---EXT2_OLD_SUPER_MAGIC = 0xef51
+---|61265
+---EXT2_SUPER_MAGIC = 0xef53
+---|61267
+---EXT3_SUPER_MAGIC = 0xef53
+---|61267
+---EXT4_SUPER_MAGIC = 0xef53
+---|61267
+---F2FS_SUPER_MAGIC = 0xf2f52010
+---|4076150800
+---FUSE_SUPER_MAGIC = 0x65735546
+---|1702057286
+---FUTEXFS_SUPER_MAGIC = 0xbad1dea | Unused
+---|195894762
+---HFS_SUPER_MAGIC = 0x4244
+---|16964
+---HOSTFS_SUPER_MAGIC = 0x00c0ffee
+---|12648430
+---HPFS_SUPER_MAGIC = 0xf995e849
+---|4187351113
+---HUGETLBFS_MAGIC = 0x958458f6
+---|2508478710
+---ISOFS_SUPER_MAGIC = 0x9660
+---|38496
+---JFFS2_SUPER_MAGIC = 0x72b6
+---|29366
+---JFS_SUPER_MAGIC = 0x3153464a
+---|827541066
+---MINIX_SUPER_MAGIC = 0x137f | original minix FS
+---|4991
+---MINIX_SUPER_MAGIC2 = 0x138f | 30 char minix FS
+---|5007
+---MINIX2_SUPER_MAGIC = 0x2468 | minix V2 FS
+---|9320
+---MINIX2_SUPER_MAGIC2 = 0x2478 | minix V2 FS, 30 char names
+---|9336
+---MINIX3_SUPER_MAGIC = 0x4d5a | minix V3 FS, 60 char names
+---|19802
+---MQUEUE_MAGIC = 0x19800202 | POSIX message queue FS
+---|427819522
+---MSDOS_SUPER_MAGIC = 0x4d44
+---|19780
+---MTD_INODE_FS_MAGIC = 0x11307854
+---|288389204
+---NCP_SUPER_MAGIC = 0x564c
+---|22092
+---NFS_SUPER_MAGIC = 0x6969
+---|26985
+---NILFS_SUPER_MAGIC = 0x3434
+---|13364
+---NSFS_MAGIC = 0x6e736673
+---|1853056627
+---NTFS_SB_MAGIC = 0x5346544e
+---|1397118030
+---OCFS2_SUPER_MAGIC = 0x7461636f
+---|1952539503
+---OPENPROM_SUPER_MAGIC = 0x9fa1
+---|40865
+---OVERLAYFS_SUPER_MAGIC = 0x794c7630
+---|2035054128
+---PIPEFS_MAGIC = 0x50495045
+---|1346981957
+---PROC_SUPER_MAGIC = 0x9fa0 | /proc FS
+---|40864
+---PSTOREFS_MAGIC = 0x6165676c
+---|1634035564
+---QNX4_SUPER_MAGIC = 0x002f
+---|47
+---QNX6_SUPER_MAGIC = 0x68191122
+---|1746473250
+---RAMFS_MAGIC = 0x858458f6
+---|2240043254
+---REISERFS_SUPER_MAGIC = 0x52654973
+---|1382369651
+---ROMFS_MAGIC = 0x7275
+---|29301
+---SECURITYFS_MAGIC = 0x73636673
+---|1935894131
+---SELINUX_MAGIC = 0xf97cff8c
+---|4185718668
+---SMACK_MAGIC = 0x43415d53
+---|1128357203
+---SMB_SUPER_MAGIC = 0x517b
+---|20859
+---SMB2_MAGIC_NUMBER = 0xfe534d42
+---|4266872130
+---SOCKFS_MAGIC = 0x534f434b
+---|1397703499
+---SQUASHFS_MAGIC = 0x73717368
+---|1936814952
+---SYSFS_MAGIC = 0x62656572
+---|1650812274
+---SYSV2_SUPER_MAGIC = 0x012ff7b6
+---|19920822
+---SYSV4_SUPER_MAGIC = 0x012ff7b5
+---|19920821
+---TMPFS_MAGIC = 0x01021994
+---|16914836
+---TRACEFS_MAGIC = 0x74726163
+---|1953653091
+---UDF_SUPER_MAGIC = 0x15013346
+---|352400198
+---UFS_MAGIC = 0x00011954
+---|72020
+---USBDEVICE_SUPER_MAGIC = 0x9fa2
+---|40866
+---V9FS_MAGIC = 0x01021997
+---|16914839
+---VXFS_SUPER_MAGIC = 0xa501fcf5
+---|2768370933
+---XENFS_SUPER_MAGIC = 0xabba1974
+---|2881100148
+---XENIX_SUPER_MAGIC = 0x012ff7b4
+---|19920820
+---XFS_SUPER_MAGIC = 0x58465342
+---|1481003842
+---_XIAFS_SUPER_MAGIC = 0x012fd16d | Linux 2.0 and earlier
+---|19911021
+
+---@alias fs_statfs_stats {type: fs_statfs_stats_type, bzise: integer, blocks: integer, bfree: integer, bavail: integer, files: integer, ffree: integer}
+
 ---
 ---Equivalent to `close(2)`.
 ---
@@ -2228,36 +2467,17 @@ function uv.fs_close(fd) end
 ---not supported.
 ---
 ---@param path string
----@param flags access_flags|integer
+---@param flags fs_access_flags|integer
 ---@param mode integer
 ---@param callback fun(err: nil|string, fd: integer|nil)
 ---@return uv_fs_t
 function uv.fs_open(path, flags, mode, callback) end
 ---@param path string
----@param flags access_flags|integer
+---@param flags fs_access_flags|integer
 ---@param mode integer
 ---@return integer|nil fd, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_open(path, flags, mode) end
-
----@alias access_flags
----|'"r"'
----|'"rs"'
----|'"sr"'
----|'"r+"'
----|'"rs+"'
----|'"sr+"'
----|'"w"'
----|'"wx"'
----|'"xw"'
----|'"w+"'
----|'"wx+"'
----|'"xw+"'
----|'"a"'
----|'"ax"'
----|'"xa"'
----|'"a+"'
----|'"ax+"'
----|'"xa+"'
 
 ---
 ---Equivalent to `preadv(2)`. Returns any data. An empty string indicates EOF.
@@ -2281,6 +2501,7 @@ function uv.fs_read(fd, size, callback) end
 ---@param size integer
 ---@param offset integer|nil
 ---@return string|nil data, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_read(fd, size, offset) end
 
 ---
@@ -2340,6 +2561,7 @@ function uv.fs_mkdir(path, mode) end
 function uv.fs_mkdtemp(template, callback) end
 ---@param template string
 ---@return string|nil path, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_mkdtemp(template) end
 
 ---
@@ -2351,6 +2573,7 @@ function uv.fs_mkdtemp(template) end
 function uv.fs_mkstemp(template, callback) end
 ---@param template string
 ---@return integer|nil fd, string path_or_errname, string? err_msg
+---@nodiscard
 function uv.fs_mkstemp(template) end
 
 ---
@@ -2378,6 +2601,7 @@ function uv.fs_rmdir(path) end
 function uv.fs_scandir(path, callback) end
 ---@param path string
 ---@return uv_fs_t|nil success, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_scandir(path) end
 
 ---
@@ -2390,50 +2614,43 @@ function uv.fs_scandir(path) end
 ---
 ---@param fs uv_fs_t
 ---@return string|nil, string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_scandir_next(fs) end
-
----@alias fs_types
----|'"file"'
----|'"directory"'
----|'"link"'
----|'"fifo"'
----|'"socket"'
----|'"char"'
----|'"block"'
----|'"unknown"'
----@alias fs_stat_struct {gen: integer, flags: integer, atime: {nsec: integer, sec: integer}, ctime: {nsec: integer, sec: integer}, birthtime: {nsec: integer, sec: integer}, uid: integer, gid: integer, mtime: {nsec: integer, sec: integer}, size: integer, type: fs_types, nlink: integer, dev: integer, mode: integer, rdev: integer, ino: integer, blksize: integer, blocks: integer}
 
 ---
 ---Equivalent to `stat(2)`.
 ---
 ---@param path string
----@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
+---@param callback fun(err: nil|string, stat: fs_stat_table|nil)
 ---@return uv_fs_t
 function uv.fs_stat(path, callback) end
 ---@param path string
----@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@return fs_stat_table|nil stat, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_stat(path) end
 
 ---
 ---Equivalent to `fstat(2)`.
 ---
 ---@param fd integer
----@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
+---@param callback fun(err: nil|string, stat: fs_stat_table|nil)
 ---@return uv_fs_t
 function uv.fs_fstat(fd, callback) end
 ---@param fd integer
----@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@return fs_stat_table|nil stat, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_fstat(fd) end
 
 ---
 ---Equivalent to `lstat(2)`.
 ---
 ---@param fd integer
----@param callback fun(err: nil|string, stat: fs_stat_struct|nil)
+---@param callback fun(err: nil|string, stat: fs_stat_table|nil)
 ---@return uv_fs_t
 function uv.fs_lstat(fd, callback) end
 ---@param fd integer
----@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@return fs_stat_table|nil stat, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_lstat(fd) end
 
 ---
@@ -2515,25 +2732,8 @@ function uv.fs_access(path, mode, callback) end
 ---@param path string
 ---@param mode fs_access_mode|integer
 ---@return boolean|nil permission, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_access(path, mode) end
-
----@alias fs_access_mode
----Tests for readbility.
----|'R'
----Tests for writiblity.
----|'W'
----Tests for executibility.
----|'X'
----Tests for readbility and writiblity.
----|'RW'
----Tests for readbility and executibility.
----|'RX'
----Tests for writiblity and executibility.
----|'WX'
----Tests for writiblity and readbility and executibility.
----|'WRX'
----A bitwise OR mask.
----|integer
 
 ---
 ---Equivalent to `chmod(2)`.
@@ -2625,7 +2825,7 @@ function uv.fs_link(path, new_path) end
 ---
 ---@param path string
 ---@param new_path string
----@param flags {dir: boolean, junction: boolean}|integer
+---@param flags fs_symlink_flags|integer
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_symlink(path, new_path, flags, callback) end
@@ -2636,7 +2836,7 @@ function uv.fs_symlink(path, new_path, flags, callback) end
 function uv.fs_symlink(path, new_path, callback) end
 ---@param path string
 ---@param new_path string
----@param flags? {dir: boolean, junction: boolean}|integer
+---@param flags? fs_symlink_flags|integer
 ---@return boolean|nil success, string? err_name, string? err_msg
 function uv.fs_symlink(path, new_path, flags) end
 
@@ -2649,6 +2849,7 @@ function uv.fs_symlink(path, new_path, flags) end
 function uv.fs_readlink(path, callback) end
 ---@param path string
 ---@return string|nil path, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_readlink(path) end
 
 ---
@@ -2660,6 +2861,7 @@ function uv.fs_readlink(path) end
 function uv.fs_realpath(path, callback) end
 ---@param path string
 ---@return string|nil path, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_realpath(path) end
 
 ---
@@ -2713,7 +2915,7 @@ function uv.fs_lchown(fd, uid, gid) end
 ---
 ---@param path string
 ---@param new_path string
----@param flags {excl: boolean, ficlone: boolean, ficlone_force: boolean}
+---@param flags fs_copyfile_flags
 ---@param callback fun(err: nil|string, success: boolean|nil)
 ---@return uv_fs_t
 function uv.fs_copyfile(path, new_path, flags, callback) end
@@ -2724,7 +2926,7 @@ function uv.fs_copyfile(path, new_path, flags, callback) end
 function uv.fs_copyfile(path, new_path, callback) end
 ---@param path string
 ---@param new_path string
----@param flags? {excl: boolean, ficlone: boolean, ficlone_force: boolean}
+---@param flags? fs_copyfile_flags
 ---@return boolean|nil success, string? err_name, string? err_msg
 function uv.fs_copyfile(path, new_path, flags) end
 
@@ -2744,6 +2946,7 @@ function uv.fs_opendir(path, entries, callback) end
 ---@param path string
 ---@param entries integer|nil
 ---@return luv_dir_t|nil dir, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_opendir(path, entries) end
 
 ---
@@ -2753,14 +2956,14 @@ function uv.fs_opendir(path, entries) end
 ---the associated `uv.fs_opendir()` call.
 ---
 ---@param dir luv_dir_t
----@param callback fun(err: nil|string, entries: table|nil)
+---@param callback fun(err: nil|string, entries: fs_readdir_entries|nil)
 ---@return uv_fs_t
 function uv.fs_readdir(dir, callback) end
 ---@param dir luv_dir_t
----@return table|nil entries, string? err_name, string? err_msg
+---@return fs_readdir_entries|nil entries, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_readdir(dir) end
 luv_dir_t.readdir = uv.fs_readdir
--- TODO: type the table return
 
 ---
 ---Closes a directory stream returned by a successful `uv.fs_opendir()` call.
@@ -2778,11 +2981,12 @@ luv_dir_t.closedir = uv.fs_closedir
 ---Equivalent to `statfs(2)`.
 ---
 ---@param path string
----@param callback fun(err: nil|string, stats: table|nil)
+---@param callback fun(err: nil|string, stats: fs_statfs_stats|nil)
 ---@return uv_fs_t
 function uv.fs_statfs(path, callback) end
 ---@param path string
----@return table|nil stats, string? err_name, string? err_msg
+---@return fs_statfs_stats|nil stats, string? err_name, string? err_msg
+---@nodiscard
 function uv.fs_statfs(path) end
 
 

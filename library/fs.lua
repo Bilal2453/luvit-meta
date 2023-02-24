@@ -377,12 +377,12 @@ function fs.existsSync(path) end
 ---```
 ---
 ---@param path string
----@param callback? fun(err: nil|string, stat: fs_stat_struct|nil)
+---@param callback? fun(err: nil|string, stat: fs_stat_table|nil)
 ---@return uv_fs_t
 function fs.stat(path, callback) end
 ---@param path string
 ---@param thread thread
----@return nil|string err, fs_stat_struct|nil stat
+---@return nil|string err, fs_stat_table|nil stat
 ---@nodiscard
 function fs.stat(path, thread) end
 
@@ -390,7 +390,7 @@ function fs.stat(path, thread) end
 ---Sync version of fs.stat. Returns either an error or the stat object
 ---
 ---@param path string
----@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@return fs_stat_table|nil stat, string? err_name, string? err_msg
 ---@nodiscard
 function fs.statSync(path) end
 
@@ -398,12 +398,12 @@ function fs.statSync(path) end
 ---Similar to stat but expects a file descriptor as retrieved from open or read instead of a path
 ---
 ---@param fd integer
----@param callback? fun(err: nil|string, stat: fs_stat_struct|nil)
+---@param callback? fun(err: nil|string, stat: fs_stat_table|nil)
 ---@return uv_fs_t
 function fs.fstat(fd, callback) end
 ---@param fd integer
 ---@param thread thread
----@return nil|string err, fs_stat_struct|nil stat
+---@return nil|string err, fs_stat_table|nil stat
 ---@nodiscard
 function fs.fstat(fd, thread) end
 
@@ -411,7 +411,7 @@ function fs.fstat(fd, thread) end
 ---Sync fstat
 ---
 ---@param fd integer
----@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@return fs_stat_table|nil stat, string? err_name, string? err_msg
 ---@nodiscard
 function fs.fstatSync(fd) end
 
@@ -419,12 +419,12 @@ function fs.fstatSync(fd) end
 ---lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
 ---
 ---@param path string
----@param callback? fun(err: nil|string, stat: fs_stat_struct|nil)
+---@param callback? fun(err: nil|string, stat: fs_stat_table|nil)
 ---@return uv_fs_t
 function fs.lstat(path, callback) end
 ---@param path string
 ---@param thread thread
----@return nil|string err, fs_stat_struct|nil stat
+---@return nil|string err, fs_stat_table|nil stat
 ---@nodiscard
 function fs.lstat(path, thread) end
 
@@ -432,7 +432,7 @@ function fs.lstat(path, thread) end
 ---Sync lstat
 ---
 ---@param path string
----@return fs_stat_struct|nil stat, string? err_name, string? err_msg
+---@return fs_stat_table|nil stat, string? err_name, string? err_msg
 ---@nodiscard
 function fs.lstatSync(path) end
 
