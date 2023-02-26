@@ -628,7 +628,7 @@ function uv.new_check() end
 ---Start the handle with the given callback.
 ---
 ---@param check uv_check_t
----@param callback function
+---@param callback fun()
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.check_start(check, callback) end
 uv_check_t.start = uv.check_start
@@ -640,6 +640,7 @@ uv_check_t.start = uv.check_start
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.check_stop(check) end
 uv_check_t.stop = uv.check_stop
+
 
 
 ---
@@ -674,7 +675,7 @@ function uv.new_idle() end
 ---Start the handle with the given callback.
 ---
 ---@param idle uv_idle_t
----@param callback function
+---@param callback fun()
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.idle_start(idle, callback) end
 uv_idle_t.start = uv.idle_start
@@ -686,6 +687,7 @@ uv_idle_t.start = uv.idle_start
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.idle_stop(idle) end
 uv_idle_t.stop = uv.idle_stop
+
 
 
 ---
