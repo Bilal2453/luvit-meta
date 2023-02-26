@@ -504,7 +504,7 @@ function uv.new_timer() end
 ---@param timer uv_timer_t
 ---@param timeout integer
 ---@param repeat_n integer
----@param callback function
+---@param callback fun()
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.timer_start(timer, timeout, repeat_n, callback) end
 uv_timer_t.start = uv.timer_start
