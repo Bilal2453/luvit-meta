@@ -201,12 +201,36 @@ function uv.walk(callback) end
 ---@class uv_req_t: userdata
 local uv_req_t = {}
 
+---@alias uv_req_struct_name
+---|'req'         1
+---|'connect'     2
+---|'write'       3
+---|'shutdown'    4
+---|'udp_send'    5
+---|'fs'          6
+---|'work'        7
+---|'getaddrinfo' 8
+---|'getnameinfo' 9
+---|'random'      10
+
+---@alias uv_req_struct_type
+---|1   req
+---|2   connect
+---|3   write
+---|4   shutdown
+---|5   udp_send
+---|6   fs
+---|7   work
+---|8   getaddrinfo
+---|9   getnameinfo
+---|10  random
+
 ---
 ---Cancel a pending request. Fails if the request is executing or has finished
 ---executing. Only cancellation of `uv_fs_t`, `uv_getaddrinfo_t`,
 ---`uv_getnameinfo_t` and `uv_work_t` requests is currently supported.
 ---
----@param req uv_req_t
+---@param req uv_fs_t|uv_getaddrinfo_t|uv_getnameinfo_t
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.cancel(req) end
 uv_req_t.cancel = uv.cancel
@@ -216,8 +240,8 @@ uv_req_t.cancel = uv.cancel
 ---and the libuv enum integer for the request's type (`uv_req_type`).
 ---
 ---@param req uv_req_t
----@return string
----@return integer
+---@return uv_req_struct_name
+---@return uv_req_struct_type
 function uv.req_get_type(req) end
 uv_req_t.get_type = uv.req_get_type
 
@@ -3541,7 +3565,7 @@ function uv.os_setpriority(pid, priority) end
 ---low on entropy.
 ---
 ---@param len integer
----@param flags nil
+---@param flags nil|0|{}
 ---@param callback fun(err?: string, bytes?: string)
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.random(len, flags, callback) end
