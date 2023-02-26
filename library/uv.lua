@@ -13,6 +13,7 @@
 local uv = {}
 
 ---@alias buffer string|string[]
+
 ---@alias threadargs userdata|string|number|boolean|nil
 
 ---
@@ -45,6 +46,15 @@ function uv.version_string() end
 ---
 ---@class uv_loop_t: userdata
 local uv_loop_t = {}
+
+---@alias uv_run_mode
+---|>'default'
+---|'once'
+---|'nowait'
+
+---@alias uv_loop_configure_option
+---|'block_signal'
+---|'metrics_idle_time'
 
 ---
 ---Closes all internal loop resources. In normal execution, the loop will
@@ -80,11 +90,6 @@ function uv.loop_close() end
 ---@return boolean|nil, string? err_name, string? err_msg
 function uv.run(mode) end
 
----@alias uv_run_mode
----|>'"default"'
----|'"once"'
----|'"nowait"'
-
 ---
 ---Set additional loop options. You should normally call this before the first call
 ---to uv_run() unless mentioned otherwise.
@@ -108,10 +113,6 @@ function uv.run(mode) end
 ---@param ... any
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.loop_configure(option, ...) end
-
----@alias uv_loop_configure_option
----|'"block_signal"'
----|'"metrics_idle_time"'
 
 ---
 ---If the loop is running, returns a string indicating the mode in use. If the loop
@@ -189,7 +190,7 @@ function uv.update_time() end
 ---end)
 ---```
 ---
----@param callback fun(handle: handle_types)
+---@param callback fun(handle: uv_handle_instances)
 function uv.walk(callback) end
 
 
@@ -229,7 +230,7 @@ uv_req_t.get_type = uv.req_get_type
 ---@class uv_handle_t: userdata
 local uv_handle_t = {}
 
----@alias handle_types
+---@alias uv_handle_instances
 ---|uv_handle_t
 ---|uv_stream_t
 ---|uv_tcp_t
@@ -238,6 +239,42 @@ local uv_handle_t = {}
 ---|uv_udp_t
 ---|uv_fs_event_t
 ---|uv_fs_poll_t
+
+---@alias uv_handle_struct_name
+---|'"async"'   1
+---|'check'     2
+---|'fs_event'  3
+---|'fs_poll'   4
+---|'handle'    5
+---|'idle'      6
+---|'pipe'      7
+---|'poll'      8
+---|'prepare'   9
+---|'process'   10
+---|'stream'    11
+---|'tcp'       12
+---|'timer'     13
+---|'tty'       14
+---|'udp'       15
+---|'signal'    16
+
+---@alias uv_handle_struct_type
+---|1   async
+---|2   check
+---|3   fs_event
+---|4   fs_poll
+---|5   handle
+---|6   idle
+---|7   pipe
+---|8   poll
+---|9   prepare
+---|10  process
+---|11  stream
+---|12  tcp
+---|13  timer
+---|14  tty
+---|15  udp
+---|16  signal
 
 ---
 ---Returns `true` if the handle is active, `false` if it's inactive. What "active”
@@ -327,8 +364,11 @@ uv_handle_t.has_ref = uv.has_ref
 ---original set value.
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
----@param size? integer # (default: `0`)
 ---@return integer|nil, string? err_name, string? err_msg
+---@nodiscard
+function uv.send_buffer_size(handle) end
+---@param size? integer # (default: `0`)
+---@return 0|nil, string? err_name, string? err_msg
 function uv.send_buffer_size(handle, size) end
 uv_handle_t.send_buffer_size = uv.send_buffer_size
 
@@ -344,8 +384,11 @@ uv_handle_t.send_buffer_size = uv.send_buffer_size
 ---original set value.
 ---
 ---@param handle uv_handle_t `userdata` for sub-type of `uv_handle_t`
----@param size? integer # (default: `0`)
 ---@return integer|nil, string? err_name, string? err_msg
+---@nodiscard
+function uv.recv_buffer_size(handle) end
+---@param size? integer # (default: `0`)
+---@return 0|nil, string? err_name, string? err_msg
 function uv.recv_buffer_size(handle, size) end
 uv_handle_t.recv_buffer_size = uv.recv_buffer_size
 
@@ -365,17 +408,15 @@ uv_handle_t.recv_buffer_size = uv.recv_buffer_size
 ---@return integer|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.fileno(handle) end
-uv_handle_t.recv_buffer_size = uv.recv_buffer_size
-
--- TODO: struct names and integers for handles
+uv_handle_t.fileno = uv.fileno
 
 ---
 ---Returns the name of the struct for a given handle (e.g. `"pipe"` for `uv_pipe_t`)
 ---and the libuv enum integer for the handle's type (`uv_handle_type`).
 ---
 ---@param handle uv_handle_t # `userdata` for sub-type of `uv_handle_t`
----@return string
----@return integer
+---@return uv_handle_struct_name
+---@return uv_handle_struct_type
 function uv.handle_get_type(handle) end
 uv_handle_t.get_type = uv.handle_get_type
 
