@@ -31,7 +31,7 @@ module.Stream = Stream
 ---@generic T: luvit.stream.Stream
 ---@param dest T
 ---@param options? {_end?: boolean}
----@return T pipe
+---@return T dest
 function Stream:pipe(dest, options) end
 
 
