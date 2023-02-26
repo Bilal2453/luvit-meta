@@ -202,6 +202,7 @@ function uv.walk(callback) end
 local uv_req_t = {}
 
 ---@alias uv_req_struct_name
+---|'unknown'     0
 ---|'req'         1
 ---|'connect'     2
 ---|'write'       3
@@ -214,6 +215,7 @@ local uv_req_t = {}
 ---|'random'      10
 
 ---@alias uv_req_struct_type
+---|0   unknown
 ---|1   req
 ---|2   connect
 ---|3   write
@@ -265,6 +267,7 @@ local uv_handle_t = {}
 ---|uv_fs_poll_t
 
 ---@alias uv_handle_struct_name
+---|'unknown'   0
 ---|'"async"'   1
 ---|'check'     2
 ---|'fs_event'  3
@@ -281,8 +284,10 @@ local uv_handle_t = {}
 ---|'tty'       14
 ---|'udp'       15
 ---|'signal'    16
+---|'file'      17
 
 ---@alias uv_handle_struct_type
+---|0   unknown
 ---|1   async
 ---|2   check
 ---|3   fs_event
@@ -299,6 +304,7 @@ local uv_handle_t = {}
 ---|14  tty
 ---|15  udp
 ---|16  signal
+---|17  file
 
 ---
 ---Returns `true` if the handle is active, `false` if it's inactive. What "active”
@@ -3260,16 +3266,32 @@ luv_thread_t.join = uv.thread_join
 ---@param msec integer
 function uv.sleep(msec) end
 
+
+
+-- [[ misc.c definitions ]]
+
+---@alias uv_os_passwd {username: string, uid: integer, gid: integer, shell: string, homedir: string}
+
+---@alias uv_os_uname {sysname: string, release: string, version: string, machine: string}
+
+---@alias uv_rusage {utime: {sec: integer, usec: integer}, stime: {sec: integer, usec: integer}, maxrss: integer, ixrss: integer, idrss: integer, isrss: integer, minflt: integer, majflt: integer, nswap: integer, inblock: integer, oublock: integer, msgsnd: integer, msgrcv: integer, nsignals: integer, nvcsw: integer, nivcsw: integer}
+
+---@alias uv_cpu_info {[integer]: {modal: string, speed: number, times: {user: number, nice: number, sys: number, idle: number, irq: number}}}
+
+---@alias uv_interface_addresses {[string]: {ip: string, family: network_family, netmask: string, internal: boolean, mac: string}}
+
 ---
 ---Returns the executable path.
 ---
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.exepath() end
 
 ---
 ---Returns the current working directory.
 ---
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.cwd() end
 
 ---
@@ -3283,6 +3305,7 @@ function uv.chdir(cwd) end
 ---Returns the title of the current process.
 ---
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.get_process_title() end
 
 ---
@@ -3295,13 +3318,15 @@ function uv.set_process_title(title) end
 ---
 ---Returns the current total system memory in bytes.
 ---
----@return number
+---@return integer
+---@nodiscard
 function uv.get_total_memory() end
 
 ---
 ---Returns the current free system memory in bytes.
 ---
----@return number
+---@return integer
+---@nodiscard
 function uv.get_free_memory() end
 
 ---
@@ -3310,32 +3335,37 @@ function uv.get_free_memory() end
 ---0 is returned. Note that it is not unusual for this value to be less than or
 ---greater than the total system memory.
 ---
----@return number
+---@return integer
+---@nodiscard
 function uv.get_constrained_memory() end
 
 ---
 ---Returns the resident set size (RSS) for the current process.
 ---
 ---@return integer|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.resident_set_memory() end
 
 ---
 ---Returns the resource usage.
 ---
----@return {utime: {sec: integer, usec: integer}, stime: {sec: integer, usec: integer}, maxrss: integer, ixrss: integer, idrss: integer, isrss: integer, minflt: integer, majflt: integer, nswap: integer, inblock: integer, oublock: integer, msgsnd: integer, msgrcv: integer, nsignals: integer, nvcsw: integer, nivcsw: integer}|nil, string? err_name, string? err_msg
+---@return uv_rusage|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.getrusage() end
 
 ---
 ---Returns information about the CPU(s) on the system as a table of tables for each
 ---CPU found.
 ---
----@return {[integer]: {modal: string, speed: number, times: {user: number, nice: number, sys: number, idle: number, irq: number}}}|nil, string? err_name, string? err_msg
+---@return uv_cpu_info|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.cpu_info() end
 
 ---
 ---**Deprecated:** Please use `uv.os_getpid()` instead.
 ---
 ---@return integer
+---@nodiscard
 ---@deprecated
 function uv.getpid() end
 
@@ -3345,6 +3375,7 @@ function uv.getpid() end
 ---**Note:** This is not a libuv function and is not supported on Windows.
 ---
 ---@return integer
+---@nodiscard
 function uv.getuid() end
 
 ---
@@ -3353,6 +3384,7 @@ function uv.getuid() end
 ---**Note:** This is not a libuv function and is not supported on Windows.
 ---
 ---@return integer
+---@nodiscard
 function uv.getgid() end
 
 ---
@@ -3377,13 +3409,15 @@ function uv.setgid(id) end
 ---and therefore not subject to clock drift. The primary use is for measuring
 ---time between intervals.
 ---
----@return number
+---@return integer
+---@nodiscard
 function uv.hrtime() end
 
 ---
 ---Returns the current system uptime in seconds.
 ---
 ---@return number|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.uptime() end
 
 ---
@@ -3414,7 +3448,8 @@ function uv.print_active_handles() end
 ---type of the stdio streams.
 ---
 ---@param fd integer
----@return string
+---@return uv_handle_struct_name|nil
+---@nodiscard
 function uv.guess_handle(fd) end
 
 ---
@@ -3422,6 +3457,7 @@ function uv.guess_handle(fd) end
 ---microseconds of a unix time as a pair.
 ---
 ---@return integer|nil, integer|string, string?
+---@nodiscard
 function uv.gettimeofday() end
 
 ---
@@ -3430,7 +3466,8 @@ function uv.gettimeofday() end
 ---is an array of address information where fields are `ip`, `family`, `netmask`,
 ---`internal`, and `mac`.
 ---
----@return {[string]: {ip: string, family: network_family, netmask: string, internal: boolean, mac: string}}
+---@return uv_interface_addresses
+---@nodiscard
 function uv.interface_addresses() end
 
 ---
@@ -3438,6 +3475,7 @@ function uv.interface_addresses() end
 ---
 ---@param ifindex integer
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.if_indextoname(ifindex) end
 
 ---
@@ -3447,24 +3485,28 @@ function uv.if_indextoname(ifindex) end
 ---
 ---@param ifindex integer
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.if_indextoiid(ifindex) end
 
 ---
 ---Returns the load average as a triad. Not supported on Windows.
 ---
 ---@return number, number, number
+---@nodiscard
 function uv.loadavg() end
 
 ---
 ---Returns system information.
 ---
----@return {sysname: string, release: string, version: string, machine: string}
+---@return uv_os_uname
+---@nodiscard
 function uv.os_uname() end
 
 ---
 ---Returns the hostname.
 ---
 ---@return string
+---@nodiscard
 function uv.os_gethostname() end
 
 ---
@@ -3479,6 +3521,7 @@ function uv.os_gethostname() end
 ---@param name string
 ---@param size integer # (default = `LUAL_BUFFERSIZE`)
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.os_getenv(name, size) end
 
 ---
@@ -3503,44 +3546,51 @@ function uv.os_unsetenv() end
 ---
 ---**Warning:** This function is not thread safe.
 ---
----@return table
+---@return {[string]: string}
+---@nodiscard
 function uv.os_environ() end
 
 ---
 ---**Warning:** This function is not thread safe.
 ---
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.os_homedir() end
 
 ---
 ---**Warning:** This function is not thread safe.
 ---
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.os_tmpdir() end
 
 ---
 ---Returns password file information.
 ---
----@return {username: string, uid: integer, gid: integer, shell: string, homedir: string}
+---@return uv_os_passwd
+---@nodiscard
 function uv.os_get_passwd() end
 
 ---
 ---Returns the current process ID.
 ---
----@return number
+---@return integer
+---@nodiscard
 function uv.os_getpid() end
 
 ---
 ---Returns the parent process ID.
 ---
----@return number
+---@return integer
+---@nodiscard
 function uv.os_getppid() end
 
 ---
 ---Returns the scheduling priority of the process specified by `pid`.
 ---
 ---@param pid integer
----@return number|nil, string? err_name, string? err_msg
+---@return integer|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.os_getpriority(pid) end
 
 ---
@@ -3570,17 +3620,26 @@ function uv.os_setpriority(pid, priority) end
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.random(len, flags, callback) end
 ---@param len integer
----@param flags nil
+---@param flags nil|0|{}
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.random(len, flags) end
+
+
+
+-- [[ util.c definitions ]]
 
 ---
 ---Returns the libuv error message and error name (both in string form, see `err` and `name` in Error Handling) equivalent to the given platform dependent error code: POSIX error codes on Unix (the ones stored in errno), and Win32 error codes on Windows (those returned by GetLastError() or WSAGetLastError()).
 ---
 ---@param errcode integer
 ---@return string|nil, string|nil
+---@nodiscard
 function uv.translate_sys_error(errcode) end
 
+
+
+-- [[ metrics.c definitions ]]
 
 ---
 ---Retrieve the amount of time the event loop has been idle in the kernel’s event
@@ -3592,8 +3651,13 @@ function uv.translate_sys_error(errcode) end
 ---**Note:** The event loop will not begin accumulating the event provider’s idle
 ---time until calling `loop_configure` with `"metrics_idle_time"`.
 ---
----@return number
+---@return integer
+---@nodiscard
 function uv.metrics_idle_time() end
+
+
+
+-- [[ constants ]]
 
 -- TODO: should constants have their values removed and replaced
 -- with an integer type?  Those constants change from system to another
