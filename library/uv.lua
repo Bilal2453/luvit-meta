@@ -589,7 +589,7 @@ function uv.new_prepare() end
 ---Start the handle with the given callback.
 ---
 ---@param prepare uv_prepare_t
----@param callback function
+---@param callback fun()
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.prepare_start(prepare, callback) end
 uv_prepare_t.start = uv.prepare_start
