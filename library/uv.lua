@@ -768,6 +768,23 @@ uv_async_t.send = uv.async_send
 ---@class uv_poll_t: uv_handle_t
 local uv_poll_t = {}
 
+---@alias uv_poll_events
+---|'"r"'
+---|'"w"'
+---|>'"rw"'
+---|'"d"'
+---|'"rd"'
+---|'"wd"'
+---|'"rwd"'
+---|'"p"'
+---|'"rp"'
+---|'"wp"'
+---|'"rwp"'
+---|'"dp"'
+---|'"rdp"'
+---|'"wdp"'
+---|'"rwdp"'
+
 ---
 ---Initialize the handle using a file descriptor.
 ---The file descriptor is set to non-blocking mode.
@@ -809,23 +826,6 @@ function uv.new_socket_poll(fd) end
 function uv.poll_start(poll, events, callback) end
 uv_poll_t.start = uv.poll_start
 
----@alias uv_poll_events
----|'"r"'
----|'"w"'
----|>'"rw"'
----|'"d"'
----|'"rd"'
----|'"wd"'
----|'"rwd"'
----|'"p"'
----|'"rp"'
----|'"wp"'
----|'"rwp"'
----|'"dp"'
----|'"rdp"'
----|'"wdp"'
----|'"rwdp"'
-
 ---
 ---Stop polling the file descriptor, the callback will no longer be called.
 ---
@@ -834,42 +834,7 @@ uv_poll_t.start = uv.poll_start
 function uv.poll_stop(poll) end
 uv_poll_t.stop = uv.poll_stop
 
----@alias uv_signals
----| "sigabrt"    Abort signal from abort(3)
----| "sigalrm"    Timer signal from alarm(2)
----| "sigbus"     Bus error (bad memory access)
----| "sigchld"    Child stopped or terminated
----| "sigcont"    Continue if stopped
----| "sigfpe"     Floating-point exception
----| "sighup"     Hangup detected on controlling terminal or death of controlling process
----| "sigill"     Illegal Instruction
----| "sigint"     Interrupt from keyboard
----| "sigio"      I/O now possible (4.2BSD)
----| "sigiot"     IOT trap. A synonym for sigabrt
----| "sigkill"    Kill signal
----| "sigpipe"    Broken pipe: write to pipe with no readers; see pipe(7)
----| "sigpoll"    Pollable event (Sys V); synonym for sigIO
----| "sigprof"    Profiling timer expired
----| "sigpwr"     Power failure (System V)
----| "sigquit"    Quit from keyboard
----| "sigsegv"    Invalid memory reference
----| "sigstkflt"  Stack fault on coprocessor
----| "sigstop"    Stop process
----| "sigtstp"    Stop typed at terminal
----| "sigsys"     Bad system call (SVr4); see also seccomp(2)
----| "sigterm"    Termination signal
----| "sigtrap"    Trace/breakpoint trap
----| "sigttin"    Terminal input for background process
----| "sigttou"    Terminal output for background process
----| "sigurg"     Urgent condition on socket (4.2BSD)
----| "sigusr1"    User-defined signal 1
----| "sigusr2"    User-defined signal 2
----| "sigvtalrm"  Virtual alarm clock (4.2BSD)
----| "sigxcpu"    CPU time limit exceeded (4.2BSD); see setrlimit(2)
----| "sigxfsz"    File size limit exceeded (4.2BSD);see setrlimit(2)
----| "sigwinch"   Window resize signal (4.3BSD, Sun)
----| "sigbreak"   CTRL + BREAK has been pressed
----| "siglost"    File lock lost
+
 
 ---
 ---Signal handles implement Unix style signal handling on a per-event loop bases.
@@ -920,6 +885,43 @@ uv_poll_t.stop = uv.poll_stop
 ---@class uv_signal_t: uv_handle_t
 local uv_signal_t = {}
 
+---@alias uv_signals
+---| "sigabrt"    Abort signal from abort(3)
+---| "sigalrm"    Timer signal from alarm(2)
+---| "sigbus"     Bus error (bad memory access)
+---| "sigchld"    Child stopped or terminated
+---| "sigcont"    Continue if stopped
+---| "sigfpe"     Floating-point exception
+---| "sighup"     Hangup detected on controlling terminal or death of controlling process
+---| "sigill"     Illegal Instruction
+---| "sigint"     Interrupt from keyboard
+---| "sigio"      I/O now possible (4.2BSD)
+---| "sigiot"     IOT trap. A synonym for sigabrt
+---| "sigkill"    Kill signal
+---| "sigpipe"    Broken pipe: write to pipe with no readers; see pipe(7)
+---| "sigpoll"    Pollable event (Sys V); synonym for sigIO
+---| "sigprof"    Profiling timer expired
+---| "sigpwr"     Power failure (System V)
+---| "sigquit"    Quit from keyboard
+---| "sigsegv"    Invalid memory reference
+---| "sigstkflt"  Stack fault on coprocessor
+---| "sigstop"    Stop process
+---| "sigtstp"    Stop typed at terminal
+---| "sigsys"     Bad system call (SVr4); see also seccomp(2)
+---| "sigterm"    Termination signal
+---| "sigtrap"    Trace/breakpoint trap
+---| "sigttin"    Terminal input for background process
+---| "sigttou"    Terminal output for background process
+---| "sigurg"     Urgent condition on socket (4.2BSD)
+---| "sigusr1"    User-defined signal 1
+---| "sigusr2"    User-defined signal 2
+---| "sigvtalrm"  Virtual alarm clock (4.2BSD)
+---| "sigxcpu"    CPU time limit exceeded (4.2BSD); see setrlimit(2)
+---| "sigxfsz"    File size limit exceeded (4.2BSD);see setrlimit(2)
+---| "sigwinch"   Window resize signal (4.3BSD, Sun)
+---| "sigbreak"   CTRL + BREAK has been pressed
+---| "siglost"    File lock lost
+
 ---
 ---Creates and initializes a new `uv_signal_t`.
 ---Returns the Lua userdata wrapping it.
@@ -964,6 +966,10 @@ uv_signal_t.stop = uv.signal_stop
 ---
 ---@class uv_process_t: uv_handle_t
 local uv_process_t = {}
+
+---@alias uv_spawn_options {args?: string[], stdio?: table<integer, integer|uv_stream_t|nil>, env?: table<string, any>, cwd?: string, uid?: integer, gid?: integer, verbatim?: boolean, detached?: boolean, hide?: boolean}
+
+-- TODO: add descriptions to above fields
 
 ---
 ---Disables inheritance for file descriptors / handles that this process inherited
@@ -1080,7 +1086,7 @@ function uv.disable_stdio_inheritance() end
 ---When the child process exits, `on_exit` is called with an exit code and signal.
 ---
 ---@param path string
----@param options {args?: string[], stdio?: table<integer, integer|uv_stream_t|nil>, env?: table<string, any>, cwd?: string, uid?: integer, gid?: integer, verbatim?: boolean, detached?: boolean, hide?: boolean}
+---@param options uv_spawn_options
 ---@param on_exit fun(code: integer, signal: integer)?
 ---@return uv_process_t|nil, integer|string, string?
 function uv.spawn(path, options, on_exit) end
@@ -1107,6 +1113,7 @@ function uv.kill(pid, signum) end
 ---
 ---@param process uv_process_t
 ---@return integer
+---@nodiscard
 function uv.process_get_pid(process) end
 uv_process_t.get_pid = uv.process_get_pid
 
@@ -1120,6 +1127,10 @@ uv_process_t.get_pid = uv.process_get_pid
 ---@class uv_stream_t: uv_handle_t
 local uv_stream_t = {}
 
+---@class uv_shutdown_t: uv_req_t
+
+---@class uv_write_t: uv_req_t
+
 ---
 ---Shutdown the outgoing (write) side of a duplex stream. It waits for pending
 ---write requests to complete. The callback is called after shutdown is complete.
@@ -1129,9 +1140,6 @@ local uv_stream_t = {}
 ---@return uv_shutdown_t|nil stream, string? err_name, string? err_msg
 function uv.shutdown(stream, callback) end
 uv_stream_t.shutdown = uv.shutdown
-
----@class uv_shutdown_t: uv_req_t
-local uv_shutdown_t = {}
 
 ---
 ---Start listening for incoming connections. `backlog` indicates the number of
@@ -1213,9 +1221,6 @@ uv_stream_t.read_stop = uv.read_stop
 function uv.write(stream, data, callback) end
 uv_stream_t.write = uv.write
 
----@class uv_write_t: uv_req_t
-local uv_write_t = {}
-
 ---
 ---Extended write function for sending handles over a pipe. The pipe must be
 ---initialized with `ipc` option `true`.
@@ -1227,7 +1232,7 @@ local uv_write_t = {}
 ---@param stream uv_stream_t
 ---@param data buffer
 ---@param send_handle uv_tcp_t|uv_pipe_t
----@param callback function|nil
+---@param callback fun()|nil
 ---@return uv_write_t|nil stream, string? err_name, string? err_msg
 function uv.write2(stream, data, send_handle, callback) end
 uv_stream_t.write2 = uv.write2
@@ -1307,15 +1312,9 @@ uv_stream_t.get_write_queue_size = uv.stream_get_write_queue_size
 ---@class uv_tcp_t: uv_stream_t
 local uv_tcp_t = {}
 
----
----Creates and initializes a new `uv_tcp_t`. Returns the Lua userdata wrapping it.
----
----@param flags network_family|nil
----@return uv_tcp_t|nil, string? err_name, string? err_msg
----@nodiscard
-function uv.new_tcp(flags) end
+---@class uv_connect_t: uv_req_t
 
----@alias network_family
+---@alias uv_network_family
 ---|'"unix"'
 ---|'"inet"'
 ---|'"inet6"'
@@ -1327,167 +1326,7 @@ function uv.new_tcp(flags) end
 ---|'"appletalk"'
 ---|'"packet"'
 
----
----Open an existing file descriptor or SOCKET as a TCP handle.
----
----**Note:** The passed file descriptor or SOCKET is not checked for its type, but it's required that it represents a valid stream socket.
----
----@param tcp uv_tcp_t
----@param sock integer
----@return 0|nil success, string? err_name, string? err_msg
-function uv.tcp_open(tcp, sock) end
-uv_tcp_t.open = uv.tcp_open
-
----
----Enable / disable Nagle's algorithm.
----
----@param tcp uv_tcp_t
----@param enable boolean
----@return 0|nil success, string? err_name, string? err_msg
-function uv.tcp_nodelay(tcp, enable) end
-uv_tcp_t.nodelay = uv.tcp_nodelay
-
----
----Enable / disable TCP keep-alive. `delay` is the initial delay in seconds,
----ignored when enable is `false`.
----
----@param tcp uv_tcp_t
----@param enable boolean
----@param delay integer|nil
----@return 0|nil success, string? err_name, string? err_msg
-function uv.tcp_keepalive(tcp, enable, delay) end
-uv_tcp_t.keepalive = uv.tcp_keepalive
-
----
----Enable / disable simultaneous asynchronous accept requests that are queued by
----the operating system when listening for new TCP connections.
----
----This setting is used to tune a TCP server for the desired performance. Having
----simultaneous accepts can significantly improve the rate of accepting connections
----(which is why it is enabled by default) but may lead to uneven load distribution
----in multi-process setups.
----
----@param tcp uv_tcp_t
----@param enable boolean
----@return 0|nil success, string? err_name, string? err_msg
-function uv.tcp_simultaneous_accepts(tcp, enable) end
-uv_tcp_t.simultaneous_accepts = uv.tcp_simultaneous_accepts
-
----
----Bind the handle to an host and port. `host` should be an IP address and
----not a domain name. Any `flags` are set with a table with field `ipv6only`
----equal to `true` or `false`.
----
----When the port is already taken, you can expect to see an `EADDRINUSE` error
----from either `uv.tcp_bind()`, `uv.listen()` or `uv.tcp_connect()`. That is, a
----successful call to this function does not guarantee that the call to `uv.listen()`
----or `uv.tcp_connect()` will succeed as well.
----
----Use a port of `0` to let the OS assign an ephemeral port.  You can look it up
----later using `uv.tcp_getsockname()`.
----
----@param tcp uv_tcp_t
----@param host string
----@param port integer
----@param flags {ipv6only: boolean}|nil
----@return 0|nil success, string? err_name, string? err_msg
-function uv.tcp_bind(tcp, host, port, flags) end
-uv_tcp_t.bind = uv.tcp_bind
-
----
----Get the address of the peer connected to the handle.
----
----@param tcp uv_tcp_t
----@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
-function uv.tcp_getpeername(tcp) end
-uv_tcp_t.getpeername = uv.tcp_getpeername
-
----
----Get the current address to which the handle is bound.
----
----@param tcp uv_tcp_t
----@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
-function uv.tcp_getsockname(tcp) end
-uv_tcp_t.getsockname = uv.tcp_getsockname
-
----
----Establish an IPv4 or IPv6 TCP connection.
----
----```lua
----local client = uv.new_tcp()
----client:connect("127.0.0.1", 8080, function (err)
----  -- check error and carry on.
----end)
----```
----
----@param tcp uv_tcp_t
----@param host string
----@param port integer
----@param callback fun(err?: string)
----@return uv_connect_t|nil stream, string? err_name, string? err_msg
-function uv.tcp_connect(tcp, host, port, callback) end
-uv_tcp_t.connect = uv.tcp_connect
-
----@class uv_connect_t: uv_req_t
-local uv_connect_t = {}
-
----
----Please use `uv.stream_get_write_queue_size()` instead.
----
----@param tcp uv_tcp_t
----@deprecated
-function uv.tcp_write_queue_size(tcp) end
-uv_tcp_t.write_queue_size = uv.tcp_write_queue_size
-
----
----Resets a TCP connection by sending a RST packet. This is accomplished by setting
----the SO_LINGER socket option with a linger interval of zero and then calling
----`uv.close()`. Due to some platform inconsistencies, mixing of `uv.shutdown()`
----and `uv.tcp_close_reset()` calls is not allowed.
----
----@param tcp uv_tcp_t
----@param callback function|nil
----@return 0|nil success, string? err_name, string? err_msg
-function uv.tcp_close_reset(tcp, callback) end
-uv_tcp_t.close_reset = uv.tcp_close_reset
-
----
----Create a pair of connected sockets with the specified properties. The resulting handles can be passed to `uv.tcp_open`, used with `uv.spawn`, or for any other purpose.
----When specified as a string, `socktype` must be one of `"stream"`, `"dgram"`, `"raw"`,
----`"rdm"`, or `"seqpacket"`.
----
----When `protocol` is set to 0 or nil, it will be automatically chosen based on the socket's domain and type. When `protocol` is specified as a string, it will be looked up using the `getprotobyname(3)` function (examples: `"ip"`, `"icmp"`, `"tcp"`, `"udp"`, etc).
----
----Flags:
----- `nonblock`: Opens the specified socket handle for `OVERLAPPED` or `FIONBIO`/`O_NONBLOCK` I/O usage. This is recommended for handles that will be used by libuv, and not usually recommended otherwise.
----
----Equivalent to `socketpair(2)` with a domain of `AF_UNIX`.
----
----```lua
------ Simple read/write with tcp
----local fds = uv.socketpair(nil, nil, {nonblock=true}, {nonblock=true})
----
----local sock1 = uv.new_tcp()
----sock1:open(fds[1])
----
----local sock2 = uv.new_tcp()
----sock2:open(fds[2])
----
----sock1:write("hello")
----sock2:read_start(function(err, chunk)
----  assert(not err, err)
----  print(chunk)
----end)
----```
----
----@param socktype tcp_socket_type|integer|nil # (default: `"stream"`)
----@param protocol network_protocols|integer|nil # (default: `0`)
----@param flags1 {nonblock: boolean}|nil # (nonblock default: `false`)
----@param flags2 {nonblock: boolean}|nil # (nonblock default: `false`)
----@return {[1]: integer, [2]: integer}|nil, string? err_name, string? err_msg # [1, 2] file descriptor
-function uv.socketpair(socktype, protocol, flags1, flags2) end
-
----@alias network_protocols
+---@alias uv_network_protocols
 ---|'"ip"'         # internet protocol, pseudo protocol number
 ---|'"hopopt"'     # hop-by-hop options for ipv6
 ---|'"icmp"'       # internet control message protocol
@@ -1629,12 +1468,185 @@ function uv.socketpair(socktype, protocol, flags1, flags2) end
 ---|'"wesp"'       # Wrapped Encapsulating Security Payload
 ---|'"rohc"'       # Robust Header Compression
 
----@alias tcp_socket_type
+---@alias uv_tcp_socket_type
 ---|>'"stream"'
 ---|'"dgram"'
 ---|'"raw"'
 ---|'"rdm"'
 ---|'"seqpacket"'
+
+---@alias uv_tcp_bind_flags {ipv6only?: boolean}
+
+---@alias uv_getname_sockname_rtn {ip: string, family: uv_network_family, port: integer}
+
+---@alias uv_socketpair_flags {nonblock: boolean}
+
+---
+---Creates and initializes a new `uv_tcp_t`. Returns the Lua userdata wrapping it.
+---
+---@param flags uv_network_family|integer|nil
+---@return uv_tcp_t|nil, string? err_name, string? err_msg
+---@nodiscard
+function uv.new_tcp(flags) end
+
+---
+---Open an existing file descriptor or SOCKET as a TCP handle.
+---
+---**Note:** The passed file descriptor or SOCKET is not checked for its type, but it's required that it represents a valid stream socket.
+---
+---@param tcp uv_tcp_t
+---@param sock integer
+---@return 0|nil success, string? err_name, string? err_msg
+function uv.tcp_open(tcp, sock) end
+uv_tcp_t.open = uv.tcp_open
+
+---
+---Enable / disable Nagle's algorithm.
+---
+---@param tcp uv_tcp_t
+---@param enable boolean
+---@return 0|nil success, string? err_name, string? err_msg
+function uv.tcp_nodelay(tcp, enable) end
+uv_tcp_t.nodelay = uv.tcp_nodelay
+
+---
+---Enable / disable TCP keep-alive. `delay` is the initial delay in seconds,
+---ignored when enable is `false`.
+---
+---@param tcp uv_tcp_t
+---@param enable boolean
+---@param delay integer|nil
+---@return 0|nil success, string? err_name, string? err_msg
+function uv.tcp_keepalive(tcp, enable, delay) end
+uv_tcp_t.keepalive = uv.tcp_keepalive
+
+---
+---Enable / disable simultaneous asynchronous accept requests that are queued by
+---the operating system when listening for new TCP connections.
+---
+---This setting is used to tune a TCP server for the desired performance. Having
+---simultaneous accepts can significantly improve the rate of accepting connections
+---(which is why it is enabled by default) but may lead to uneven load distribution
+---in multi-process setups.
+---
+---@param tcp uv_tcp_t
+---@param enable boolean
+---@return 0|nil success, string? err_name, string? err_msg
+function uv.tcp_simultaneous_accepts(tcp, enable) end
+uv_tcp_t.simultaneous_accepts = uv.tcp_simultaneous_accepts
+
+---
+---Bind the handle to an host and port. `host` should be an IP address and
+---not a domain name. Any `flags` are set with a table with field `ipv6only`
+---equal to `true` or `false`.
+---
+---When the port is already taken, you can expect to see an `EADDRINUSE` error
+---from either `uv.tcp_bind()`, `uv.listen()` or `uv.tcp_connect()`. That is, a
+---successful call to this function does not guarantee that the call to `uv.listen()`
+---or `uv.tcp_connect()` will succeed as well.
+---
+---Use a port of `0` to let the OS assign an ephemeral port.  You can look it up
+---later using `uv.tcp_getsockname()`.
+---
+---@param tcp uv_tcp_t
+---@param host string
+---@param port integer
+---@param flags uv_tcp_bind_flags|nil
+---@return 0|nil success, string? err_name, string? err_msg
+function uv.tcp_bind(tcp, host, port, flags) end
+uv_tcp_t.bind = uv.tcp_bind
+
+---
+---Get the address of the peer connected to the handle.
+---
+---@param tcp uv_tcp_t
+---@return uv_getname_sockname_rtn|nil, string? err_name, string? err_msg
+---@nodiscard
+function uv.tcp_getpeername(tcp) end
+uv_tcp_t.getpeername = uv.tcp_getpeername
+
+---
+---Get the current address to which the handle is bound.
+---
+---@param tcp uv_tcp_t
+---@return uv_getname_sockname_rtn|nil, string? err_name, string? err_msg
+---@nodiscard
+function uv.tcp_getsockname(tcp) end
+uv_tcp_t.getsockname = uv.tcp_getsockname
+
+---
+---Establish an IPv4 or IPv6 TCP connection.
+---
+---```lua
+---local client = uv.new_tcp()
+---client:connect("127.0.0.1", 8080, function (err)
+---  -- check error and carry on.
+---end)
+---```
+---
+---@param tcp uv_tcp_t
+---@param host string
+---@param port integer
+---@param callback fun(err?: string)
+---@return uv_connect_t|nil stream, string? err_name, string? err_msg
+function uv.tcp_connect(tcp, host, port, callback) end
+uv_tcp_t.connect = uv.tcp_connect
+
+---
+---Please use `uv.stream_get_write_queue_size()` instead.
+---
+---@param tcp uv_tcp_t
+---@deprecated
+function uv.tcp_write_queue_size(tcp) end
+uv_tcp_t.write_queue_size = uv.tcp_write_queue_size
+
+---
+---Resets a TCP connection by sending a RST packet. This is accomplished by setting
+---the SO_LINGER socket option with a linger interval of zero and then calling
+---`uv.close()`. Due to some platform inconsistencies, mixing of `uv.shutdown()`
+---and `uv.tcp_close_reset()` calls is not allowed.
+---
+---@param tcp uv_tcp_t
+---@param callback fun()|nil
+---@return 0|nil success, string? err_name, string? err_msg
+function uv.tcp_close_reset(tcp, callback) end
+uv_tcp_t.close_reset = uv.tcp_close_reset
+
+---
+---Create a pair of connected sockets with the specified properties. The resulting handles can be passed to `uv.tcp_open`, used with `uv.spawn`, or for any other purpose.
+---When specified as a string, `socktype` must be one of `"stream"`, `"dgram"`, `"raw"`,
+---`"rdm"`, or `"seqpacket"`.
+---
+---When `protocol` is set to 0 or nil, it will be automatically chosen based on the socket's domain and type. When `protocol` is specified as a string, it will be looked up using the `getprotobyname(3)` function (examples: `"ip"`, `"icmp"`, `"tcp"`, `"udp"`, etc).
+---
+---Flags:
+---- `nonblock`: Opens the specified socket handle for `OVERLAPPED` or `FIONBIO`/`O_NONBLOCK` I/O usage. This is recommended for handles that will be used by libuv, and not usually recommended otherwise.
+---
+---Equivalent to `socketpair(2)` with a domain of `AF_UNIX`.
+---
+---```lua
+----- Simple read/write with tcp
+---local fds = uv.socketpair(nil, nil, {nonblock=true}, {nonblock=true})
+---
+---local sock1 = uv.new_tcp()
+---sock1:open(fds[1])
+---
+---local sock2 = uv.new_tcp()
+---sock2:open(fds[2])
+---
+---sock1:write("hello")
+---sock2:read_start(function(err, chunk)
+---  assert(not err, err)
+---  print(chunk)
+---end)
+---```
+---
+---@param socktype uv_tcp_socket_type|integer|nil # (default: `"stream"`)
+---@param protocol uv_network_protocols|integer|nil # (default: `0`)
+---@param flags1 uv_socketpair_flags|nil # (nonblock default: `false`)
+---@param flags2 uv_socketpair_flags|nil # (nonblock default: `false`)
+---@return {[1]: integer, [2]: integer}|nil, string? err_name, string? err_msg # [1, 2] file descriptor
+function uv.socketpair(socktype, protocol, flags1, flags2) end
 
 
 
@@ -1656,6 +1668,12 @@ function uv.socketpair(socktype, protocol, flags1, flags2) end
 ---
 ---@class uv_pipe_t: uv_stream_t
 local uv_pipe_t = {}
+
+---@alias uv_pipe_flags
+---|'"r"'
+---|'"w"'
+---|'"rw"'
+---|'"wr"'
 
 ---
 ---Creates and initializes a new `uv_pipe_t`. Returns the Lua userdata wrapping
@@ -1708,6 +1726,7 @@ uv_pipe_t.connect = uv.pipe_connect
 ---
 ---@param pipe uv_pipe_t
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.pipe_getsockname(pipe) end
 uv_pipe_t.getsockname = uv.pipe_getsockname
 
@@ -1717,6 +1736,7 @@ uv_pipe_t.getsockname = uv.pipe_getsockname
 ---
 ---@param pipe uv_pipe_t
 ---@return string|nil, string? err_name, string? err_msg
+---@nodiscard
 function uv.pipe_getpeername(pipe) end
 uv_pipe_t.getpeername = uv.pipe_getpeername
 
@@ -1765,12 +1785,6 @@ uv_pipe_t.pending_type = uv.pipe_pending_type
 function uv.pipe_chmod(pipe, flags) end
 uv_pipe_t.chmod = uv.pipe_chmod
 
----@alias uv_pipe_flags
----|'"r"'
----|'"w"'
----|'"rw"'
----|'"wr"'
-
 ---
 ---Create a pair of connected pipe handles. Data may be written to the `write` fd and read from the `read` fd.
 ---The resulting handles can be passed to `pipe_open`, used with `spawn`, or for any other purpose.
@@ -1804,6 +1818,7 @@ uv_pipe_t.chmod = uv.pipe_chmod
 ---@nodiscard
 function uv.pipe(read_flags, write_flags) end
 
+-- TODO: continue consistency checks from above
 
 
 ---
@@ -1935,7 +1950,7 @@ local uv_udp_t = {}
 ---When it is an integer, it will be used directly as the `flags` parameter when
 ---calling `uv_udp_init_ex`.
 ---
----@param flags {family: network_family, mmsgs: integer}|network_family|integer|nil # (mmsgs default: `1`)
+---@param flags {family: uv_network_family, mmsgs: integer}|uv_network_family|integer|nil # (mmsgs default: `1`)
 ---@return uv_udp_t|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.new_udp(flags) end
@@ -1991,7 +2006,7 @@ uv_udp_t.bind = uv.udp_bind
 ---Get the local IP and port of the UDP handle.
 ---
 ---@param udp uv_udp_t
----@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
+---@return {ip: string, family: uv_network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.udp_getsockname(udp) end
 uv_udp_t.getsockname = uv.udp_getsockname
@@ -2000,7 +2015,7 @@ uv_udp_t.getsockname = uv.udp_getsockname
 ---Get the remote IP and port of the UDP handle on connected UDP handles.
 ---
 ---@param udp uv_udp_t
----@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
+---@return {ip: string, family: uv_network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.udp_getpeername(udp) end
 uv_udp_t.getpeername = uv.udp_getpeername
@@ -2115,7 +2130,7 @@ uv_udp_t.try_send = uv.udp_try_send
 ---and a random port number.
 ---
 ---@param udp uv_udp_t
----@param callback fun(err?: string, data?: string, add?: {ip: string, port: integer, family: network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
+---@param callback fun(err?: string, data?: string, add?: {ip: string, port: integer, family: uv_network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.udp_recv_start(udp, callback) end
 uv_udp_t.recv_start = uv.udp_recv_start
@@ -3199,8 +3214,8 @@ function uv.getaddrinfo(host, service, hints, callback) end
 ---@return uv_getaddrinfo_rtn|nil addresses, string? err_name, string? err_msg
 function uv.getaddrinfo(host, service, hints) end
 
----@alias uv_getaddrinfo_hint {family: network_family|integer|nil, socktype: tcp_socket_type|nil, protocol: network_protocols|nil, addrconfig: boolean|nil, v4mapped: boolean|nil, all: boolean|nil, numberichost: boolean|nil, passive: boolean|nil, numericserv: boolean|nil, canonname: boolean|nil}
----@alias uv_getaddrinfo_rtn {[integer]: {addr: string, family: network_family, port: integer|nil, socktype: tcp_socket_type, protocol: network_protocols, canonname: string|nil}}
+---@alias uv_getaddrinfo_hint {family: uv_network_family|integer|nil, socktype: uv_tcp_socket_type|nil, protocol: uv_network_protocols|nil, addrconfig: boolean|nil, v4mapped: boolean|nil, all: boolean|nil, numberichost: boolean|nil, passive: boolean|nil, numericserv: boolean|nil, canonname: boolean|nil}
+---@alias uv_getaddrinfo_rtn {[integer]: {addr: string, family: uv_network_family, port: integer|nil, socktype: uv_tcp_socket_type, protocol: uv_network_protocols, canonname: string|nil}}
 
 ---@class uv_getnameinfo_t: uv_req_t
 local uv_getnameinfo_t = {}
@@ -3208,11 +3223,11 @@ local uv_getnameinfo_t = {}
 ---
 ---Equivalent to `getnameinfo(3)`.
 ---
----@param address {ip: string|nil, port: integer|nil, family: network_family|integer|nil}
+---@param address {ip: string|nil, port: integer|nil, family: uv_network_family|integer|nil}
 ---@param callback fun(err?: string, host?: string, service?: string)
 ---@return uv_getnameinfo_t
 function uv.getnameinfo(address, callback) end
----@param address {ip: string|nil, port: integer|nil, family: network_family|integer|nil}
+---@param address {ip: string|nil, port: integer|nil, family: uv_network_family|integer|nil}
 ---@return string|nil host, string service_or_errname, string? err_msg
 function uv.getnameinfo(address) end
 
@@ -3280,7 +3295,7 @@ function uv.sleep(msec) end
 
 ---@alias uv_cpu_info {[integer]: {modal: string, speed: number, times: {user: number, nice: number, sys: number, idle: number, irq: number}}}
 
----@alias uv_interface_addresses {[string]: {ip: string, family: network_family, netmask: string, internal: boolean, mac: string}}
+---@alias uv_interface_addresses {[string]: {ip: string, family: uv_network_family, netmask: string, internal: boolean, mac: string}}
 
 ---
 ---Returns the executable path.

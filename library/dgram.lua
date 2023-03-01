@@ -16,7 +16,7 @@ dgram.Socket = Socket
 ---Creates a new instance and initializes it.
 ---
 ---@param type 'udp4'|'udp6'
----@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
+---@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: uv_network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
 ---@return luvit.dgram.Socket
 ---@nodiscard
 function Socket:initialize(type, callback) end
@@ -64,7 +64,7 @@ function Socket:close(callback) end
 ---
 ---Get the local IP and port of the UDP handle.
 ---
----@return {ip: string, family: network_family, port: integer}|nil, string? err_name, string? err_msg
+---@return {ip: string, family: uv_network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function Socket:address() end
 
@@ -110,7 +110,7 @@ function Socket:setTTL(ttl) end
 
 ---
 ---@param type 'udp4'|'udp6'
----@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
+---@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: uv_network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
 ---@return luvit.dgram.Socket
 ---@nodiscard
 function dgram.createSocket(type, callback) end
