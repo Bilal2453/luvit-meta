@@ -1,4 +1,4 @@
----@meta
+---@meta package
 
 ---
 ---Loads the given module, returns any value returned by the given module (`{}` "empty table" when `nil`).
@@ -15,58 +15,27 @@
 ---@return unknown
 function require(modname) end
 
----#DES 'package'
----@class packagelib
----#DES 'package.cpath'
----@field cpath     string
----#DES 'package.loaded'
----@field loaded    table
----#DES 'package.path'
----@field path      string
----#DES 'package.preload'
----@field preload   table<string, function>
-package = {}
-
----#DES 'package.config'
-package.config = [[
-/
-;
-?
-!
--]]
-
----@version <5.1,JIT
 ---
 ---A table used by `require` to control how to load modules.
 ---
 ---[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.loaders"])
+---
 ---@type function[]
 package.loaders = {}
 
----#DES 'package.loadlib'
----@param libname string
----@param funcname string
----@return any
-function package.loadlib(libname, funcname) end
-
----#DES 'package.searchers'
----@version >5.2,JIT
----@type {[number]: fun(modname: string): function?, string?}
+---
+---A table used by `require` to control how to load modules.
+---
+---[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.searchers"])
+---
+---@type (fun(modname: string): function?, string?)[]
 package.searchers = {}
 
----#DES 'package.searchpath'
----@version >5.2,JIT
----@param name string
----@param path string
----@param sep? string
----@param rep? string
----@return string? filename
----@return string? errmsg
----@nodiscard
-function package.searchpath(name, path, sep, rep) end
-
----#DES 'package.seeall'
----@version <5.1,JIT
+---
+---Sets a metatable for `module` with its `__index` field referring to the global environment, so that this module inherits values from the global environment. To be used as an option to function `module` .
+---
+---[View documents](command:extension.lua.doc?["en-us/51/manual.html/pdf-package.seeall"])
+---
 ---@param module table
 function package.seeall(module) end
 

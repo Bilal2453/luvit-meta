@@ -1,8 +1,4 @@
 {
-  "GLOBALS": [
-    "p",
-    "args"
-  ],
   "configs": [
     {
       "action": "set",
@@ -43,36 +39,12 @@
       "action": "add",
       "key": "Lua.workspace.library",
       "value": "../libs"
-    },
-    {
-      "action": "prop",
-      "key": "Lua.runtime.builtin",
-      "prop": "basic",
-      "value": "disable"
-    },
-    {
-      "action": "prop",
-      "key": "Lua.runtime.builtin",
-      "prop": "package",
-      "value": "disable"
-    },
-    {
-      "action": "prop",
-      "key": "Lua.runtime.builtin",
-      "prop": "string",
-      "value": "disable"
-    },
-    {
-      "action": "prop",
-      "key": "Lua.runtime.builtin",
-      "prop": "table",
-      "value": "disable"
     }
   ],
   "name": "Luvit",
   "words": [
-    "use%-?luvit",
-    "coro%-%w*",
+    "use%-luvit",
+    "coro%-http",
     "luvit"
   ]
 }

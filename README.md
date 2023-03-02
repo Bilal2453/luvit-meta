@@ -71,16 +71,6 @@ By default that file looks something like this:
     "../deps",
     "../libs"
   ],
-  "Lua.runtime.builtin": {
-    "basic": "disable",
-    "package": "disable",
-    "string": "disable",
-    "table": "disable"
-  },
-  "Lua.diagnostics.globals": [
-    "p",
-    "args"
-  ],
   "Lua.workspace.checkThirdParty": false
 }
 ```
@@ -91,8 +81,6 @@ To explain what and why each field exists:
 
   - `Lua.runtime.path`: We define this to make sure Sumneko's LSP can resolve modules in Luvit's special `deps`/`libs` folders. It makes things such as `require('discordia')` actually resolve to the module file.
   - `Lua.workspace.library`: Those are the directories that contain meta definitions. `${3rd}/Luvit/library` is where this meta library should be installed at. `../deps` and `../libs` is a hopeless try from me to somewhat support the recursive `require` Luvit can have.
-  - `Lua.runtime.builtin`: This makes sure to disable the built-in meta files we are overriding. This prevents duplicates entries for stuff like `getfenv`.
-  - `Lua.diagnostics.globals`: At first I used this to imply globals. But this should be totally safe to remove. It is unneeded and I may remove it in the future.
   - `Lua.workspace.checkThirdParty`: This stop any further 3rd libraries checking, to make sure it does not keep annoying you with the prompt.
 
 ### What modules have definitions?
@@ -133,13 +121,26 @@ To explain what and why each field exists:
 - [x] ustring
 - [x] utils
 - [x] uv
+- [ ] miniz
+- [ ] luvi
+- [ ] rex
+- [ ] openssl
+- [ ] WinSVC
+
+And some popular libraries used with Luvit that are not built-in:
+
 - [x] coro-http
+- [ ] coro-net
+- [ ] coro-channel
+- [ ] coro-wrapper
+- [ ] coro-fs
+- [ ] coro-spawn
 
-### Why basic, table and string built-ins have been overwritten?
+### Why override some basic, table and string built-ins?
 
-Since [Luvi](https://github.com/Luvit/Luvi)/[Luvit](https://github.com/Luvit/Luvit) come with Lua 5.2 compat (and even some Lua 5.3 stuff), the Language Server thinks they are not defined for the JIT environment giving away many annoying warnings. Thus I had to manually overwrite the built-in definitions and include the `JIT` version.
+Since [Luvi](https://github.com/Luvit/Luvi)/[Luvit](https://github.com/Luvit/Luvit) come with Lua 5.2 compat (and even some Lua 5.3 stuff), the Language Server thinks they are not defined for the JIT environment giving away many annoying warnings. Thus had to redefine those without the version annotation.
 
-There is also [the difference between LuaJIT and Luvi](https://github.com/Luvit/Luvi#integration-with-cs-main-function) when it comes to `args` vs `arg`. The only way for me to tell the Language Server "hey, there is nothing such as `args`" is by overwriting the built-in definition.
+There is also [the difference between LuaJIT and Luvi](https://github.com/Luvit/Luvi#integration-with-cs-main-function) when it comes to `args` vs `arg`.
 
 ### My Luvit/library suddenly disappeared!
 
