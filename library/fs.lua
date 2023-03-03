@@ -45,13 +45,13 @@ function fs.closeSync(fd) end
 --- the end of the file.
 ---
 ---@param path string
----@param flags? fs_access_flags # Default `'r'`.
+---@param flags? uv.aliases.fs_access_flags # Default `'r'`.
 ---@param mode? fs_mode # Default '0666'.
 ---@param callback? fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, flags, mode, callback) end
 ---@param path string
----@param flags? fs_access_flags # Default `'r'`.
+---@param flags? uv.aliases.fs_access_flags # Default `'r'`.
 ---@param mode? fs_mode # Default '0666'.
 ---@param thread thread
 ---@return string? err, integer? fd
@@ -62,7 +62,7 @@ function fs.open(path, flags, mode, thread) end
 ---@return uv_fs_t
 function fs.open(path, callback) end
 ---@param path string
----@param flags fs_access_flags
+---@param flags uv.aliases.fs_access_flags
 ---@param callback fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, flags, callback) end
@@ -73,7 +73,7 @@ function fs.open(path, flags, callback) end
 ---descriptor.
 ---
 ---@param path string
----@param flags? fs_access_flags # Default `'r'`.
+---@param flags? uv.aliases.fs_access_flags # Default `'r'`.
 ---@param mode? string|integer # Default '0666'.
 ---@return integer|nil fd, string? err_name, string? err_msg
 ---@nodiscard
@@ -265,7 +265,7 @@ function fs.readdir(path, thread) end
 ---@nodiscard
 function fs.readdirSync(path) end
 
----@alias fs_scandir_iterator fun(): string, fs_types)
+---@alias fs_scandir_iterator fun(): string, uv.aliases.fs_types)
 ---
 ---Similar to readdir but the callback here gets a function instead of a table containing
 ---the list of files. Every time this function is invoked it returns the name of the file/dir
@@ -283,7 +283,7 @@ function fs.scandir(path, thread) end
 ---Do note, on error this will still return the iterator, which when called will raise the error.
 ---
 ---@param path string
----@return fun(): string, fs_types iterator
+---@return fun(): string, uv.aliases.fs_types iterator
 ---@nodiscard
 function fs.scandirSync(path) end
 
@@ -321,12 +321,12 @@ function fs.existsSync(path) end
 ---```
 ---
 ---@param path string
----@param callback? fun(err: nil|string, stat: fs_stat_table|nil)
+---@param callback? fun(err: nil|string, stat: uv.aliases.fs_stat_table|nil)
 ---@return uv_fs_t
 function fs.stat(path, callback) end
 ---@param path string
 ---@param thread thread
----@return nil|string err, fs_stat_table|nil stat
+---@return nil|string err, uv.aliases.fs_stat_table|nil stat
 ---@nodiscard
 function fs.stat(path, thread) end
 
@@ -334,7 +334,7 @@ function fs.stat(path, thread) end
 ---Sync version of fs.stat. Returns either an error or the stat object
 ---
 ---@param path string
----@return fs_stat_table|nil stat, string? err_name, string? err_msg
+---@return uv.aliases.fs_stat_table|nil stat, string? err_name, string? err_msg
 ---@nodiscard
 function fs.statSync(path) end
 
@@ -342,12 +342,12 @@ function fs.statSync(path) end
 ---Similar to stat but expects a file descriptor as retrieved from open or read instead of a path
 ---
 ---@param fd integer
----@param callback? fun(err: nil|string, stat: fs_stat_table|nil)
+---@param callback? fun(err: nil|string, stat: uv.aliases.fs_stat_table|nil)
 ---@return uv_fs_t
 function fs.fstat(fd, callback) end
 ---@param fd integer
 ---@param thread thread
----@return nil|string err, fs_stat_table|nil stat
+---@return nil|string err, uv.aliases.fs_stat_table|nil stat
 ---@nodiscard
 function fs.fstat(fd, thread) end
 
@@ -355,7 +355,7 @@ function fs.fstat(fd, thread) end
 ---Sync fstat
 ---
 ---@param fd integer
----@return fs_stat_table|nil stat, string? err_name, string? err_msg
+---@return uv.aliases.fs_stat_table|nil stat, string? err_name, string? err_msg
 ---@nodiscard
 function fs.fstatSync(fd) end
 
@@ -363,12 +363,12 @@ function fs.fstatSync(fd) end
 ---lstat() is identical to stat(), except that if path is a symbolic link, then the link itself is stat-ed, not the file that it refers to.
 ---
 ---@param path string
----@param callback? fun(err: nil|string, stat: fs_stat_table|nil)
+---@param callback? fun(err: nil|string, stat: uv.aliases.fs_stat_table|nil)
 ---@return uv_fs_t
 function fs.lstat(path, callback) end
 ---@param path string
 ---@param thread thread
----@return nil|string err, fs_stat_table|nil stat
+---@return nil|string err, uv.aliases.fs_stat_table|nil stat
 ---@nodiscard
 function fs.lstat(path, thread) end
 
@@ -376,7 +376,7 @@ function fs.lstat(path, thread) end
 ---Sync lstat
 ---
 ---@param path string
----@return fs_stat_table|nil stat, string? err_name, string? err_msg
+---@return uv.aliases.fs_stat_table|nil stat, string? err_name, string? err_msg
 ---@nodiscard
 function fs.lstatSync(path) end
 
@@ -538,12 +538,12 @@ function fs.sendfileSync(outFd, inFd, offset, length) end
 ---Tests a user's permissions for the file specified by path. mode is an optional integer that specifies the accessibility checks to be performed. The following constants define the possible values of mode. It is possible to create a mask consisting of the bitwise OR of two or more values.
 ---
 ---@param path string
----@param mode? fs_access_mode
+---@param mode? uv.aliases.fs_access_mode
 ---@param callback? fun(err: nil|string, permission: boolean|nil)
 ---@return uv_fs_t
 function fs.access(path, mode, callback) end
 ---@param path string
----@param mode? fs_access_mode
+---@param mode? uv.aliases.fs_access_mode
 ---@param thread thread
 ---@return nil|string err, boolean|nil permission
 ---@nodiscard
@@ -556,7 +556,7 @@ function fs.access(path, callback) end
 ---
 ---
 ---@param path string
----@param mode? fs_access_mode
+---@param mode? uv.aliases.fs_access_mode
 ---@return boolean|nil permission, string? err_name, string? err_msg
 function fs.accessSync(path, mode) end
 
@@ -868,7 +868,7 @@ function fs.createReadStream(path, options) end
 
 
 
----@alias WriteStream-Options {fd?: integer, flags?: fs_access_flags, mode?: integer, start?: integer}
+---@alias WriteStream-Options {fd?: integer, flags?: uv.aliases.fs_access_flags, mode?: integer, start?: integer}
 
 ---
 ---@class luvit.fs.WriteStream: luvit.stream.Writable

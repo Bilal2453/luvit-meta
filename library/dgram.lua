@@ -16,7 +16,7 @@ dgram.Socket = Socket
 ---Creates a new instance and initializes it.
 ---
 ---@param type 'udp4'|'udp6'
----@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: uv_network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
+---@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: uv.aliases.network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
 ---@return luvit.dgram.Socket
 ---@nodiscard
 function Socket:initialize(type, callback) end
@@ -39,7 +39,7 @@ function Socket:setTimeout(msecs, callback) end
 ---with `Socket:bind()` it will be bound to `0.0.0.0` (the "all interfaces" IPv4
 ---address) and a random port number.
 ---
----@param data buffer
+---@param data uv.aliases.buffer
 ---@param host string
 ---@param port integer
 ---@param callback fun(err?: string)
@@ -64,7 +64,7 @@ function Socket:close(callback) end
 ---
 ---Get the local IP and port of the UDP handle.
 ---
----@return {ip: string, family: uv_network_family, port: integer}|nil, string? err_name, string? err_msg
+---@return {ip: string, family: uv.aliases.network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function Socket:address() end
 
@@ -110,7 +110,7 @@ function Socket:setTTL(ttl) end
 
 ---
 ---@param type 'udp4'|'udp6'
----@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: uv_network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
+---@param callback? fun(msg: string, rinfo: {ip: string, port: integer, family: uv.aliases.network_family}, flags: {partial: boolean|nil, mmsg_chunk: boolean|nil})
 ---@return luvit.dgram.Socket
 ---@nodiscard
 function dgram.createSocket(type, callback) end

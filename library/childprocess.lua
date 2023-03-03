@@ -93,7 +93,7 @@ function childprocess.spawn(command, args, options) end
 ---@field signal? string # Default is `'SIGTERM'`
 ---@field shell? string # Default is `'cmd.exe'` or `'/bin/sh'`.
 
----@alias luvit.childprocess.ExecErrArg {message?: string, code?: integer, singal?: uv_signals}
+---@alias luvit.childprocess.ExecErrArg {message?: string, code?: integer, singal?: uv.aliases.signals}
 ---@alias luvit.childprocess.ExecCallback async fun(err?: luvit.childprocess.ExecErrArg, stdout: string, stderr: string)
 
 ---

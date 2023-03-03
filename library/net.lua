@@ -70,7 +70,7 @@ function Socket:_onSocketEnd() end
 function Socket:bind(ip, port) end
 
 ---
----@return {ip: string, family: uv_network_family, port: integer}|nil, string? err_name, string? err_msg
+---@return {ip: string, family: uv.aliases.network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function Socket:address() end
 
@@ -80,7 +80,7 @@ function Socket:address() end
 function Socket:setTimeout(msecs, callback) end
 
 ---
----@param data buffer
+---@param data uv.aliases.buffer
 ---@param callback fun(err?: string)|nil
 function Socket:_write(data, callback) end
 
@@ -150,7 +150,7 @@ function Socket:connect(port, host, callback) end
 function Socket:destroy(exception, callback) end
 
 ---
----@return {ip: string, family: uv_network_family, port: integer}|nil, string? err_name, string? err_msg
+---@return {ip: string, family: uv.aliases.network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function Socket:getsockname() end
 
@@ -204,7 +204,7 @@ function Server:listen(port, callback) end
 function Server:listen(port) end
 
 ---
----@return {ip: string, family: uv_network_family, port: integer}|nil, string? err_name, string? err_msg
+---@return {ip: string, family: uv.aliases.network_family, port: integer}|nil, string? err_name, string? err_msg
 ---@nodiscard
 function Server:address() end
 

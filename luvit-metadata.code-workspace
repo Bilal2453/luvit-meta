@@ -4,5 +4,11 @@
       "path": "."
     }
   ],
-  "settings": {}
+  "settings": {
+    "cSpell.words": [
+      "dgram",
+      "reuseaddr",
+      "rinfo"
+    ]
+  }
 }
