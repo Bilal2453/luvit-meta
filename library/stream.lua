@@ -9,8 +9,6 @@
 ---@class luvit.stream
 local module = {}
 
-
-
 ---
 ---This is the stream core or base. Extends the emitter class described in Core.
 ---
@@ -34,8 +32,6 @@ module.Stream = Stream
 ---@return T dest
 function Stream:pipe(dest, options) end
 
-
-
 ---@alias Writable-Chunk nil|string|any
 
 ---
@@ -52,8 +48,6 @@ local WriteReq = {}
 ---@return luvit.stream.WriteReq
 ---@nodiscard
 function WriteReq:new(chunk, cb) end
-
-
 
 ---@alias Writable-State-Options {objectMode?: boolean, highWaterMark?: integer}
 
@@ -87,8 +81,6 @@ local WritableState = {}
 ---@return luvit.stream.WritableState
 ---@nodiscard
 function WritableState:new(options, stream) end
-
-
 
 ---
 ---The writable stream class
@@ -152,8 +144,6 @@ function Writable:_write(chunk, cb) end
 ---@param cb fun(err?: luvit.core.Error)
 function Writable:_end(chunk, cb) end
 
-
-
 ---
 ---@class luvit.stream.ReadableState: luvit.core.Object
 ---@field highWaterMark integer
@@ -185,8 +175,6 @@ local ReadableState = {}
 ---@return luvit.stream.ReadableState
 ---@nodiscard
 function ReadableState:new(options, stream) end
-
-
 
 ---
 ---@class luvit.stream.Readable: luvit.stream.Stream
@@ -299,8 +287,6 @@ function Readable:wrap(stream) end
 ---@return nil|string
 function Readable._fromList(n, state) end
 
-
-
 ---@class luvit.stream.Duplex: luvit.stream.Readable, luvit.stream.Writable
 ---@field meta nil
 ---@field readable boolean
@@ -343,8 +329,6 @@ module.Duplex = Duplex
 ---@return luvit.stream.Duplex
 ---@nodiscard
 function Duplex:new(options) end
-
-
 
 ---@class luvit.stream.TransformState: luvit.core.Object
 ---@field needTransform boolean
@@ -568,7 +552,5 @@ function Observable:new(options) end
 ---
 ---@return luvit.stream.Readable
 function Observable:observe() end
-
-
 
 return module

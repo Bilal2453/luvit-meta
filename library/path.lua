@@ -234,7 +234,6 @@ function Path.basename(path, ext) end
 ---@nodiscard
 function Path.extname(path) end
 
-
 ---
 ---The `path.isAbsolute()` method determines if path is an absolute path.
 ---
@@ -295,14 +294,13 @@ local function normalizeSeparators(path) end
 ---@nodiscard
 local function _makeLong(filepath) end
 
-
 ---
 ---@class luvit.path.PosixPath: luvit.path.Path
 local PosixPath = {
-  normalizeSeparators = normalizeSeparators,
-  isDriveRelative = isDriveRelative,
-  isAbsolute = isAbsolute,
-  isUNC = isUNC,
+	normalizeSeparators = normalizeSeparators,
+	isDriveRelative = isDriveRelative,
+	isAbsolute = isAbsolute,
+	isUNC = isUNC,
 }
 ---@protected
 PosixPath._makeLong = _makeLong
@@ -314,14 +312,13 @@ PosixPath._makeLong = _makeLong
 ---@nodiscard
 function PosixPath:new() end
 
-
 ---
 ---@class luvit.path.WindowsPath: luvit.path.Path
 local WindowsPath = {
-  normalizeSeparators = normalizeSeparators,
-  isDriveRelative = isDriveRelative,
-  isAbsolute = isAbsolute,
-  isUNC = isUNC,
+	normalizeSeparators = normalizeSeparators,
+	isDriveRelative = isDriveRelative,
+	isAbsolute = isAbsolute,
+	isUNC = isUNC,
 }
 ---@protected
 WindowsPath._makeLong = _makeLong

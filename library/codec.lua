@@ -9,13 +9,13 @@ local codec = {}
 ---@return fun(data: any) write # Writes `data` into the emitter chain. If the emitter is paused, this yields until the emitter is resumed back.
 ---@nodiscard
 function codec.wrapEmitter(emitter)
-  function emitter:pause() end
-  function emitter:resume() end
-  ---
-  ---@param data any # The data to chain into the emitter.
-  ---@return boolean is_queued # Whether the write has been queued for next `read` call, or was written to the waiting `read`.
-  function emitter:write(data) end
-  function emitter:shutdown() end
+	function emitter:pause() end
+	function emitter:resume() end
+	---
+	---@param data any # The data to chain into the emitter.
+	---@return boolean is_queued # Whether the write has been queued for next `read` call, or was written to the waiting `read`.
+	function emitter:write(data) end
+	function emitter:shutdown() end
 end
 
 ---

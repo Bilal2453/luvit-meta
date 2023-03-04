@@ -5,7 +5,7 @@ local ustring = {}
 
 ---@class luvit.ustring.UStr
 local meta = {
-  __index = ustring,
+	__index = ustring,
 }
 ---@param ustr1 luvit.ustring.UStr
 ---@param ustr2 luvit.ustring.UStr
@@ -73,7 +73,6 @@ ustring.len = rawlen
 ---@nodiscard
 function ustring.gsub(ustr, pattern, repl, n) end
 
-
 ---
 ---@param ustr luvit.ustring.UStr
 ---@param i  integer
@@ -91,7 +90,6 @@ function ustring.sub(ustr, i, j) end
 ---@return integer end
 ---@nodiscard
 function ustring.find(ustr, pattern, init, plain) end
-
 
 ---
 ---@param formatstring luvit.ustring.UStr

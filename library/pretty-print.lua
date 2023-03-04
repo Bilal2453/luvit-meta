@@ -51,7 +51,6 @@ function prettyPrint.stringEscape(c) end
 ---@nodiscard
 function prettyPrint.dump(value, recuse, nocolor) end
 
-
 ---
 ---@param fs userdata
 ---@param s string
@@ -64,7 +63,6 @@ function prettyPrint.console_write(fs, s) end
 ---@return nil
 function prettyPrint.prettyPrint(...) end
 p = prettyPrint.prettyPrint
-
 
 -- TODO: Continue themes
 

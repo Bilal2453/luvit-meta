@@ -25,7 +25,7 @@ nextTick = timer.setImmediate
 ---`env.set(key, value)`, if `value` was nil it would instead do `env.unset(key)` (__newindex). And `pairs(lenv)` will use the `lenv.iterate` iterator (__pairs).
 ---
 local lenv = {
-  get = env.get,
+	get = env.get,
 }
 
 ---@alias lenv_iterate_iterator fun(): string, string
@@ -68,7 +68,7 @@ local function memoryUsage(self) end
 ---
 ---Returns the user and system CPU time usage of the current process in microseconds
 ---(as a table of the format {user=value, system=value})
----The result of a previous call to process:cpuUsage() can optionally be passed as 
+---The result of a previous call to process:cpuUsage() can optionally be passed as
 ---an argument to get a diff reading
 ---
 ---@param self luvit.GlobalProcess # The proccess instance
@@ -107,25 +107,27 @@ function UvStreamReadable:new(handle) end
 ---
 ---@class luvit.GlobalProcess: luvit.core.Emitter
 local global_proccess_rtn = {
-  argv = args,
-  ---@type integer
-  exitCode = 0,
-  nextTick = nextTick,
-  env = lenv,
-  cwd = uv.cwd,
-  kill = kill,
-  pid = uv.os_getpid(),
-  exit = exit,
-  memoryUsage = memoryUsage,
-  cpuUsage = cpuUsage,
-  ---@type luvit.process.UvStreamReadable | luvit.fs.ReadStream
-  stdin = UvStreamReadable,
-  stdout = UvStreamWritable,
-  stderr = UvStreamWritable,
+	argv = args,
+	---@type integer
+	exitCode = 0,
+	nextTick = nextTick,
+	env = lenv,
+	cwd = uv.cwd,
+	kill = kill,
+	pid = uv.os_getpid(),
+	exit = exit,
+	memoryUsage = memoryUsage,
+	cpuUsage = cpuUsage,
+	---@type luvit.process.UvStreamReadable | luvit.fs.ReadStream
+	stdin = UvStreamReadable,
+	stdout = UvStreamWritable,
+	stderr = UvStreamWritable,
 }
 
 ---
-function process.globalProcess() return global_proccess_rtn end
+function process.globalProcess()
+	return global_proccess_rtn
+end
 
 _G.process = process.globalProcess()
 

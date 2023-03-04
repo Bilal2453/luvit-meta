@@ -17,7 +17,6 @@ local core = {}
 ---@nodiscard
 function core.instanceof(obj, class) end
 
-
 ---
 ---This is the most basic object in Luvit. It provides simple prototypal
 -- inheritance and inheritable constructors. All other objects inherit from this.
@@ -77,10 +76,10 @@ function Object:new(...) end
 ---@param self T
 ---@return T
 function Object:extend()
-  self.meta = {
-    super = self
-  }
-  return self
+	self.meta = {
+		super = self,
+	}
+	return self
 end
 
 ---

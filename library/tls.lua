@@ -14,7 +14,6 @@ function tls.isLibreSSL() end
 ---@nodiscard
 function tls.isTLSv1_3() end
 
-
 ---
 ---@class luvit.tls.Credential: luvit.core.Object
 ---@field rejectUnauthorized? boolean
@@ -28,7 +27,7 @@ local Credential = {}
 ---@param flags? integer
 ---@param rejectUnauthorized? boolean
 ---@param context? unknown
-function Credential:new(secureProtocol,defaultCiphers, flags, rejectUnauthorized, context) end
+function Credential:new(secureProtocol, defaultCiphers, flags, rejectUnauthorized, context) end
 
 ---
 ---
@@ -42,8 +41,6 @@ function Credential:setCA(certs) end
 ---@param key string
 ---@param cert string
 function Credential:setKeyCert(key, cert) end
-
-
 
 ---@alias TLSSocket-Options {secureContext?: unknown, server?: boolean, requestCert?: boolean, rejectUnauthorized?: boolean}
 
@@ -123,7 +120,6 @@ function TLSSocket:_write(data, callback) end
 ---@param n integer
 function TLSSocket:_read(n) end
 
-
 ---@param options? {secureProtocol?: 'SSLv3'|'SSLv23'|'SSLv2'|'TSLv1'|'TSLv1_1'|'TSLv1_2'|'TLS'|'DTLSv1'|'DTLSv1_2', ciphers?: string, secureOptions?: integer, rejectUnauthorized?: boolean, key?: string, cert?: string, ca?: string}
 ---@param context any
 ---@return luvit.tls.Credential
@@ -143,7 +139,6 @@ function Server:init(options, connectionListener) end
 ---
 ---@param hosts string[]
 function Server:sni(hosts) end
-
 
 ---
 ---@param options {ciphers?: string, rejectUnauthorized?: boolean, port?: integer, host?: string, hostname?: string, }

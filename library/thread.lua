@@ -3,8 +3,8 @@
 ---Thread module for luvit
 local thread = {}
 
----Creates and initializes a `luv_thread_t` (not `uv_thread_t`). Returns the 
----Lua userdata wrapping it and asynchronously executes `threadFunc`. 
+---Creates and initializes a `luv_thread_t` (not `uv_thread_t`). Returns the
+---Lua userdata wrapping it and asynchronously executes `threadFunc`.
 ---Additional arguments `...` are passed to the `threadFunc` function.
 ---@param threadFunc function | string # If a string, it must come from `string.dump`.
 ---@param ... any # arguments passed to `threadFunc`
@@ -44,9 +44,9 @@ function Worker:queue(...) end
 ---@return luvit.thread.Worker
 function thread.work(threadFunc, notifyEntry) end
 
----Queues a work request which will run `threadFunc` in a new Lua state in a 
----thread from the threadpool with any additional arguments from `...`. Values 
----returned from `threadFunc` are passed to `notifyEntry`, which is called in 
+---Queues a work request which will run `threadFunc` in a new Lua state in a
+---thread from the threadpool with any additional arguments from `...`. Values
+---returned from `threadFunc` are passed to `notifyEntry`, which is called in
 ---the main loop thread.
 ---@param worker luvit.thread.Worker
 ---@param ... any # arguments passed to the worker's `threadFunc`

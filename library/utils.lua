@@ -37,4 +37,3 @@ function utils.noop(err) end
 function utils.adapt(c, fn, ...) end
 
 return utils
-

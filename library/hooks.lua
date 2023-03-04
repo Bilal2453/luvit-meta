@@ -8,8 +8,8 @@
 ---
 ---@type luvit.core.Emitter
 local hook = {
-  ---@type nil|fun(self: luvit.core.Emitter)
-  init = nil
+	---@type nil|fun(self: luvit.core.Emitter)
+	init = nil,
 }
 
 return hook

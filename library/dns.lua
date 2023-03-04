@@ -12,7 +12,7 @@
 ---| 33 # dns.TYPE_SRV
 
 ---
----@alias luvit.dns.dnsclass 
+---@alias luvit.dns.dnsclass
 ---| 1 # dns.TYPE_CLASS_IN
 
 ---Node-style dns module for luvit

@@ -2,8 +2,8 @@
 
 ---@class luvit.httpHeader
 local http_header = {
-  ---@type httpHeader_metatable
-  headerMeta = {}
+	---@type httpHeader_metatable
+	headerMeta = {},
 }
 
 ---@alias httpHeader_metatable {__index: function, __newindex: function}

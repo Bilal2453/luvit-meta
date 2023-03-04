@@ -62,8 +62,6 @@ function IncomingMessage:new(head, socket) end
 ---
 function IncomingMessage:_read() end
 
-
-
 ---@class luvit.http.ServerResponse: luvit.stream.Writable
 ---Override this in the instance to not send the date.
 ---@field sendDate boolean
@@ -89,7 +87,7 @@ function IncomingMessage:_read() end
 ---@field on fun(self: luvit.http.ServerResponse, name: 'end', callback: fun())
 ---@field once fun(self: luvit.http.ServerResponse, name: 'end', callback: fun())
 local ServerResponse = {
-  encode = httpCodec.encoder()
+	encode = httpCodec.encoder(),
 }
 
 ---
@@ -150,8 +148,6 @@ function http.handleConnection(socket, onRequest) end
 ---@return luvit.net.Server
 function http.createServer(onRequest) end
 
-
-
 ---
 ---@class luvit.http.ClientRequest: luvit.stream.Writable
 ---@field host? string
@@ -188,8 +184,8 @@ function http.createServer(onRequest) end
 ---@field on fun(self: luvit.http.ClientRequest, name: 'response', callback: fun(res: luvit.http.IncomingMessage))
 ---@field once fun(self: luvit.http.ClientRequest, name: 'response', callback: fun(res: luvit.http.IncomingMessage))
 local ClientRequest = {
-  encode = httpCodec.encoder(),
-  decode = httpCodec.decoder(),
+	encode = httpCodec.encoder(),
+	decode = httpCodec.decoder(),
 }
 
 ---
@@ -242,7 +238,6 @@ function ClientRequest:setTimeout(msecs, callback) end
 ---
 ---
 function ClientRequest:destroy() end
-
 
 ---@param options? string
 ---@return url_parsed result

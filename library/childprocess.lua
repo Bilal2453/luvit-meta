@@ -1,7 +1,7 @@
 ---@meta
 
 ---
----It is possible to stream data through a child's stdin, stdout, and stderr 
+---It is possible to stream data through a child's stdin, stdout, and stderr
 ---in a fully non-blocking way.
 ---
 local childprocess = {}
@@ -77,7 +77,7 @@ function Process:destroy(err) end
 ---
 ---Spawns a command line process.
 ---
----Since the data coming in is a stream, you may want to pass it through a 
+---Since the data coming in is a stream, you may want to pass it through a
 ---filter like the luvit `line-emitter` package to get lines instead.
 ---
 ---@param command string
@@ -98,8 +98,8 @@ function childprocess.spawn(command, args, options) end
 
 ---
 ---Executes the supplied `command` and returns data returned in the `callback`.
----The `callback` can be either a function or a thread for coroutine style 
----code. The `command` can have arguments e.g. 
+---The `callback` can be either a function or a thread for coroutine style
+---code. The `command` can have arguments e.g.
 ---`childprocess.exec('ls -a', print)`.
 ---
 ---@param command string
@@ -112,8 +112,8 @@ function childprocess.spawn(command, args, options) end
 function childprocess.exec(command, options, callback) end
 
 ---
----Similar to `childprocess.exec` but the arguments for the command/file must 
----be supplied as a string to the second parameter. `callback` is optional 
+---Similar to `childprocess.exec` but the arguments for the command/file must
+---be supplied as a string to the second parameter. `callback` is optional
 ---as well here.
 ---
 ---@param file string

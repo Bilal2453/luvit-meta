@@ -8,8 +8,6 @@ local fs = {}
 
 ---@alias fs_mode string|integer
 
-
-
 ---
 ---Close a file. No arguments other than a possible exception are given to the completion callback.
 ---
@@ -66,7 +64,6 @@ function fs.open(path, callback) end
 ---@param callback fun(err?: string, fd?: integer)
 ---@return uv_fs_t
 function fs.open(path, flags, callback) end
-
 
 ---
 ---Synchronous version of `fs.open()`. Returns an integer representing the file
@@ -866,8 +863,6 @@ function fs.createWriteStream(path, options) end
 ---@nodiscard
 function fs.createReadStream(path, options) end
 
-
-
 ---@alias WriteStream-Options {fd?: integer, flags?: uv.aliases.fs_access_flags, mode?: integer, start?: integer}
 
 ---
@@ -906,14 +901,11 @@ function WriteStream:close() end
 ---
 function WriteStream:destroy() end
 
-
 ---
 ---@class luvit.fs.WriteStreamSync: luvit.fs.WriteStream
 local WriteStreamSync = {}
 fs.WriteStreamSync = WriteStreamSync
 -- TODO: once we want to add descriptions, document the override fields of this
-
-
 
 ---@alias ReadStream-Options {fd?: integer, mode?: fs_mode|'0666', offset?: integer|nil, chunkSize?: integer|65536, length?: integer|nil}
 
@@ -953,7 +945,5 @@ function fs.ReadStream:close() end
 ---
 ---@param err? any # If passed, emit `error` event and pass `err` as an argument to the listener.
 function fs.ReadStream:destroy(err) end
-
-
 
 return fs

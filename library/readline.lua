@@ -44,7 +44,6 @@ function History:updateLastLine(line) end
 ---@return luvit.readline.History
 function History.new() end
 
-
 ---
 ---@class luvit.readline.Editor
 local Editor = {}

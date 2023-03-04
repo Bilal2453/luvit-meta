@@ -154,8 +154,6 @@ function Socket:destroy(exception, callback) end
 ---@nodiscard
 function Socket:getsockname() end
 
-
-
 ---
 ---@class luvit.net.Server: luvit.core.Emitter
 ---@field _handle luvit.net.Socket|nil
@@ -211,7 +209,6 @@ function Server:address() end
 ---
 ---@param callback? fun()
 function Server:close(callback) end
-
 
 ---
 ---@param port string
