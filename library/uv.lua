@@ -33,6 +33,8 @@ function uv.version() end
 ---@nodiscard
 function uv.version_string() end
 
+
+
 ---
 ---The event loop is the central part of libuv's functionality. It takes care of
 -- polling for I/O and scheduling callbacks to be run based on different sources of events.
@@ -191,6 +193,8 @@ function uv.update_time() end
 ---@param callback fun(handle: uv.aliases.handle_instances)
 function uv.walk(callback) end
 
+
+
 ---
 ---`uv_req_t` is the base type for all libuv request types.
 ---
@@ -242,6 +246,8 @@ uv_req_t.cancel = uv.cancel
 ---@return uv.aliases.req_struct_type
 function uv.req_get_type(req) end
 uv_req_t.get_type = uv.req_get_type
+
+
 
 ---
 ---`uv_handle_t` is the base type for all libuv handle types. All API functions
@@ -444,6 +450,8 @@ uv_handle_t.fileno = uv.fileno
 function uv.handle_get_type(handle) end
 uv_handle_t.get_type = uv.handle_get_type
 
+
+
 ---
 ---Timer handles are used to schedule callbacks to be called in the future.
 ---
@@ -553,6 +561,8 @@ uv_timer_t.get_repeat = uv.timer_get_repeat
 function uv.timer_get_due_in(timer) end
 uv_timer_t.get_due_in = uv.timer_get_due_in
 
+
+
 ---
 ---Prepare handles will run the given callback once per loop iteration, right
 ---before polling for I/O.
@@ -592,6 +602,7 @@ uv_prepare_t.start = uv.prepare_start
 function uv.prepare_stop(prepare) end
 uv_prepare_t.stop = uv.prepare_stop
 
+
 ---
 ---Check handles will run the given callback once per loop iteration, right after
 ---polling for I/O.
@@ -629,6 +640,8 @@ uv_check_t.start = uv.check_start
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.check_stop(check) end
 uv_check_t.stop = uv.check_stop
+
+
 
 ---
 ---Idle handles will run the given callback once per loop iteration, right before
@@ -674,6 +687,8 @@ uv_idle_t.start = uv.idle_start
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.idle_stop(idle) end
 uv_idle_t.stop = uv.idle_stop
+
+
 
 ---
 ---Async handles allow the user to "wakeup" the event loop and get a callback
@@ -721,6 +736,8 @@ function uv.new_async(callback) end
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.async_send(async, ...) end
 uv_async_t.send = uv.async_send
+
+
 
 ---
 ---Poll handles are used to watch file descriptors for readability and writability,
@@ -816,6 +833,8 @@ uv_poll_t.start = uv.poll_start
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.poll_stop(poll) end
 uv_poll_t.stop = uv.poll_stop
+
+
 
 ---
 ---Signal handles implement Unix style signal handling on a per-event loop bases.
@@ -938,6 +957,8 @@ uv_signal_t.start_oneshot = uv.signal_start_oneshot
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.signal_stop(signal) end
 uv_signal_t.stop = uv.signal_stop
+
+
 
 ---
 ---Process handles will spawn a new process and allow the user to control it and
@@ -1095,6 +1116,8 @@ function uv.kill(pid, signum) end
 ---@nodiscard
 function uv.process_get_pid(process) end
 uv_process_t.get_pid = uv.process_get_pid
+
+
 
 ---
 ---Stream handles provide an abstraction of a duplex communication channel.
@@ -1280,6 +1303,8 @@ uv_stream_t.set_blocking = uv.stream_set_blocking
 ---@nodiscard
 function uv.stream_get_write_queue_size() end
 uv_stream_t.get_write_queue_size = uv.stream_get_write_queue_size
+
+
 
 ---
 ---TCP handles are used to represent both TCP streams and servers.
@@ -1623,6 +1648,8 @@ uv_tcp_t.close_reset = uv.tcp_close_reset
 ---@return {[1]: integer, [2]: integer}|nil, string? err_name, string? err_msg # [1, 2] file descriptor
 function uv.socketpair(socktype, protocol, flags1, flags2) end
 
+
+
 ---
 ---Pipe handles provide an abstraction over local domain sockets on Unix and named pipes on Windows.
 ---
@@ -1793,6 +1820,7 @@ function uv.pipe(read_flags, write_flags) end
 
 -- TODO: continue consistency checks from above
 
+
 ---
 ---TTY handles represent a stream for the console.
 ---
@@ -1897,6 +1925,8 @@ function uv.tty_set_vterm_state(state) end
 ---
 ---@return uv.aliases.tty_vsterm_state|nil, string? err_name, string? err_msg
 function uv.tty_get_vterm_state() end
+
+
 
 ---
 ---UDP handles encapsulate UDP communication for both clients and servers.
@@ -2127,6 +2157,8 @@ uv_udp_t.recv_stop = uv.udp_recv_stop
 function uv.udp_connect(udp, host, port) end
 uv_udp_t.connect = uv.udp_connect
 
+
+
 ---
 ---FS Event handles allow the user to monitor a given path for changes, for
 ---example, if the file was renamed or there was a generic change in it. This
@@ -2168,6 +2200,8 @@ uv_fs_event_t.stop = uv.fs_event_stop
 ---@nodiscard
 function uv.fs_event_getpath() end
 uv_fs_event_t.getpath = uv.fs_event_getpath
+
+
 
 ---
 ---FS Poll handles allow the user to monitor a given path for changes. Unlike
@@ -2212,6 +2246,8 @@ uv_fs_poll_t.stop = uv.fs_poll_stop
 ---@nodiscard
 function uv.fs_poll_getpath() end
 uv_fs_poll_t.getpath = uv.fs_poll_getpath
+
+
 
 ---
 ---Most file system functions can operate synchronously or asynchronously. When a synchronous version is called (by omitting a callback), the function will
@@ -3110,6 +3146,8 @@ function uv.fs_statfs(path, callback) end
 ---@nodiscard
 function uv.fs_statfs(path) end
 
+
+
 ---
 ---Libuv provides a threadpool which can be used to run user code and get notified
 ---in the loop thread. This threadpool is internally used to run all file system
@@ -3135,11 +3173,10 @@ function uv.fs_statfs(path) end
 local luv_work_ctx_t = {}
 
 ---
----Creates and initializes a new `luv_work_ctx_t` (not `uv_work_t`).
----`work_callback` is a Lua function or a string containing Lua code or bytecode dumped from a function.
----Returns the Lua userdata wrapping it.
+---Creates and initializes a new `luv_work_ctx_t` (not `uv_work_t`). Returns the
+---Lua userdata wrapping it.
 ---
----@param work_callback fun(...: uv.aliases.threadargs)|string # passed to/from `uv.queue_work(work_ctx, ...)`
+---@param work_callback fun(...: uv.aliases.threadargs) # passed to/from `uv.queue_work(work_ctx, ...)`
 ---@param after_work_callback fun(...: uv.aliases.threadargs) # returned from `work_callback`
 ---@return luv_work_ctx_t
 ---@nodiscard
@@ -3156,6 +3193,8 @@ function uv.new_work(work_callback, after_work_callback) end
 ---@return boolean|nil success, string? err_name, string? err_msg
 function uv.queue_work(work_ctx, ...) end
 luv_work_ctx_t.queue = uv.queue_work
+
+
 
 ---@class uv_getaddrinfo_t: uv_req_t
 local uv_getaddrinfo_t = {}
@@ -3192,6 +3231,8 @@ function uv.getnameinfo(address, callback) end
 ---@return string|nil host, string service_or_errname, string? err_msg
 function uv.getnameinfo(address) end
 
+
+
 ---
 ---Libuv provides cross-platform implementations for multiple threading an
 --- synchronization primitives. The API largely follows the pthreads API.
@@ -3202,20 +3243,15 @@ local luv_thread_t = {}
 ---
 ---Creates and initializes a `luv_thread_t` (not `uv_thread_t`). Returns the Lua
 ---userdata wrapping it and asynchronously executes `entry`, which can be either
----a Lua function or a string containing Lua code or bytecode dumped from a function.
----Additional arguments `...` are passed to the `entry` function
----and an optional `options` table may be
+---a Lua function or a Lua function dumped to a string. Additional arguments `...`
+---are passed to the `entry` function and an optional `options` table may be
 ---provided. Currently accepted `option` fields are `stack_size`.
 ---
----@param options {stack_size?: integer}
----@param entry fun(...: uv.aliases.threadargs)|string
+---@param options? {stack_size?: integer}
+---@param entry fun(...: uv.aliases.threadargs)
 ---@vararg uv.aliases.threadargs # varargs passed to `entry`
 ---@return luv_thread_t?, string? err_name, string? err_msg
 function uv.new_thread(options, entry, ...) end
----@param entry fun(...: uv.aliases.threadargs)|string
----@vararg uv.aliases.threadargs # varargs passed to `entry`
----@return luv_thread_t?, string? err_name, string? err_msg
-function uv.new_thread(entry, ...) end
 
 ---
 ---Returns a boolean indicating whether two threads are the same. This function is
@@ -3246,6 +3282,8 @@ luv_thread_t.join = uv.thread_join
 ---
 ---@param msec integer
 function uv.sleep(msec) end
+
+
 
 -- [[ misc.c definitions ]]
 
@@ -3604,6 +3642,8 @@ function uv.random(len, flags, callback) end
 ---@nodiscard
 function uv.random(len, flags) end
 
+
+
 -- [[ util.c definitions ]]
 
 ---
@@ -3613,6 +3653,8 @@ function uv.random(len, flags) end
 ---@return string|nil, string|nil
 ---@nodiscard
 function uv.translate_sys_error(errcode) end
+
+
 
 -- [[ metrics.c definitions ]]
 
@@ -3630,85 +3672,30 @@ function uv.translate_sys_error(errcode) end
 ---@nodiscard
 function uv.metrics_idle_time() end
 
+
+
 -- [[ constants ]]
 
 -- TODO: should constants have their values removed and replaced
 -- with an integer type?  Those constants change from system to another
 
 uv.constants = {
-	O_RDONLY = 0,
-	O_WRONLY = 1,
-	O_RDWR = 2,
-	O_APPEND = 1024,
-	O_CREAT = 64,
-	O_DSYNC = 4096,
-	O_EXCL = 128,
-	O_NOCTTY = 256,
-	O_NONBLOCK = 2048,
-	O_RSYNC = 1052672,
-	O_SYNC = 1052672,
-	O_TRUNC = 512,
-	SOCK_STREAM = 1,
-	SOCK_DGRAM = 2,
-	SOCK_SEQPACKET = 5,
-	SOCK_RAW = 3,
-	SOCK_RDM = 4,
-	AF_UNIX = 1,
-	AF_INET = 2,
-	AF_INET6 = 10,
-	AF_IPX = 4,
-	AF_NETLINK = 16,
-	AF_X25 = 9,
-	AF_AX25 = 3,
-	AF_ATMPVC = 8,
-	AF_APPLETALK = 5,
-	AF_PACKET = 17,
-	AI_ADDRCONFIG = 32,
-	AI_V4MAPPED = 8,
-	AI_ALL = 16,
-	AI_NUMERICHOST = 4,
-	AI_PASSIVE = 1,
-	AI_NUMERICSERV = 1024,
-	SIGHUP = 1,
-	SIGINT = 2,
-	SIGQUIT = 3,
-	SIGILL = 4,
-	SIGTRAP = 5,
-	SIGABRT = 6,
-	SIGIOT = 6,
-	SIGBUS = 7,
-	SIGFPE = 8,
-	SIGKILL = 9,
-	SIGUSR1 = 10,
-	SIGSEGV = 11,
-	SIGUSR2 = 12,
-	SIGPIPE = 13,
-	SIGALRM = 14,
-	SIGTERM = 15,
-	SIGCHLD = 17,
-	SIGSTKFLT = 16,
-	SIGCONT = 18,
-	SIGSTOP = 19,
-	SIGTSTP = 20,
-	SIGTTIN = 21,
-	SIGWINCH = 28,
-	SIGIO = 29,
-	SIGPOLL = 29,
-	SIGXFSZ = 25,
-	SIGVTALRM = 26,
-	SIGPROF = 27,
-	UDP_RECVMMSG = 256,
-	UDP_MMSG_CHUNK = 8,
-	UDP_REUSEADDR = 4,
-	UDP_PARTIAL = 2,
-	UDP_IPV6ONLY = 1,
-	TCP_IPV6ONLY = 1,
-	UDP_MMSG_FREE = 16,
-	SIGSYS = 31,
-	SIGPWR = 30,
-	SIGTTOU = 22,
-	SIGURG = 23,
-	SIGXCPU = 24,
+  O_RDONLY = 0, O_WRONLY = 1, O_RDWR = 2, O_APPEND = 1024, O_CREAT = 64,
+  O_DSYNC = 4096, O_EXCL = 128, O_NOCTTY = 256, O_NONBLOCK = 2048,
+  O_RSYNC = 1052672, O_SYNC = 1052672, O_TRUNC = 512, SOCK_STREAM = 1,
+  SOCK_DGRAM = 2, SOCK_SEQPACKET = 5, SOCK_RAW = 3, SOCK_RDM = 4, AF_UNIX = 1,
+  AF_INET = 2, AF_INET6 = 10, AF_IPX = 4, AF_NETLINK = 16, AF_X25 = 9,
+  AF_AX25 = 3, AF_ATMPVC = 8, AF_APPLETALK = 5, AF_PACKET = 17,
+  AI_ADDRCONFIG = 32, AI_V4MAPPED = 8, AI_ALL = 16, AI_NUMERICHOST = 4,
+  AI_PASSIVE = 1, AI_NUMERICSERV = 1024, SIGHUP = 1, SIGINT = 2, SIGQUIT = 3,
+  SIGILL = 4, SIGTRAP = 5, SIGABRT = 6, SIGIOT = 6, SIGBUS = 7, SIGFPE = 8,
+  SIGKILL = 9, SIGUSR1 = 10, SIGSEGV = 11, SIGUSR2 = 12, SIGPIPE = 13,
+  SIGALRM = 14, SIGTERM = 15, SIGCHLD = 17, SIGSTKFLT = 16, SIGCONT = 18,
+  SIGSTOP = 19, SIGTSTP = 20, SIGTTIN = 21, SIGWINCH = 28, SIGIO = 29,
+  SIGPOLL = 29, SIGXFSZ = 25, SIGVTALRM = 26, SIGPROF = 27, UDP_RECVMMSG = 256,
+  UDP_MMSG_CHUNK = 8, UDP_REUSEADDR = 4, UDP_PARTIAL = 2, UDP_IPV6ONLY = 1,
+  TCP_IPV6ONLY = 1, UDP_MMSG_FREE = 16, SIGSYS = 31, SIGPWR = 30, SIGTTOU = 22,
+  SIGURG = 23, SIGXCPU = 24
 }
 
 return uv
