@@ -41,7 +41,7 @@ The definitions use the [Sumneko's Lua Language Server (LLS)](https://github.com
 
   1. Install [LLS]((https://github.com/LuaLS/lua-language-server/)) for your editor.
   2. Configure your meta directory.
-  3. [Click here] to download the definitions; alternatively clone this repository.
+  3. [Click here](https://github.com/Bilal2453/luvit-meta/archive/refs/heads/release.zip) to download the definitions; alternatively clone this repository.
   4. Extract the ZIP file to your meta directory/move the folder there.
   5. Should now be ready. If not, check the editor plugin's manual for doing this.
 
