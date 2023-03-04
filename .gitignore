@@ -1,3 +1,5 @@
 test
 scrapers/*-output*
 scrapers/*.markdown
+LLS-Addons
+.vscode

@@ -3173,10 +3173,12 @@ function uv.fs_statfs(path) end
 local luv_work_ctx_t = {}
 
 ---
----Creates and initializes a new `luv_work_ctx_t` (not `uv_work_t`). Returns the
----Lua userdata wrapping it.
+---Creates and initializes a new `luv_work_ctx_t` (not `uv_work_t`).
+---`work_callback` is a Lua function or a string containing Lua code or bytecode dumped from a function.
+---Returns the Lua userdata wrapping it.
 ---
----@param work_callback fun(...: uv.aliases.threadargs) # passed to/from `uv.queue_work(work_ctx, ...)`
+---@generic T: uv.aliases.threadargs
+---@param work_callback fun(...: T)|string # passed to/from `uv.queue_work(work_ctx, ...)`
 ---@param after_work_callback fun(...: uv.aliases.threadargs) # returned from `work_callback`
 ---@return luv_work_ctx_t
 ---@nodiscard
@@ -3243,15 +3245,21 @@ local luv_thread_t = {}
 ---
 ---Creates and initializes a `luv_thread_t` (not `uv_thread_t`). Returns the Lua
 ---userdata wrapping it and asynchronously executes `entry`, which can be either
----a Lua function or a Lua function dumped to a string. Additional arguments `...`
+---which can be either a Lua function or a string containing Lua code or bytecode dumped from a function. Additional arguments `...`
 ---are passed to the `entry` function and an optional `options` table may be
 ---provided. Currently accepted `option` fields are `stack_size`.
 ---
+---@generic T: uv.aliases.threadargs
 ---@param options? {stack_size?: integer}
----@param entry fun(...: uv.aliases.threadargs)
----@vararg uv.aliases.threadargs # varargs passed to `entry`
+---@param entry fun(...: T)|string
+---@vararg T # varargs passed to `entry`
 ---@return luv_thread_t?, string? err_name, string? err_msg
 function uv.new_thread(options, entry, ...) end
+---@generic T: uv.aliases.threadargs
+---@param entry fun(...: T)|string
+---@vararg T # varargs passed to `entry`
+---@return luv_thread_t?, string? err_name, string? err_msg
+function uv.new_thread(entry, ...) end
 
 ---
 ---Returns a boolean indicating whether two threads are the same. This function is
