@@ -27,14 +27,19 @@ The definitions use the [Sumneko's Lua Language Server (LLS)](https://github.com
 #### On Visual Studio Code:
 
   1. Install [this plugin](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) then reload editor.
+    
   2. Open the workspace you want to enable this in.
   3. Press `Ctrl + Shift + P`, a prompt will open.
   4. Type "Open addon manager" and press enter.
+
+  ![image](https://user-images.githubusercontent.com/38175840/222934323-e3f92383-98d1-4799-bc29-80453b78af84.png)
+
   5. Search for `Luvit` then press `Enable`.
+
+  ![image](https://user-images.githubusercontent.com/38175840/222933683-fcf54e36-3b46-4ce0-b12a-3210e2c4f44e.png)
+
   6. The definitions should now be enabled for that workspace.
      Typing something like `local fs = require'fs'` will show you auto-completion.
-
-![image](https://user-images.githubusercontent.com/38175840/222933683-fcf54e36-3b46-4ce0-b12a-3210e2c4f44e.png)
 
 
 #### Manually, for other editors:
