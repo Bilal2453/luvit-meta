@@ -48,12 +48,28 @@ function uv.version_string() end
 local uv_loop_t = {}
 
 ---@alias uv.aliases.run_mode
+---Runs the event loop until there are no more active and referenced handles or requests.
+---Returns `true` if `uv.stop()` was called and there are still active handles or requests.
+---Returns `false` in all other cases.
 ---|>'default'
+---Poll for I/O once. Note that this function blocks if there are no
+---pending callbacks. Returns `false` when done (no active handles or requests
+---left), or `true` if more callbacks are expected (meaning you should run the
+---event loop again sometime in the future).
 ---|'once'
+---Poll for I/O once but don't block if there are no pending callbacks.
+---Returns `false` if done (no active handles or requests left),
+---or `true` if more callbacks are expected (meaning you should run the event loop again sometime in the future).
 ---|'nowait'
 
 ---@alias uv.aliases.loop_configure_option
+---Block a signal when polling for new events.
+---The second argument to loop_configure() is the signal name (as a lowercase string) or the signal number.
+---This operation is currently only implemented for `"sigprof"` signals, to suppress unnecessary wakeups when using a sampling profiler.
+---Requesting other signals will fail with `EINVAL`.
 ---|'block_signal'
+---Accumulate the amount of idle time the event loop spends in the event provider.
+---This option is necessary to use `metrics_idle_time()`.
 ---|'metrics_idle_time'
 
 ---
@@ -109,7 +125,7 @@ function uv.run(mode) end
 ---**Note**: Be prepared to handle the `ENOSYS` error; it means the loop option is
 ---not supported by the platform.
 ---
----@param option string
+---@param option uv.aliases.loop_configure_option
 ---@param ... any
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.loop_configure(option, ...) end
