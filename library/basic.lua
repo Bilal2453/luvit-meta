@@ -14,7 +14,7 @@ arg = nil
 ---p('Your args were ', args)
 ---```
 ---
----@type string[]
+---@type {[integer]: string}
 args = {}
 
 ---
