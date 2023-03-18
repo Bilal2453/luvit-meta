@@ -2240,12 +2240,12 @@ function uv.new_fs_poll() end
 ---**Note:** For maximum portability, use multi-second intervals. Sub-second
 ---intervals will not detect all changes on many file systems.
 ---
----@param fs_event uv_fs_event_t
+---@param fs_poll uv_fs_poll_t
 ---@param path string
 ---@param interval integer
 ---@param callback fun(err?: string, prev: uv.aliases.fs_stat_table, curr: uv.aliases.fs_stat_table)
 ---@return 0|nil success, string? err_name, string? err_msg
-function uv.fs_poll_start(fs_event, path, interval, callback) end
+function uv.fs_poll_start(fs_poll, path, interval, callback) end
 uv_fs_poll_t.start = uv.fs_poll_start
 
 ---
