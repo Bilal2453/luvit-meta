@@ -17,8 +17,6 @@ local timer
 ---@type luvi.env
 local env
 
-nextTick = timer.setImmediate
-
 ---
 ---A table value that acts as a middle layer to luvi.env.
 ---Indexing the table will return back `env.get(key)` (__index), setting a new index to the table would trigger
@@ -28,13 +26,11 @@ local lenv = {
   get = env.get,
 }
 
----@alias lenv_iterate_iterator fun(): string, string
-
 ---
 ---Returns an iterator function, each time that function is called it returns `name, value` of some environment variable. U
 ---Until all keys are consumed, it returns nil indicating that.
 ---
----@return lenv_iterate_iterator iterator
+---@return fun(): (string, string) iterator
 ---@return string[] keys
 ---@return nil
 ---@nodiscard
@@ -42,10 +38,11 @@ function lenv.iterate() end
 lenv.__pairs = lenv.iterate
 
 ---
----Sends the specified signal to the given PID. Check the documentation on `uv_signal_t` for signal support, specially on Windows.
+---Sends the specified signal to the given PID.
+---Check the documentation on `uv_signal_t` for signal support, specially on Windows.
 ---
 ---@param pid integer
----@param signal string|integer|'sigterm'
+---@param signal uv.aliases.signals|integer
 local function kill(pid, signal) end
 
 ---
@@ -110,7 +107,7 @@ local global_proccess_rtn = {
   argv = args,
   ---@type integer
   exitCode = 0,
-  nextTick = nextTick,
+  nextTick = timer.setImmediate,
   env = lenv,
   cwd = uv.cwd,
   kill = kill,
