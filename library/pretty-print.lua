@@ -45,11 +45,11 @@ function prettyPrint.stringEscape(c) end
 
 ---
 ---@param value any
----@param recuse? boolean  # default true
+---@param recurse? boolean  # default true
 ---@param nocolor? boolean # default false
 ---@return string
 ---@nodiscard
-function prettyPrint.dump(value, recuse, nocolor) end
+function prettyPrint.dump(value, recurse, nocolor) end
 
 
 ---
