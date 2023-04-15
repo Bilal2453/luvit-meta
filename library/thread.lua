@@ -5,13 +5,6 @@
 ---
 local thread = {}
 
-<<<<<<< HEAD
----Creates and initializes a `luv_thread_t` (not `uv_thread_t`). Returns the
----Lua userdata wrapping it and asynchronously executes `threadFunc`.
----Additional arguments `...` are passed to the `threadFunc` function.
----@param threadFunc function | string # If a string, it must come from `string.dump`.
----@param ... any # arguments passed to `threadFunc`
-=======
 ---
 ---Creates and initializes a new system thread (`luv_thread_t`) and injects the Luvit environment.
 ---Returns the Lua userdata wrapping it and asynchronously executes `thread_func`, which can be
@@ -21,7 +14,6 @@ local thread = {}
 ---@generic T: uv.aliases.threadargs
 ---@param thread_func fun(...: T)|string
 ---@param ... T
->>>>>>> main
 ---@return luv_thread_t?, string? err_msg, string? err_name
 function thread.start(thread_func, ...) end
 
@@ -46,8 +38,6 @@ function thread.equals(thread1, thread2) end
 ---
 ---@return luv_thread_t
 function thread.self() end
-
-
 
 ---
 ---Libuv provides a threadpool which can be used to run user code and get notified
@@ -78,16 +68,10 @@ function Worker:queue(...) end
 ---@nodiscard
 function thread.work(thread_func, notify_entry) end
 
-<<<<<<< HEAD
----Queues a work request which will run `threadFunc` in a new Lua state in a
----thread from the threadpool with any additional arguments from `...`. Values
----returned from `threadFunc` are passed to `notifyEntry`, which is called in
-=======
 ---
----Queues a work request which will run `thread_func` in a new Lua state in a 
----thread from the threadpool with any additional arguments from `...`. Values 
----returned from `thread_func` are passed to `notify_entry`, which is called in 
->>>>>>> main
+---Queues a work request which will run `thread_func` in a new Lua state in a
+---thread from the threadpool with any additional arguments from `...`. Values
+---returned from `thread_func` are passed to `notify_entry`, which is called in
 ---the main loop thread.
 ---
 ---@param worker luvit.thread.Worker

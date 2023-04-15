@@ -92,8 +92,6 @@ local uv = {}
 
 ---@alias uv.aliases.threadargs userdata|string|number|boolean|nil
 
-
-
 ---
 ---@section Contents
 ---
@@ -132,8 +130,6 @@ local uv = {}
 
 -- TODO: above section should probably not be hardcoded
 
-
-
 ---
 ---In libuv, errors are negative numbered constants; however, while those errors are exposed through `uv.errno`,
 ---the functions used to handle them are not exposed to luv users. Instead, if an
@@ -165,8 +161,6 @@ local uv = {}
 ---
 ---@type uv.errno
 uv.errno = {}
-
-
 
 ---
 ---@section Version Checking
@@ -619,8 +613,6 @@ uv_handle_t.fileno = uv.fileno
 function uv.handle_get_type(handle) end
 uv_handle_t.get_type = uv.handle_get_type
 
-
-
 ---
 ---@section Reference counting
 ---
@@ -635,8 +627,6 @@ uv_handle_t.get_type = uv.handle_get_type
 ---All handles are referenced when active by default, see `uv.is_active()` for a
 ---more detailed explanation on what being active involves.
 ---
-
-
 
 ---
 ---Timer handles are used to schedule callbacks to be called in the future.
@@ -2020,8 +2010,6 @@ uv_pipe_t.chmod = uv.pipe_chmod
 ---@nodiscard
 function uv.pipe(read_flags, write_flags) end
 
-
-
 ---
 ---TTY handles represent a stream for the console.
 ---
@@ -2470,8 +2458,6 @@ uv_fs_poll_t.stop = uv.fs_poll_stop
 ---@nodiscard
 function uv.fs_poll_getpath() end
 uv_fs_poll_t.getpath = uv.fs_poll_getpath
-
-
 
 ---
 ---@section File system operations
@@ -3423,8 +3409,6 @@ function uv.new_work(work_callback, after_work_callback) end
 function uv.queue_work(work_ctx, ...) end
 luv_work_ctx_t.queue = uv.queue_work
 
-
-
 ---
 ---@section DNS utility functions
 ---
@@ -3529,7 +3513,6 @@ function uv.sleep(msec) end
 ---@section Miscellaneous utilities
 ---@source misc.c
 ---
-
 
 ---
 ---@section Miscellaneous utilities
@@ -3917,7 +3900,6 @@ function uv.translate_sys_error(errcode) end
 ---@section Metrics operations
 ---@source metrics.c
 ---
-
 
 ---
 ---@section Metrics operations

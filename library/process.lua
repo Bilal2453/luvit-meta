@@ -104,21 +104,21 @@ function UvStreamReadable:new(handle) end
 ---
 ---@class luvit.GlobalProcess: luvit.core.Emitter
 local global_proccess_rtn = {
-  argv = args,
-  ---@type integer
-  exitCode = 0,
-  nextTick = timer.setImmediate,
-  env = lenv,
-  cwd = uv.cwd,
-  kill = kill,
-  pid = uv.os_getpid(),
-  exit = exit,
-  memoryUsage = memoryUsage,
-  cpuUsage = cpuUsage,
-  ---@type luvit.process.UvStreamReadable | luvit.fs.ReadStream
-  stdin = UvStreamReadable,
-  stdout = UvStreamWritable,
-  stderr = UvStreamWritable,
+	argv = args,
+	---@type integer
+	exitCode = 0,
+	nextTick = timer.setImmediate,
+	env = lenv,
+	cwd = uv.cwd,
+	kill = kill,
+	pid = uv.os_getpid(),
+	exit = exit,
+	memoryUsage = memoryUsage,
+	cpuUsage = cpuUsage,
+	---@type luvit.process.UvStreamReadable | luvit.fs.ReadStream
+	stdin = UvStreamReadable,
+	stdout = UvStreamWritable,
+	stderr = UvStreamWritable,
 }
 
 ---
