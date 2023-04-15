@@ -7,9 +7,9 @@
 ---
 ---@class luvit.prettyPrint
 ---@field theme table<colors_names, string> # The currently loaded theme.
----@field stdin  uv_stream_t|uv_pipe_t # stdin stream
----@field stdout uv_stream_t|uv_pipe_t # stdout stream
----@field stderr uv_stream_t|uv_pipe_t # stderr stream
+---@field stdin  uv_tty_t|uv_pipe_t # stdin stream
+---@field stdout uv_tty_t|uv_pipe_t # stdout stream
+---@field stderr uv_tty_t|uv_pipe_t # stderr stream
 local prettyPrint = {}
 
 ---
@@ -45,11 +45,11 @@ function prettyPrint.stringEscape(c) end
 
 ---
 ---@param value any
----@param recuse? boolean  # default true
+---@param recurse? boolean  # default true
 ---@param nocolor? boolean # default false
 ---@return string
 ---@nodiscard
-function prettyPrint.dump(value, recuse, nocolor) end
+function prettyPrint.dump(value, recurse, nocolor) end
 
 ---
 ---@param fs userdata

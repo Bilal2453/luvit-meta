@@ -59,7 +59,7 @@ local IncomingMessage = {}
 function IncomingMessage:new(head, socket) end
 
 ---
----
+---@protected
 function IncomingMessage:_read() end
 
 ---@class luvit.http.ServerResponse: luvit.stream.Writable
@@ -118,13 +118,14 @@ function ServerResponse:removeHeader(name) end
 function ServerResponse:flushHeaders() end
 
 ---@param chunk string
----@param callback fun(err?: luvit.core.Error)
+---@param callback? fun(err?: luvit.core.Error)
 ---@return boolean
 function ServerResponse:write(chunk, callback) end
 
 ---
 ---Same as `ServerResponse:finish()`.
 ---
+---@protected
 function ServerResponse:_end() end
 
 ---
@@ -160,7 +161,7 @@ function http.createServer(onRequest) end
 ---@field connected? boolean
 ---@field ended boolean
 ---@field headers_sent boolean
----@field _defaultUserAgent? 'luvit/http luvi/?'
+---@field _defaultUserAgent? string|'luvit/http luvi/?'
 ---Emitted on error, as well as on `Emitter:wrap()`.
 ---@field on fun(self: luvit.http.ClientRequest, name: 'error', callback: fun(err: string|luvit.core.Error))
 ---Emitted on error, as well as on `Emitter:wrap()`.
@@ -189,7 +190,7 @@ local ClientRequest = {
 }
 
 ---
----@return 'luvit/http luvi/?'
+---@return string
 ---@nodiscard
 function ClientRequest.getDefaultUserAgent() end
 
@@ -212,17 +213,19 @@ function ClientRequest:flushHeaders() end
 function ClientRequest:write(data, cb) end
 
 ---
+---@protected
 ---@param data string
 ---@param cb fun(err?: luvit.core.Error)
 function ClientRequest:_write(data, cb) end
 
 ---
+---@protected
 ---@param data string
 ---@param cb? fun()
 function ClientRequest:_done(data, cb) end
 
 ---
----
+---@protected
 function ClientRequest:_setConnection() end
 
 ---
