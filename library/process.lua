@@ -76,13 +76,13 @@ local function cpuUsage(self, prevValue) end
 
 ---
 ---@class luvit.process.UvStreamWritable: luvit.stream.Writable
----@field handle uv_pipe_t|uv_stream_t
+---@field handle uv_pipe_t|uv_tty_t
 local UvStreamWritable = {}
 
 ---
 ---Creates a new instance and initializes it.
 ---
----@param handle uv_pipe_t|uv_stream_t
+---@param handle uv_pipe_t|uv_tty_t
 ---@return luvit.process.UvStreamWritable
 ---@nodiscard
 function UvStreamWritable:new(handle) end
@@ -90,13 +90,13 @@ function UvStreamWritable:new(handle) end
 ---
 ---@class luvit.process.UvStreamReadable: luvit.stream.Readable
 ---@field reading boolean
----@field handle uv_pipe_t|uv_stream_t
+---@field handle uv_pipe_t|uv_tty_t
 local UvStreamReadable = {}
 
 ---
 ---Creates a new instance and initializes it.
 ---
----@param handle uv_pipe_t|uv_stream_t
+---@param handle uv_pipe_t|uv_tty_t
 ---@return luvit.process.UvStreamReadable
 ---@nodiscard
 function UvStreamReadable:new(handle) end
