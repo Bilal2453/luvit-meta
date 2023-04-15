@@ -121,6 +121,10 @@ end
 ---@field on fun(self: luvit.core.Emitter, name: 'error', callback: fun(err: string|luvit.core.Error))
 ---Emitted on error, as well as on `Emitter:wrap()`.
 ---@field once fun(self: luvit.core.Emitter, name: 'error', callback: fun(err: string|luvit.core.Error))
+---
+---@field on fun(self: luvit.core.Emitter, name: string, callback: fun(...: any): any)
+---
+---@field once fun(self: luvit.core.Emitter, name: string, callback: fun(...: any): any)
 local Emitter = Object:extend()
 core.Emitter = Emitter
 
