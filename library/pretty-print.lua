@@ -7,9 +7,9 @@
 ---
 ---@class luvit.prettyPrint
 ---@field theme table<colors_names, string> # The currently loaded theme.
----@field stdin  uv_stream_t|uv_pipe_t # stdin stream
----@field stdout uv_stream_t|uv_pipe_t # stdout stream
----@field stderr uv_stream_t|uv_pipe_t # stderr stream
+---@field stdin  uv_tty_t|uv_pipe_t # stdin stream
+---@field stdout uv_tty_t|uv_pipe_t # stdout stream
+---@field stderr uv_tty_t|uv_pipe_t # stderr stream
 local prettyPrint = {}
 
 ---
