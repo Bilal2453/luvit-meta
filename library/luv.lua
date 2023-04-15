@@ -1,3 +1,3 @@
 ---@meta
 
-return require 'uv'
+return require("uv")
