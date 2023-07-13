@@ -81,10 +81,10 @@ function coro_http.request(method, url, headers, body, options) end
 ---
 ---*This method does not require running in a coroutine*
 ---
----@param host string       # The host which the server corresponds to.
----@param port integer      # The port to which the created server should listen on.
+---@param host string                         # The host which the server corresponds to.
+---@param port integer                        # The port to which the created server should listen on.
 ---@param onConnect coro-http.alias.onConnect # See [onConnect](https://bilal2453.github.io/coro-docs/docs/coro-http.html#createServer-onConnect) for details.
----@return uv_tcp_t server  # The TCP socket of the created server. Server connection can be stopped and manipulated using this.
+---@return uv_tcp_t server                    # The TCP socket of the created server. Server connection can be stopped and manipulated using this.
 function coro_http.createServer(host, port, onConnect) end
 
 ---
@@ -92,7 +92,7 @@ function coro_http.createServer(host, port, onConnect) end
 ---
 ---*This method does not require running in a coroutine*
 ---
----@param url string # The HTTP URL to be parsed. An error will be raised up if it is not a valid HTTP URL.
+---@param url string                  # The HTTP URL to be parsed. An error will be raised up if it is not a valid HTTP URL.
 ---@return coro-http.class.URL result # A [Parsed URL](https://bilal2453.github.io/coro-docs/docs/coro-http.html#parsed-url) structure representing the URL as a Lua table.
 ---@nodiscard
 function coro_http.parseUrl(url) end
@@ -108,10 +108,10 @@ function coro_http.parseUrl(url) end
 ---
 ---***This method MUST be run in a coroutine***
 ---
----@param host string                      # The host which the established connection refers to.
----@param port integer                     # The port that this connection should refer to when connecting to the host.
+---@param host string                             # The host which the established connection refers to.
+---@param port integer                            # The port that this connection should refer to when connecting to the host.
 ---@param tls? boolean|coro-http.alias.tlsOptions # The use of SSL/TLS cryptographic protocol. <br> - Boolean value whether to use SSL/TLS cert or not.<br>- Table value to use SSL/TLS, with optional configurations. See [TLS Options](https://bilal2453.github.io/coro-docs/docs/coro-http.html#tls-options) for acceptable fields.
----@param timeout? number                  # How much time to wait for the response before canceling the request out in millisecond.
+---@param timeout? number                         # How much time to wait for the response before canceling the request out in millisecond.
 ---@return coro-http.class.Connection
 ---@nodiscard
 function coro_http.getConnection(host, port, tls, timeout) end
