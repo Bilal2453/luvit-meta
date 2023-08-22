@@ -1,0 +1,33 @@
+name: Merge main into release
+on: [workflow_dispatch]
+
+jobs:
+  merge-n-style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+        with:
+          fetch-depth: 0
+
+      - name: Checkout release
+        run: |
+          /usr/bin/git checkout release
+      - name: Merge main/library into release/library
+        run: |
+          /usr/bin/git checkout main -- library/ config.json
+
+      - uses: JohnnyMorganz/stylua-action@v3
+        name: Apply Stylua
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: library/
+
+      - name: Push changes into release branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add library/*
+          git commit -m 'Merge changes from main'
+          git push
