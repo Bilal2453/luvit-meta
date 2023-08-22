@@ -890,7 +890,7 @@ function WriteStream:open(callback) end
 
 ---
 ---@param data string|string[]
----@param callback? fun(err?: string, bytes?: integer)
+---@param callback fun(err?: string)
 function WriteStream:_write(data, callback) end
 
 ---

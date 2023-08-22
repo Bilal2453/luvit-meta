@@ -1,10 +1,17 @@
 ---@meta
 
+---
+---A value used to represent a JSON NULL.
+---
+---This is a normal table with the `__tojson` metamethod
+---set to return a `"null"` string when called.
+---
 ---@class luvit.json.null
----@field __tojson fun(): string|'null'
 
 ---@class luvit.json
----Set to `true` in the copy of the module table that uses LPeg support.
+---Whether the module is currently using LPeg for parsing or not.
+---By default this is `true` on Luvit.
+---See `json.use_lpeg`.
 ---@field using_lpeg boolean
 ---The module version in the format `dkjson X.Y`.
 ---@field original_version string
@@ -38,9 +45,8 @@ local json = {}
 ---
 ---When `state.buffer` was set, the return value will be `true` on success. Without `state.buffer` the return value will be a string.
 ---
----@overload fun(object: table|string|number|nil|luvit.json.null): string
----@param object table|string|number|nil|luvit.json.null
----@param state json_encode_state
+---@param object table|string|number|nil
+---@param state? json_encode_state
 ---@return string|boolean result
 ---@nodiscard
 function json.encode(object, state) end
@@ -99,7 +105,7 @@ function json.addnewline(state) end
 function json.encodeexception(reason, value, state, defaultmessage) end
 
 ---
----*Note*: By default, Luvit has its configuration to always use LPeg.
+---*Note*: By default, Luvit is configured to use LPeg.
 ---
 ---Require the LPeg module and return a copy of the module table where the decode function was replaced by a version that uses LPeg:
 ---

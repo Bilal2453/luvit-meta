@@ -42,7 +42,7 @@ lenv.__pairs = lenv.iterate
 ---Check the documentation on `uv_signal_t` for signal support, specially on Windows.
 ---
 ---@param pid integer
----@param signal uv.aliases.signals|integer
+---@param signal? uv.aliases.signals|integer # (default: `"sigterm"`)
 local function kill(pid, signal) end
 
 ---

@@ -667,11 +667,9 @@ local uv_timer_t = {}
 ---end
 ---```
 ---
----@return uv_timer_t|nil, string? err_name, string? err_msg
+---@return uv_timer_t
 ---@nodiscard
 function uv.new_timer() end
-
--- TODO: make sure that the above method can indeed return nil + error.
 
 ---
 ---Start the timer. `timeout` and `repeat_n` are in milliseconds.
@@ -1278,7 +1276,7 @@ function uv.spawn(path, options, on_exit) end
 ---Sends the specified signal to the given process handle.
 ---
 ---@param process uv_process_t
----@param signum integer|uv.aliases.signals
+---@param signum? integer|uv.aliases.signals # (default: `"sigterm"`)
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.process_kill(process, signum) end
 uv_process_t.kill = uv.process_kill
@@ -1287,7 +1285,7 @@ uv_process_t.kill = uv.process_kill
 ---Sends the specified signal to the given PID.
 ---
 ---@param pid integer
----@param signum integer|uv.aliases.signals
+---@param signum? integer|uv.aliases.signals # (default: `"sigterm"`)
 ---@return 0|nil success, string? err_name, string? err_msg
 function uv.kill(pid, signum) end
 
@@ -3016,14 +3014,14 @@ function uv.fs_fstat(fd) end
 ---
 ---Equivalent to `lstat(2)`.
 ---
----@param fd integer
+---@param path string
 ---@param callback fun(err: nil|string, stat: uv.aliases.fs_stat_table|nil)
 ---@return uv_fs_t
-function uv.fs_lstat(fd, callback) end
----@param fd integer
+function uv.fs_lstat(path, callback) end
+---@param path string
 ---@return uv.aliases.fs_stat_table|nil stat, string? err_name, string? err_msg
 ---@nodiscard
-function uv.fs_lstat(fd) end
+function uv.fs_lstat(path) end
 
 ---
 ---Equivalent to `rename(2)`.
@@ -3514,11 +3512,6 @@ function uv.sleep(msec) end
 ---@source misc.c
 ---
 
----
----@section Miscellaneous utilities
----@source misc.c
----
-
 ---@alias uv.aliases.os_passwd {username: string, uid: integer, gid: integer, shell: string, homedir: string}
 
 ---@alias uv.aliases.os_uname {sysname: string, release: string, version: string, machine: string}
@@ -3797,10 +3790,13 @@ function uv.os_getenv(name, size) end
 function uv.os_setenv(name, value) end
 
 ---
+---Unsets the environmental variable specified by `name`.
+---
 ---**Warning:** This function is not thread safe.
 ---
+---@param name string
 ---@return boolean|nil success, string? err_name, string? err_msg
-function uv.os_unsetenv() end
+function uv.os_unsetenv(name) end
 
 ---
 ---Returns all environmental variables as a dynamic table of names associated with
@@ -3895,11 +3891,6 @@ function uv.random(len, flags) end
 ---@source util.c
 ---@nodiscard
 function uv.translate_sys_error(errcode) end
-
----
----@section Metrics operations
----@source metrics.c
----
 
 ---
 ---@section Metrics operations

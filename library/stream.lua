@@ -229,7 +229,7 @@ function Readable:push(chunk) end
 function Readable:unshift(chunk) end
 
 ---
----@param n integer
+---@param n? integer
 ---@return nil|string
 function Readable:read(n) end
 
