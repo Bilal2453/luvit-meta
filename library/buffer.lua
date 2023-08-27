@@ -27,9 +27,12 @@ local buffer = {}
 ---```
 ---
 ---@class luvit.buffer.Buffer: luvit.core.Object
----@field initialize fun(length: string|integer)|nil
+---@field protected initialize fun(length: string|integer)|nil
 ---A pointer to the memory allocated for the buffer as returned by `calloc`.
 ---@field ctype ffi.cdata*
+---The buffer total length/size.
+---@field length integer
+---@operator concat(any): string
 local Buffer = {}
 buffer.Buffer = Buffer
 
