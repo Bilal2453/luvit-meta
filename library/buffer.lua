@@ -33,6 +33,7 @@ local buffer = {}
 ---The buffer total length/size.
 ---@field length integer
 ---@operator concat(any): string
+---@operator len:integer
 local Buffer = {}
 buffer.Buffer = Buffer
 
