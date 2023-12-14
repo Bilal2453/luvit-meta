@@ -169,9 +169,9 @@ net.Server = Server
 
 ---
 ---@param options {handle?: luvit.net.Socket}
----@param connectionListener fun(client: uv_tcp_t)
+---@param connectionListener fun(client: luvit.net.Socket)
 function Server:init(options, connectionListener) end
----@param connectionListener fun(client: uv_tcp_t)
+---@param connectionListener fun(client: luvit.net.Socket)
 function Server:init(connectionListener) end
 
 ---
@@ -224,11 +224,11 @@ net.connect = net.createConnection
 
 ---
 ---@param options {handle?: luvit.net.Socket}
----@param connectionListener fun(client: uv_tcp_t)
+---@param connectionListener fun(client: luvit.net.Socket)
 ---@return luvit.net.Server
 ---@nodiscard
 function net.createServer(options, connectionListener) end
----@param connectionListener fun(client: uv_tcp_t)
+---@param connectionListener fun(client: luvit.net.Socket)
 ---@return luvit.net.Server
 ---@nodiscard
 function net.createServer(connectionListener) end
