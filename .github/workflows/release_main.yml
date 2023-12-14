@@ -1,24 +1,24 @@
-name: Merge main into release
+name: Release the main branch
 on: [workflow_dispatch]
 
 jobs:
   merge-n-style:
+    name: Merge changes into release branch and apply StyLua
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        name: Checkout
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Checkout release
+      - name: Bring library/ & config.json changes into release branch
         run: |
-          /usr/bin/git checkout release
-      - name: Merge main/library into release/library
-        run: |
-          /usr/bin/git checkout main -- library/ config.json
+          git checkout release
+          git checkout main -- library/ config.json
 
-      - uses: JohnnyMorganz/stylua-action@v3
-        name: Apply Stylua
+      - name: Apply Stylua
+        uses: JohnnyMorganz/stylua-action@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: latest
@@ -28,6 +28,19 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add library/*
+          git add --all
           git commit -m 'Merge changes from main'
           git push
+
+  open_pr:
+    name: Open LLS-Addons fork that updates the submodule
+    runs-on: ubuntu-latest
+    needs: [merge-n-style]
+    steps:
+
+      - name: Trigger a repository_dispatch in the LLS-Addons fork
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT }}
+          repository: Bilal2453/LLS-Addons
+          event-type: open
