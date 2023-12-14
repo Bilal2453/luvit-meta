@@ -25,6 +25,7 @@ jobs:
           args: library/
 
       - name: Push changes into release branch
+        continue-on-error: true
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
