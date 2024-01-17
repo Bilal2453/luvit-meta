@@ -1906,6 +1906,10 @@ local uv_pipe_t = {}
 
 ---@alias uv.aliases.pipe_rtn {read: integer, write: integer}
 
+-- TODO: seems like a typo in the field name upstream
+
+---@alias uv.aliases.pipe_2_flags {no_trunate: boolean}
+
 ---
 ---Creates and initializes a new `uv_pipe_t`. Returns the Lua userdata wrapping
 ---it. The `ipc` argument is a boolean to indicate if this pipe will be used for
@@ -2051,6 +2055,55 @@ uv_pipe_t.chmod = uv.pipe_chmod
 ---@return uv.aliases.pipe_rtn|nil, string? err_name, string? err_msg
 ---@nodiscard
 function uv.pipe(read_flags, write_flags) end
+
+---
+---Bind the pipe to a file path (Unix) or a name (Windows).
+---
+---`Flags`:
+---
+--- - If `type(flags)` is `number`, it must be `0` or `uv.constants.PIPE_NO_TRUNCATE`.
+--- - If `type(flags)` is `table`, it must be `{}` or `{ no_trunate = true|false }`.
+--- - If `type(flags)` is `nil`, it use default value `0`.
+--- - Returns `EINVAL` for unsupported flags without performing the bind operation.
+---
+---Supports Linux abstract namespace sockets. namelen must include the leading '\0' byte but not the trailing nul byte.
+---
+---**Note**:
+---1. Paths on Unix get truncated to sizeof(sockaddr_un.sun_path) bytes,
+---typically between 92 and 108 bytes.
+---2. New in version 1.46.0.
+---
+---@param pipe uv_pipe_t
+---@param name string
+---@param flags integer|uv.aliases.pipe_2_flags|nil # (default: 0)
+---@return 0|nil success, string? err_name, string? err_msg
+function uv.pipe_bind2(pipe, name, flags) end
+uv_pipe_t.bind2 = uv.pipe_bind2
+
+---
+---Connect to the Unix domain socket or the named pipe.
+---
+---`Flags`:
+---
+--- - If `type(flags)` is `number`, it must be `0` or `uv.constants.PIPE_NO_TRUNCATE`.
+--- - If `type(flags)` is `table`, it must be `{}` or `{ no_trunate = true|false }`.
+--- - If `type(flags)` is `nil`, it use default value `0`.
+--- - Returns `EINVAL` for unsupported flags without performing the bind operation.
+---
+---Supports Linux abstract namespace sockets. namelen must include the leading nul byte but not the trailing nul byte.
+---
+---**Note**:
+---1. Paths on Unix get truncated to sizeof(sockaddr_un.sun_path) bytes,
+---typically between 92 and 108 bytes.
+---2. New in version 1.46.0.
+---
+---@param pipe uv_pipe_t
+---@param name string
+---@param flags integer|uv.aliases.pipe_2_flags|nil # (default: 0)
+---@param callback fun(err?: string)|nil
+---@return uv_connect_t|nil stream, string? err_name, string? err_msg
+function uv.pipe_connect2(pipe, name, flags, callback) end
+uv_pipe_t.connect2 = uv.pipe_connect2
 
 
 
@@ -2479,7 +2532,7 @@ local uv_fs_poll_t = {}
 ---@nodiscard
 function uv.new_fs_poll() end
 
--- TODO: make sure that the above methof can indeed return nil + error.
+-- TODO: make sure that the above method can indeed return nil + error.
 -- confirmed to never return error see libuv/fs-poll#uv_fs_poll_init
 
 ---
