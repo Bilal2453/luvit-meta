@@ -47,22 +47,7 @@ SOFTWARE.
 @p propertyName type description+
 ]=]
 
-local fs = require('fs')
-local pathjoin = require('pathjoin')
-
 local insert, concat = table.insert, table.concat
-local pathJoin = pathjoin.pathJoin
-
-local function scan(dir)
-	for fileName, fileType in fs.scandirSync(dir) do
-		local path = pathJoin(dir, fileName)
-		if fileType == 'file' then
-			coroutine.yield(path)
-		else
-			scan(path)
-		end
-	end
-end
 
 local function match(s, pattern) -- only useful for one capture
 	return assert(s:match(pattern), s)
@@ -147,58 +132,6 @@ end
 
 ----
 
-local function newClass(docs, dir)
-
-	local class = {
-		methods = {},
-		statics = {},
-		properties = {},
-		file_dir = dir,
-	}
-
-	local function init(s)
-		class.name = matchClassName(s)
-		class.parents = matchParents(s)
-		class.desc = matchDescription(s)
-		class.parameters = matchParameters(s)
-		class.tags = matchTags(s)
-		class.methodTags = matchMethodTags(s)
-		assert(not docs[class.name], 'duplicate class: ' .. class.name)
-		docs[class.name] = class
-	end
-
-	return class, init
-
-end
-
----@param dir string
----@return Class[]
-local function scanDir(dir)
-	local docs = {}
-	for f in coroutine.wrap(scan), dir do
-		local d = assert(fs.readFileSync(f))
-		local class, initClass = newClass(docs, dir)
-		for s in matchComments(d) do
-			local t = matchType(s)
-			if t == 'c' then
-				initClass(s)
-			elseif t == 'm' then
-				local method = matchMethod(s)
-				for k, v in pairs(class.methodTags) do
-					method.tags[k] = v
-				end
-				method.class = class
-				insert(method.tags.static and class.statics or class.methods, method)
-			elseif t == 'p' then
-				insert(class.properties, matchProperty(s))
-			end
-		end
-	end
-	return docs
-end
-
-----
-
 local methodTags = {}
 
 methodTags['http'] = 'This method always makes an HTTP request.'
@@ -220,7 +153,61 @@ local function checkTags(tbl, check)
 	end
 end
 
--------------------
+----
+
+---@type {[string]: fun(docs: Class[], contents: string, ...: any): any}
+local scanners = {}
+
+---@return Class, function
+local function newClass(docs, dir)
+
+	local class = {
+		methods = {},
+		statics = {},
+		properties = {},
+		filePath = dir,
+	}
+
+	local function init(s)
+		class.name = matchClassName(s)
+		class.parents = matchParents(s)
+		class.desc = matchDescription(s)
+		class.parameters = matchParameters(s)
+		class.tags = matchTags(s)
+		class.methodTags = matchMethodTags(s)
+		assert(not docs[class.name], 'duplicate class: ' .. class.name)
+		docs[class.name] = class
+	end
+
+	return class, init
+
+end
+
+---@return Class
+function scanners.scanClass(docs, d, f)
+	local class, initClass = newClass(docs, f)
+	for s in matchComments(d) do
+		local t = matchType(s)
+		if t == 'c' then
+			initClass(s)
+		elseif t == 'm' then
+			local method = matchMethod(s)
+			for k, v in pairs(class.methodTags) do
+				method.tags[k] = v
+			end
+			method.class = class
+			insert(method.tags.static and class.statics or class.methods, method)
+		elseif t == 'p' then
+			insert(class.properties, matchProperty(s))
+		end
+	end
+	return class
+end
+
+----
+
+---@type {[string]: fun(w: fun(str: string, ...: any), class: Class), scanDir: fun(string): Class[]}
+local writers = {}
 
 local function prepareType(typ)
   return typ:gsub('/', '|')
@@ -233,9 +220,6 @@ local function prepareField(typ)
   return typ:gsub('^private$', 'public private')
 end
 string.prepareField = prepareField
-
----@type {[string]: fun(w: fun(str: string, ...: any), class: Class), scanDir: fun(string): Class[]}
-local writers = {}
 
 local function writeFunction(w, func, sep)
   -- write description and tags
@@ -339,5 +323,7 @@ function writers.writeMethods(w, class)
   end
 end
 
-writers.scanDir = scanDir
-return writers
+return {
+	writers = writers,
+	scanners = scanners,
+}
