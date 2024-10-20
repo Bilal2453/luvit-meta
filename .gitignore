@@ -3,5 +3,4 @@ scrapers/*-output*
 scrapers/*.markdown
 LLS-Addons
 .vscode
-scrapers/discordia/docs
-scrapers/discordia/libs
+resources

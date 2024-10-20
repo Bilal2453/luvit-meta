@@ -1,89 +1,82 @@
----@alias MethodTags {mem: boolean, ws?: boolean, ["http?"]?: boolean, http?: boolean}
----@alias ClassTags {ui?: boolean, abc?: boolean}
----@alias Parameter {[1]: string, [2]: string, [3]: boolean}
+---@alias alias.MethodTags {mem: boolean, ws?: boolean, ["http?"]?: boolean, http?: boolean}
+---@alias alias.ClassTags {ui?: boolean, abc?: boolean}
+---@alias alias.Parameter {[1]: string, [2]: string, [3]: boolean}
 
----@class Property
+---@class alias.Property
 ---@field name string
 ---@field desc string
 ---@field type string
 
----@class Method
+---@class alias.Method
 ---@field desc string
----@field parameters Parameter[]
+---@field parameters alias.Parameter[]
 ---@field returns string[]
 ---@field class table
 ---@field name string
----@field tags MethodTags
+---@field tags alias.MethodTags
 
----@class Static
+---@class alias.Static
 ---@field name string
 ---@field desc string
----@field parameters Parameter[]
+---@field parameters alias.Parameter[]
 ---@field returns string[]
----@field tags MethodTags
----@field class Class
+---@field tags alias.MethodTags
+---@field class alias.Class
 
----@class Class
+---@class alias.Class
 ---@field name string
----@field tags ClassTags
----@field parameters Parameter[]
----@field methods Method[]
----@field statics Static[]
----@field properties Property[]
+---@field tags alias.ClassTags
+---@field parameters alias.Parameter[]
+---@field methods alias.Method[]
+---@field statics alias.Static[]
+---@field properties alias.Property[]
 ---@field parents string[]
----@field methodTags MethodTags
+---@field methodTags alias.MethodTags
 ---@field desc string
+---@field filePath string
+
+-- TODO: enums.lua
+-- TODO: extensions.lua
 
 local fs = require('fs')
-local pathjoin = require('pathjoin')
+local utils = require('useful') -- defines string methods
+local pathJoin = require('pathjoin').pathJoin
 
 local insert, concat = table.insert, table.concat
-local pathJoin = pathjoin.pathJoin
 
-local classes = require('./discordia-classes')
+_G.INC_DIR = './resources/libs'
+_G.OUT_DIR = './resources/docs'
 
-local output = 'docs'
-if not fs.existsSync(output) then
-	fs.mkdirSync(output)
+assert(fs.existsSync(INC_DIR), INC_DIR .. " directory must contain Discordia's libs folder")
+if not fs.existsSync(OUT_DIR) then
+	fs.mkdirSync(OUT_DIR)
 end
 
-local docs = classes.scanDir('./libs')
-
-for _, class in pairs(docs) do
+---@return Writer
+---@return fun(path: string): boolean, string?
+local function openBuf()
   local buf = setmetatable({}, {
     __call = function(self, str, ...)
-      if ... then
+      if select('#', {...}) > 0 then
         str = str:format(...)
       end
       insert(self, str)
     end,
   })
-  ---@diagnostic disable-next-line: assign-type-mismatch
-  local w = buf --[[@type fun(str, ...)]]
 
-  w('---@meta\n\n')
+  local function close(path)
+    return fs.writeFileSync(pathJoin(OUT_DIR, path), concat(buf))
+  end
 
-  -- write description
-  classes.writeDesc(w, class)
-  -- write tags
-  classes.writeTags(w, class)
-  -- write class and inheritance
-	classes.writeInherits(w, class)
+  return buf, close
+end
 
-  -- write fields (properties)
-  classes.writeProperties(w, class)
-
-  -- write init call overload
-  classes.writeOverload(w, class)
-
-	-- write the class table container signature
-	classes.writeSignature(w, class)
-
-  -- write static functions
-  classes.writeStatics(w, class)
-	-- write methods
-  classes.writeMethods(w, class)
-
-  -- write results to the file
-  fs.writeFileSync(pathJoin(output, class.name .. '.lua'), concat(buf))
+local writers = utils.initDir('./writers', 'writer')
+local names = {}
+for name in pairs(writers) do
+  insert(names, name)
+end
+table.sort(names)
+for _, name in ipairs(names) do
+  writers[name](openBuf)
 end

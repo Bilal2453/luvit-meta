@@ -47,22 +47,10 @@ SOFTWARE.
 @p propertyName type description+
 ]=]
 
-local fs = require('fs')
-local pathjoin = require('pathjoin')
+local utils = require('useful')
 
 local insert, concat = table.insert, table.concat
-local pathJoin = pathjoin.pathJoin
-
-local function scan(dir)
-	for fileName, fileType in fs.scandirSync(dir) do
-		local path = pathJoin(dir, fileName)
-		if fileType == 'file' then
-			coroutine.yield(path)
-		else
-			scan(path)
-		end
-	end
-end
+local writeFunction = utils.writeFunction
 
 local function match(s, pattern) -- only useful for one capture
 	return assert(s:match(pattern), s)
@@ -145,15 +133,31 @@ local function matchMethod(s)
 	}
 end
 
+local function checkTags(tbl, check)
+	for i, v in ipairs(check) do
+		if tbl[v] then
+			for j, w in ipairs(check) do
+				if i ~= j and tbl[w] then
+					return error(string.format('mutually exclusive tags encountered: %s and %s', v, w), 1)
+				end
+			end
+		end
+	end
+end
+
 ----
 
+---@type Scanners
+local scanners = {}
+
+---@return alias.Class, function
 local function newClass(docs, dir)
 
 	local class = {
 		methods = {},
 		statics = {},
 		properties = {},
-		file_dir = dir,
+		filePath = dir,
 	}
 
 	local function init(s)
@@ -171,100 +175,31 @@ local function newClass(docs, dir)
 
 end
 
----@param dir string
----@return Class[]
-local function scanDir(dir)
-	local docs = {}
-	for f in coroutine.wrap(scan), dir do
-		local d = assert(fs.readFileSync(f))
-		local class, initClass = newClass(docs, dir)
-		for s in matchComments(d) do
-			local t = matchType(s)
-			if t == 'c' then
-				initClass(s)
-			elseif t == 'm' then
-				local method = matchMethod(s)
-				for k, v in pairs(class.methodTags) do
-					method.tags[k] = v
-				end
-				method.class = class
-				insert(method.tags.static and class.statics or class.methods, method)
-			elseif t == 'p' then
-				insert(class.properties, matchProperty(s))
+---@return alias.Class
+function scanners.scanClass(docs, d, f)
+	local class, initClass = newClass(docs, f)
+	for s in matchComments(d) do
+		local t = matchType(s)
+		if t == 'c' then
+			initClass(s)
+		elseif t == 'm' then
+			local method = matchMethod(s)
+			for k, v in pairs(class.methodTags) do
+				method.tags[k] = v
 			end
+			method.class = class
+			insert(method.tags.static and class.statics or class.methods, method)
+		elseif t == 'p' then
+			insert(class.properties, matchProperty(s))
 		end
 	end
-	return docs
+	return class
 end
 
 ----
 
-local methodTags = {}
-
-methodTags['http'] = 'This method always makes an HTTP request.'
-methodTags['http?'] = 'This method may make an HTTP request.'
-methodTags['ws'] = 'This method always makes a WebSocket request.'
-methodTags['mem'] = 'This method only operates on data in memory.'
-
-local function checkTags(tbl, check)
-	for i, v in ipairs(check) do
-		if tbl[v] then
-			for j, w in ipairs(check) do
-				if i ~= j then
-					if tbl[w] then
-						return error(string.format('mutually exclusive tags encountered: %s and %s', v, w), 1)
-					end
-				end
-			end
-		end
-	end
-end
-
--------------------
-
-local function prepareType(typ)
-  return typ:gsub('/', '|')
-            :gsub('*', 'any')
-						:gsub('nothing', '')
-end
-string.prepareType = prepareType
-
-local function prepareField(typ)
-  return typ:gsub('^private$', 'public private')
-end
-string.prepareField = prepareField
-
----@type {[string]: fun(w: fun(str: string, ...: any), class: Class), scanDir: fun(string): Class[]}
+---@type Writers
 local writers = {}
-
-local function writeFunction(w, func, sep)
-  -- write description and tags
-  w('---\n---%s\n', func.desc)
-  local tag = next(func.tags) -- technically only one tag is used mutually ever
-  if methodTags[tag] then
-    w('---\n---*%s*\n', methodTags[tag])
-  end
-  w('---\n')
-
-  -- write params
-  for _, param in ipairs(func.parameters) do
-    w('---@param %s%s %s\n', param[1], param[3] and '?' or '', param[2]:prepareType())
-  end
-  -- write returns
-  for _, rtn in ipairs(func.returns) do
-		local t = rtn:prepareType()
-		if t and t ~= '' then
-			w('---@return %s\n', t)
-		end
-  end
-
-  -- write signature
-  local param_names = {}
-  for _, param in ipairs(func.parameters) do
-    insert(param_names, param[1])
-  end
-  w('function %s%s%s(%s) end\n\n', func.class.name, sep, func.name, concat(param_names, ', '))
-end
 
 -- write description
 function writers.writeDesc(w, class)
@@ -303,7 +238,7 @@ function writers.writeProperties(w, class)
   w('\n')
 end
 
-  -- write init call overload
+-- write init call overload
 function writers.writeOverload(w, class)
   local overload = 'fun(%s): %s'
   local params = class.parameters
@@ -339,5 +274,7 @@ function writers.writeMethods(w, class)
   end
 end
 
-writers.scanDir = scanDir
-return writers
+return {
+	writers = writers,
+	scanners = scanners,
+}
