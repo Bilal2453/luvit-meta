@@ -33,6 +33,7 @@
 ---@field parents string[]
 ---@field methodTags MethodTags
 ---@field desc string
+---@field filePath string
 
 local fs = require('fs')
 local pathjoin = require('pathjoin')
@@ -41,15 +42,34 @@ local insert, concat = table.insert, table.concat
 local pathJoin = pathjoin.pathJoin
 
 local classes = require('./discordia-classes')
+local events = require('./discordia-events')
 
-local output = 'docs'
-if not fs.existsSync(output) then
-	fs.mkdirSync(output)
+local DOCS = {}
+local INC_DIR = './libs'
+local OUT_DIR = 'docs'
+
+local function scan(dir)
+	for fileName, fileType in fs.scandirSync(dir) do
+		local path = pathJoin(dir, fileName)
+		if fileType == 'file' then
+			coroutine.yield(path)
+		else
+			scan(path)
+		end
+	end
 end
 
-local docs = classes.scanDir('./libs')
+for f in coroutine.wrap(scan), INC_DIR do
+  local d = assert(fs.readFileSync(f))
+  local c = classes.scanners.scanClass(DOCS, d, f)
+  events.scanners.scanEmitter(DOCS, d, c)
+end
 
-for _, class in pairs(docs) do
+if not fs.existsSync(OUT_DIR) then
+	fs.mkdirSync(OUT_DIR)
+end
+
+for _, class in pairs(DOCS) do
   local buf = setmetatable({}, {
     __call = function(self, str, ...)
       if ... then
@@ -61,29 +81,34 @@ for _, class in pairs(docs) do
   ---@diagnostic disable-next-line: assign-type-mismatch
   local w = buf --[[@type fun(str, ...)]]
 
-  w('---@meta\n\n')
+  w('---@meta _\n\n')
 
   -- write description
-  classes.writeDesc(w, class)
+  classes.writers.writeDesc(w, class)
   -- write tags
-  classes.writeTags(w, class)
+  classes.writers.writeTags(w, class)
   -- write class and inheritance
-	classes.writeInherits(w, class)
+	classes.writers.writeInherits(w, class)
 
   -- write fields (properties)
-  classes.writeProperties(w, class)
+  classes.writers.writeProperties(w, class)
+  -- write class events, if any
+  events.writers.writeEventFields(w, class)
 
   -- write init call overload
-  classes.writeOverload(w, class)
+  classes.writers.writeOverload(w, class)
 
 	-- write the class table container signature
-	classes.writeSignature(w, class)
+	classes.writers.writeSignature(w, class)
 
   -- write static functions
-  classes.writeStatics(w, class)
+  classes.writers.writeStatics(w, class)
 	-- write methods
-  classes.writeMethods(w, class)
+  classes.writers.writeMethods(w, class)
+
+  -- write aliases
+  events.writers.writeEventAlias(w, class)
 
   -- write results to the file
-  fs.writeFileSync(pathJoin(output, class.name .. '.lua'), concat(buf))
+  fs.writeFileSync(pathJoin(OUT_DIR, class.name .. '.lua'), concat(buf))
 end
