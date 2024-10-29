@@ -3,7 +3,7 @@ local utils = require('useful') -- defines string methods
 local insert, concat = table.insert, table.concat
 local events = utils.initDir('./writers/class/events', 'events')
 
----@param class alias.Class
+---@param class Class
 ---@return boolean
 local function checkParent(class, parent)
   for _, pa in ipairs(class.parents) do

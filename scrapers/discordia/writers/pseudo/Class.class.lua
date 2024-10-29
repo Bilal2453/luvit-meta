@@ -4,7 +4,7 @@ local template = [[
 ---
 ---The class module used by Discordia is available to users in the main Discordia module. The class module is both the module table and a callable class constructor.
 ---
----@class class: table
+---@class discordia.class: table
 ---@field classes discordia.class.classes # Table of all defined classes, indexed by name.
 local class = {}
 

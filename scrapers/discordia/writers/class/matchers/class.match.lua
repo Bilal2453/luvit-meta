@@ -150,7 +150,7 @@ end
 ---@type Scanners
 local scanners = {}
 
----@return alias.Class, function
+---@return Class, function
 local function newClass(docs, dir)
 
 	local class = {
@@ -175,7 +175,7 @@ local function newClass(docs, dir)
 
 end
 
----@return alias.Class
+---@return Class
 function scanners.scanClass(docs, d, f)
 	local class, initClass = newClass(docs, f)
 	for s in matchComments(d) do

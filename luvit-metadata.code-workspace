@@ -7,8 +7,10 @@
   "settings": {
     "cSpell.words": [
       "dgram",
+      "discordia",
       "reuseaddr",
-      "rinfo"
+      "rinfo",
+      "infmt"
     ]
   }
 }

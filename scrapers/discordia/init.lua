@@ -1,41 +1,40 @@
----@alias alias.MethodTags {mem: boolean, ws?: boolean, ["http?"]?: boolean, http?: boolean}
----@alias alias.ClassTags {ui?: boolean, abc?: boolean}
----@alias alias.Parameter {[1]: string, [2]: string, [3]: boolean}
+---@alias MethodTags {mem: boolean, ws?: boolean, ["http?"]?: boolean, http?: boolean}
+---@alias ClassTags {ui?: boolean, abc?: boolean}
+---@alias Parameter {[1]: string, [2]: string, [3]: boolean}
 
----@class alias.Property
+---@class Property
 ---@field name string
 ---@field desc string
 ---@field type string
 
----@class alias.Method
+---@class Method
 ---@field desc string
----@field parameters alias.Parameter[]
+---@field parameters Parameter[]
 ---@field returns string[]
 ---@field class table
 ---@field name string
----@field tags alias.MethodTags
+---@field tags MethodTags
 
----@class alias.Static
+---@class Static
 ---@field name string
 ---@field desc string
----@field parameters alias.Parameter[]
+---@field parameters Parameter[]
 ---@field returns string[]
----@field tags alias.MethodTags
----@field class alias.Class
+---@field tags MethodTags
+---@field class Class
 
----@class alias.Class
+---@class Class
 ---@field name string
----@field tags alias.ClassTags
----@field parameters alias.Parameter[]
----@field methods alias.Method[]
----@field statics alias.Static[]
----@field properties alias.Property[]
+---@field tags ClassTags
+---@field parameters Parameter[]
+---@field methods Method[]
+---@field statics Static[]
+---@field properties Property[]
 ---@field parents string[]
----@field methodTags alias.MethodTags
+---@field methodTags MethodTags
 ---@field desc string
 ---@field filePath string
 
--- TODO: enums.lua
 -- TODO: extensions.lua
 
 local fs = require('fs')

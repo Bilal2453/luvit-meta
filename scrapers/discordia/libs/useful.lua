@@ -58,7 +58,16 @@ local function insertfmt(str, tbl, ...)
 end
 string.infmt = insertfmt
 
----@param func alias.Static|alias.Method
+local function encodeString(value)
+  local t = type(value)
+  if t == 'string' then
+    return '"' .. value .. '"'
+  end
+  return value
+end
+string.encodeString = encodeString
+
+---@param func Static|Method
 local function writeFunction(w, func, sep)
   -- write description and tags
   w('---\n---%s\n', func.desc)
@@ -105,5 +114,13 @@ end
 
 return {
   writeFunction = writeFunction,
+  encodeString = encodeString,
+  prepareField = prepareField,
+  prepareType = prepareType,
+  newlineToBr = newlineToBr,
+  singleline = singleline,
+  multiline = multiline,
+  insertfmt = insertfmt,
   initDir = initDir,
+  trim = trim,
 }
