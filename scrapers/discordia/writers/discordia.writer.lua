@@ -16,7 +16,7 @@ local template = [[
 ---See the [Classes](https://github.com/SinisterRectus/Discordia/wiki/Classes) page for more information.
 ---@field class discordia.class
 ---Extensions to the Lua standard library. Functions can be used directly or can be loaded into the Lua global tables. See [Extensions](https://github.com/SinisterRectus/Discordia/wiki/Extensions) for more information.
----@field extensions table
+---@field extensions discordia.extensions
 ---@field package discordia.package
 ---@field Client Client
 ---@field Clock Clock

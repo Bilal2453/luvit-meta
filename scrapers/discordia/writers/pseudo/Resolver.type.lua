@@ -2,7 +2,7 @@ require('useful') -- defines string methods
 
 local concat = table.concat
 
--- automatically generated - types are manually filled in
+-- semi-automatically generated - types are manually filled in
 local template = {
   {"Integer-Resolvable", "Due to Luvit/LuaJIT's lack of native 64-bit integers, integers are resolved as strings in Discordia. If you wish to input the purest type where ever an integer is accepted, usually a Discord Snowflake ID, use a Lua string.", {"string", "integer"}},
   {"User-ID-Resolvable", "- [[https://github.com/SinisterRectus/Discordia/wiki/User]] object via `User.id`<br>- [[https://github.com/SinisterRectus/Discordia/wiki/Member]] object via `Member.user.id`<br>- [[https://github.com/SinisterRectus/Discordia/wiki/Message]] object via `Message.author.id`<br>- [[https://github.com/SinisterRectus/Discordia/wiki/Guild]] object via `Guild.ownerId`<br>- Integer", {"User", "Member", "Message", "Guild", "discordia.aliases.Integer"}},
@@ -19,11 +19,10 @@ local template = {
   {"Emoji-Resolvable", "- [[https://github.com/SinisterRectus/Discordia/wiki/Emoji]] object via `Emoji.hash`<br>- [[https://github.com/SinisterRectus/Discordia/wiki/Reaction]] object via `Reaction.emojiHash`<br>- Lua string, where the string is a unicode emoji or of the form `\"{Emoji.name}:{Emoji.id}\"`", {"Emoji", "Reaction", "string"}},
   {"Sticker-Resolvable", "- [[https://github.com/SinisterRectus/Discordia/wiki/Sticker]] object via `Sticker.hash`<br>- Lua string, TODO: what string exactly?", {"Sticker", "string"}},
   {"Color-Resolvable", "- [[https://github.com/SinisterRectus/Discordia/wiki/Color]] object via `Color.value`<br>- Lua number via `tonumber(obj)`", {"Color", "number"}},
-  -- TODO: might want to add enum type for the below resolvable
   {"Permissions-Resolvable", "- [[https://github.com/SinisterRectus/Discordia/wiki/Permissions]] object via `Permissions.value`<br>- Lua number via `tonumber(obj)`", {"Permissions", "integer"}},
-  {"Permission-Resolvable", "- Lua string equivalent to the name of a Discordia permissions enumeration<br>- Lua number equivalent to the value of a Discordia permissions enumeration", {"string", "integer"}},
-  {"Gateway-Intent-Resolvable", "- Lua string equivalent to the name of a Discordia gateway intent enumeration<br>- Lua number equivalent to the value of a Discordia gateway intent enumeration", {"string", "integer"}},
-  {"Action-Type-Resolvable", "- Lua string equivalent to the name of a Discordia action type enumeration<br>- Lua number equivalent to the value of a Discordia action type enumeration", {"string", "integer"}},
+  {"Permission-Resolvable", "- Lua string equivalent to the name of a Discordia permissions enumeration<br>- Lua number equivalent to the value of a Discordia permissions enumeration", {"discordia.enums.permission_key", "discordia.enums.permission_value", "string", "integer"}},
+  {"Gateway-Intent-Resolvable", "- Lua string equivalent to the name of a Discordia gateway intent enumeration<br>- Lua number equivalent to the value of a Discordia gateway intent enumeration", {"discordia.enums.gatewayIntent_key", "discordia.enums.gatewayIntent_value","string", "integer"}},
+  {"Action-Type-Resolvable", "- Lua string equivalent to the name of a Discordia action type enumeration<br>- Lua number equivalent to the value of a Discordia action type enumeration", {"discordia.enums.actionType_key", "discordia.enums.actionType_value", "string", "integer"}},
   {"Base64-Resolvable", "- Lua string representing the base64 string, prefixed by an appropriate `\"data:.*;base64\"` URI scheme<br>- Lua string representing a relative or absolute path to a local file, read via `fs.readFileSync`", {"string"}}
 }
 

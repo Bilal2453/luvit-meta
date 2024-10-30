@@ -8,10 +8,12 @@ local pseudo_types = initDir('./writers/pseudo', 'type')
 
 local template = '--- %s\n---@alias %s %s\n\n'
 
+-- used to define types (classes and aliases) that are not directly defined by Discordia
+-- but we will need to define, such as extensions, client options, enums, etc.
 return function (open)
   for name, alias in pairs(pseudo_types) do
     local w, save = open()
-    w('---@meta _\n\n')
+    w('---@meta _\n\n') -- no pseudo types are allowed to be required directly
 
     for _, t in ipairs(alias) do
       w(template, t[2]:newlineToBr(), t[1], concat(t[3], '|'))

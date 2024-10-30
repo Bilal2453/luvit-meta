@@ -50,7 +50,7 @@ string.newlineToBr = newlineToBr
 ---@param tbl table
 ---@return string
 local function insertfmt(str, tbl, ...)
-  if select('#', {...}) > 0 then
+  if select('#', ...) > 0 then
     str = str:format(...)
   end
   insert(tbl, str)
@@ -98,7 +98,7 @@ local function writeFunction(w, func, sep)
 end
 
 local function initDir(dir_path, suffix)
-  local pattern = '^(%w+)%.' .. suffix .. '%.lua$'
+  local pattern = '^([^%.]+)%.' .. suffix .. '%.lua$'
   local rtn = {}
   for path, typ in scandir(dir_path) do
     if typ == 'file' then

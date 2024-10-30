@@ -48,12 +48,23 @@ local function writeEnums(enums)
   end
   table.sort(enums_names)
 
+  -- currently disabled due to a bug/missing feature in the language server
+  -- see: https://github.com/LuaLS/lua-language-server/issues/2929
+  local as_hex = {
+    permission = false,
+    messageFlag = false,
+    gatewayIntent = false,
+  }
+
   for _, k in ipairs(enums_names) do
     local v = enums[k]
 
     local buf = {}
     insertfmt('---@alias %s%s_key', buf, PREFIX, k)
     for name, value in iterateEnum(v) do
+      if as_hex[k] then
+        value = string.format('0x%x', value)
+      end
       insertfmt('---|%s # %s', buf, encodeString(name), value)
     end
     insert(buf_enums, concat(buf, '\n'))
@@ -61,7 +72,8 @@ local function writeEnums(enums)
     buf = {}
     insertfmt('---@alias %s%s_value', buf, PREFIX, k)
     for name, value in iterateEnum(v) do
-      insertfmt('---|%s # %s', buf, encodeString(value), name)
+      value = as_hex[k] and string.format('0x%x', value) or encodeString(value)
+      insertfmt('---|%s # %s', buf, value, name)
     end
     insert(buf_enums, concat(buf, '\n'))
 
@@ -70,7 +82,8 @@ local function writeEnums(enums)
     insertfmt('---@class %s: table\n---@overload fun(k: %s_value): %s_key', buf, prefix_k, prefix_k, prefix_k)
     local fields = {}
     for name, value in iterateEnum(v) do
-      insertfmt('\t%s = %s,', fields, name, encodeString(value))
+      value = as_hex[k] and string.format('0x%x', value) or encodeString(value)
+      insertfmt('\t%s = %s,', fields, name, value)
     end
     insertfmt('local %s = {\n%s\n}', buf, k, concat(fields, '\n'))
     insert(buf_enums, concat(buf, '\n'))

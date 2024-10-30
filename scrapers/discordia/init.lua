@@ -35,7 +35,9 @@
 ---@field desc string
 ---@field filePath string
 
--- TODO: extensions.lua
+---@alias Writer fun(str: string, ...: any)|table
+---@alias Writers {[string]: fun(w: Writer, class: Class, ...: any): (any), scanDir: fun(string): Class[]}
+---@alias Scanners {[string]: fun(docs: Class[], contents: string, class: Class): any}
 
 local fs = require('fs')
 local utils = require('useful') -- defines string methods
@@ -51,12 +53,15 @@ if not fs.existsSync(OUT_DIR) then
 	fs.mkdirSync(OUT_DIR)
 end
 
+---Create a new Writer buffer, a writer is a higher level interface for a file.
+---Returns a buffer object, which consists of an array of strings that are concatenated on save.
+---Calling the buffer object directly inserts a new entry into the array.
 ---@return Writer
----@return fun(path: string): boolean, string?
+---@return fun(path: string): boolean, string? # Writes the buffer into `OUT_DIR .. path`.
 local function openBuf()
   local buf = setmetatable({}, {
     __call = function(self, str, ...)
-      if select('#', {...}) > 0 then
+      if select('#', ...) > 0 then
         str = str:format(...)
       end
       insert(self, str)
@@ -70,6 +75,11 @@ local function openBuf()
   return buf, close
 end
 
+
+-- load the writers and start initializing them
+-- Note that the order in which writers are loaded *does* matter, `class.writer.lua` is expected to load first.
+-- initDir does not provide a direct way to define the order, so instead we sort writers alphabetically.
+-- One way to explicitly define the order would be to prefix all writers with a number such as `1- `.
 local writers = utils.initDir('./writers', 'writer')
 local names = {}
 for name in pairs(writers) do

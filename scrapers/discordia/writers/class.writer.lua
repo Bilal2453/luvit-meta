@@ -1,7 +1,3 @@
----@alias Writer fun(str: string, ...: any)|table
----@alias Writers {[string]: fun(w: Writer, class: Class, ...: any): (any), scanDir: fun(string): Class[]}
----@alias Scanners {[string]: fun(docs: Class[], contents: string, class: Class): any}
-
 local fs = require('fs')
 local utils = require('useful')
 local pathjoin = require('pathjoin')

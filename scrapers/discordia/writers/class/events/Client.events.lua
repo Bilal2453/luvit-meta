@@ -54,6 +54,8 @@ local function generateBaseTable()
 end
 -- require'fs'.writeFileSync('generated-events.lua', generateBaseTable())
 
+-- this table is half auto-generated
+-- make sure when regenerating to merge the manually typed types
 return {
 	{"ready", "Emitted after all shards and guilds are fully loaded."},
 	{"shardReady", "Emitted after a shard successfully connects to a Discord gateway and loads all corresponding guilds.", {"shardId", "ID of the shard", "string"}},
