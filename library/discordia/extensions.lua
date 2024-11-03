@@ -1,18 +1,5 @@
+---@meta _
 
-
-local function generateTemplate()
-  local url = 'https://raw.githubusercontent.com/wiki/SinisterRectus/Discordia/Extensions.md'
-  local res, body = require('coro-http').request('GET', url)
-  assert(res.code == 200, 'expected response code 200; got ' .. res.code)
-
-  local docs = {}
-  for section in body:gmatch('%-%-%-%-(.-)%-') do
-    local name = section:match('### ([^\n]+)')
-  end
-end
--- generateTemplate()
-
-local template = [[
 ---
 ---**Discordia** has some built-in Lua standard library extensions. These provide complementary or supplementary, commonly used functions that the Lua standard library does not provide.
 ---
@@ -275,10 +262,3 @@ function extensions.math.clamp(n, min, max) end
 ---@return number
 ---@nodiscard
 function extensions.math.round(n, digits) end
-]]
-
--- TODO: how do we handle globally injected functions?
-
-return function(w)
-  w(template)
-end

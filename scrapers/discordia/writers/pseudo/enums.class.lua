@@ -62,7 +62,7 @@ local function writeEnums(enums)
     local buf = {}
     insertfmt('---@alias %s%s_key', buf, PREFIX, k)
     for name, value in iterateEnum(v) do
-      if as_hex[k] then
+      if as_hex[k] ~= nil then -- currently bypasses limitations
         value = string.format('0x%x', value)
       end
       insertfmt('---|%s # %s', buf, encodeString(name), value)

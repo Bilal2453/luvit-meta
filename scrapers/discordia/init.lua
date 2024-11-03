@@ -8,20 +8,16 @@
 ---@field type string
 
 ---@class Method
+---@field name string
 ---@field desc string
 ---@field parameters Parameter[]
 ---@field returns string[]
 ---@field class table
----@field name string
 ---@field tags MethodTags
+---@field nodiscard boolean?
+---@field deprecated boolean|string?
 
----@class Static
----@field name string
----@field desc string
----@field parameters Parameter[]
----@field returns string[]
----@field tags MethodTags
----@field class Class
+---@class Static: Method
 
 ---@class Class
 ---@field name string
@@ -39,6 +35,10 @@
 ---@alias Writers {[string]: fun(w: Writer, class: Class, ...: any): (any), scanDir: fun(string): Class[]}
 ---@alias Scanners {[string]: fun(docs: Class[], contents: string, class: Class): any}
 
+-- TODO: Currently iterables do not suggest the type of
+-- the elements they iterate, because when typing things like Cache<Guild>
+-- the Language Server freaks out and stops realizing it is a Cache
+
 local fs = require('fs')
 local utils = require('useful') -- defines string methods
 local join = require('pathjoin').pathJoin
@@ -54,6 +54,9 @@ _G.OUT_DIR = join(RES_DIR, OUT_DIR_NAME)
 -- flip this to true if you don't want method overloads
 -- when `nil` values may be returned for errors
 _G.WITHOUT_ERROR_HANDLING = false
+-- currently doing errors as returns
+-- instead of overloads because of LSP problems
+_G.ERRORS_AS_RETURNS = true
 
 do
   local dirs = {RES_DIR, OUT_DIR}

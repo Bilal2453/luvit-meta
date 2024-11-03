@@ -5,8 +5,8 @@ local pathjoin = require('pathjoin')
 local scanDir = fs.scandirSync
 local pathJoin = pathjoin.pathJoin
 
-local matchers = utils.initDir('./writers/class/matchers', 'match')
-local classes, events = matchers.class, matchers.event
+local matchers = utils.initDir('./writers/class', 'match') --[[@type {[string]: {writers: Writers, scanners: Scanners}}]]
+local classes, events, patches = matchers.class, matchers.event, matchers.patches
 
 _G.DOCS = {}
 
@@ -21,8 +21,6 @@ local function scan(dir)
 	end
 end
 
--- TODO: MAIN: start patching classes with types such as client-options, and enums
-
 return function(open)
   for f in coroutine.wrap(scan), INC_DIR do
     local d = assert(fs.readFileSync(f))
@@ -35,6 +33,13 @@ return function(open)
     local w, save = open()
 
     w('---@meta _\n\n')
+
+    if ERRORS_AS_RETURNS then
+      classes.scanners.scanErrors(DOCS, '', class)
+    end
+
+    -- apply any necessary patches, if any
+    patches.scanners.patchClass(DOCS, '', class)
 
     -- write aliases
     events.writers.writeEventAlias(w, class)

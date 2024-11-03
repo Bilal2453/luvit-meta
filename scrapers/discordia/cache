@@ -1,0 +1,89 @@
+For convenience, some **Discordia** methods accept more than one type of input. For example, a method that strictly requires a user ID may also accept a user object, since a user object can be directly *resolved* into a user ID.
+
+This page details the resolveable types in Discordia. For example, if a method calls for a "User ID Resolveable", then any type listed for "User ID" may be used.
+
+### Integer
+
+Due to Luvit/LuaJIT's lack of native 64-bit integers, integers are resolved as strings in Discordia. If you wish to input the purest type where ever an integer is accepted, usually a Discord Snowflake ID, use a Lua string.
+
+- Lua string via `tonumber(str) and str or nil`
+- Lua number via `string.format('%i', num)`
+- LuaJIT int64_t or uint64_t via `tostring(int):match('%d*')`
+- [[Date]] via `Date:toSnowflake()`
+
+### User ID
+- [[User]] object via `User.id`
+- [[Member]] object via `Member.user.id`
+- [[Message]] object via `Message.author.id`
+- [[Guild]] object via `Guild.ownerId`
+- Integer
+
+### Message ID
+- [[Message]] object via `Message.id`
+- Integer
+
+### Channel ID
+- [[Channel]] object via `Channel.id`
+- Integer
+
+### Role ID
+- [[Role]] object via `Role.id`
+- Integer
+
+### Emoji ID
+- [[Emoji]] object via `Emoji.id`
+- Integer
+
+### Sticker ID
+- [[Sticker]] object via `Sticker.id`
+- Integer
+
+### Guild ID
+- [[Guild]] object via `Guild.id`
+- Integer
+
+### Entry ID
+- [[AuditLogEntry]] object via `Entry.id`
+- Integer
+
+### Message IDs
+- [[Iterable]] of Message ID resolveables
+- Lua table of Message ID resolveables
+
+### Role IDs
+- [[Iterable]] of Role ID resolveables
+- Lua table of Role ID resolveables
+
+### Emoji
+- [[Emoji]] object via `Emoji.hash`
+- [[Reaction]] object via `Reaction.emojiHash`
+- Lua string, where the string is a unicode emoji or of the form `"{Emoji.name}:{Emoji.id}"`
+
+### Sticker
+- [[Sticker]] object via `Sticker.hash`
+- Lua string, TODO: what string exactly?
+
+### Color
+- [[Color]] object via `Color.value`
+- Lua number via `tonumber(obj)`
+
+### Permissions
+- [[Permissions]] object via `Permissions.value`
+- Lua number via `tonumber(obj)`
+
+### Permission
+- Lua string equivalent to the name of a Discordia permissions enumeration
+- Lua number equivalent to the value of a Discordia permissions enumeration
+
+### Gateway Intent
+- Lua string equivalent to the name of a Discordia gateway intent enumeration
+- Lua number equivalent to the value of a Discordia gateway intent enumeration
+
+### Action Type
+- Lua string equivalent to the name of a Discordia action type enumeration
+- Lua number equivalent to the value of a Discordia action type enumeration
+
+### Base64
+- Lua string representing the base64 string, prefixed by an appropriate `"data:.*;base64"` URI scheme
+- Lua string representing a relative or absolute path to a local file, read via `fs.readFileSync`
+

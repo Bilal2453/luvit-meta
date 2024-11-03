@@ -13,9 +13,10 @@ local methodTags = {
 }
 
 local function prepareType(typ)
-  return typ:gsub('/', '|')
-            :gsub('*', 'any')
-						:gsub('nothing', '')
+  return typ
+    :gsub('/', '|')
+    :gsub('*', 'any')
+    :gsub('nothing', '')
 end
 string.prepareType = prepareType
 
@@ -25,7 +26,11 @@ end
 string.prepareField = prepareField
 
 local function trim(str)
-  return str:gsub('^%s*', ''):gsub('%s*$', '')
+  return str
+    :gsub('^%s*', '')
+    :gsub('%s*$', '')
+    :gsub('^<br>', '')
+    :gsub('<br>$', '')
 end
 string.trim = trim
 
@@ -43,6 +48,11 @@ local function newlineToBr(str)
   return str:gsub('\r?\n', '<br>')
 end
 string.newlineToBr = newlineToBr
+
+local function brToNewline(str)
+  return str:gsub('<br>(.+)', '\n%-%-%- %1')
+end
+string.brToNewline = brToNewline
 
 --- Formats string according to the varargs
 --- and inserts it into table `tbl`.
@@ -77,16 +87,26 @@ local function writeFunction(w, func, sep)
   end
   w('---\n')
 
+  -- write @deprecated if deprecated
+  if func.deprecated then
+    w('---@deprecated\n')
+  end
+
   -- write params
   for _, param in ipairs(func.parameters) do
     w('---@param %s%s %s\n', param[1], param[3] and '?' or '', param[2]:prepareType())
   end
   -- write returns
   for _, rtn in ipairs(func.returns) do
-		local t = rtn:prepareType()
-		if t and t ~= '' then
-			w('---@return %s\n', t)
-		end
+    local t = rtn:prepareType()
+    if t and t ~= '' then
+      w('---@return %s\n', t)
+    end
+  end
+
+  -- write no discard if set
+  if func.nodiscard then
+    w('---@nodiscard\n')
   end
 
   -- write signature
@@ -96,8 +116,8 @@ local function writeFunction(w, func, sep)
   end
   w('function %s%s%s(%s) end\n', func.class.name, sep, func.name, concat(param_names, ', '))
 
-  -- write an overload in case of possible error returns
-  if not WITHOUT_ERROR_HANDLING and func.tags.http or func.tags["http?"] then
+  -- write an overload/return in case of possible error returns
+  if not WITHOUT_ERROR_HANDLING and not ERRORS_AS_RETURNS and func.tags.http or func.tags["http?"] then
     w('---@return nil, string error_msg\n')
     w('function %s%s%s(%s) end\n', func.class.name, sep, func.name, concat(param_names, ', '))
   end

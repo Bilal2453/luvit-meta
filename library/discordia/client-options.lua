@@ -1,4 +1,5 @@
-local template = [=[
+---@meta _
+
 ---
 ---When initializing a client, a table of options can be passed to the constructor. A variety of sanity checks are performed on client initialization and while authenticating. Invalid options will result in an error being thrown while unusual options may log a client warning.
 ---
@@ -30,8 +31,3 @@ local template = [=[
 ---@field syncGuilds? boolean # Whether to automatically sync all guilds on start up (user-accounts only).<br>**Default:** `false`.
 ---@field gatewayIntents? integer # Represents which intents to use. The default includes all non-privileged intents.<br>**Default:** `3243773`.
 local client_options = {}
-]=]
-
-return function(w)
-  w(template)
-end
