@@ -94,7 +94,15 @@ local function writeFunction(w, func, sep)
   for _, param in ipairs(func.parameters) do
     insert(param_names, param[1])
   end
-  w('function %s%s%s(%s) end\n\n', func.class.name, sep, func.name, concat(param_names, ', '))
+  w('function %s%s%s(%s) end\n', func.class.name, sep, func.name, concat(param_names, ', '))
+
+  -- write an overload in case of possible error returns
+  if not WITHOUT_ERROR_HANDLING and func.tags.http or func.tags["http?"] then
+    w('---@return nil, string error_msg\n')
+    w('function %s%s%s(%s) end\n', func.class.name, sep, func.name, concat(param_names, ', '))
+  end
+
+  w('\n')
 end
 
 local function initDir(dir_path, suffix)

@@ -175,6 +175,8 @@ local function newClass(docs, dir)
 
 end
 
+--- Given the code, start matching for comments
+--- to parsing the documentation and initialize classes
 ---@return Class
 function scanners.scanClass(docs, d, f)
 	local class, initClass = newClass(docs, f)
@@ -195,6 +197,31 @@ function scanners.scanClass(docs, d, f)
 	end
 	return class
 end
+
+--- Scan classes for methods that may return `nil, error`
+--- and annotate those returns before starting to write
+-- function scanners.scanErrors(_, _, class)
+-- 	for _, method in ipairs(class.methods) do
+-- 		-- TODO: do we want to also include ws methods?
+-- 		if method.tags.http or method.tags['http?'] then
+-- 			if #method.returns == 1 then
+-- 				local rtn = method.returns[1]
+-- 				if rtn == 'nil' then
+-- 					table.insert(method.returns, 'string?')
+-- 				elseif rtn:find('/nil') then
+-- 					method.returns[1] = rtn
+-- 					method.returns[2] = 'string?'
+-- 				else
+-- 					method.returns[1] = rtn .. '/nil'
+-- 					method.returns[2] = 'string? error_msg'
+-- 				end
+-- 			else
+-- 				-- there are currently no http methods that has multi returns
+-- 				return error('todo')
+-- 			end
+-- 		end
+-- 	end
+-- end
 
 ----
 

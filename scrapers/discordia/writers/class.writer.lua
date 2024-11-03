@@ -21,11 +21,14 @@ local function scan(dir)
 	end
 end
 
+-- TODO: MAIN: start patching classes with types such as client-options, and enums
+
 return function(open)
   for f in coroutine.wrap(scan), INC_DIR do
     local d = assert(fs.readFileSync(f))
     local c = classes.scanners.scanClass(DOCS, d, f)
     events.scanners.scanEmitters(DOCS, d, c)
+    -- classes.scanners.scanErrors(DOCS, d, c)
   end
 
   for _, class in pairs(DOCS) do

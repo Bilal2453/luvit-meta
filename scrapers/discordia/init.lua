@@ -41,16 +41,32 @@
 
 local fs = require('fs')
 local utils = require('useful') -- defines string methods
-local pathJoin = require('pathjoin').pathJoin
+local join = require('pathjoin').pathJoin
 
 local insert, concat = table.insert, table.concat
+local exists, mkdir = fs.existsSync, fs.mkdirSync
 
-_G.INC_DIR = './resources/libs'
-_G.OUT_DIR = './resources/docs'
+local RES_DIR = './resources'
+local INC_DIR_NAME = 'libs'
+local OUT_DIR_NAME = 'docs'
+_G.INC_DIR = join(RES_DIR, INC_DIR_NAME)
+_G.OUT_DIR = join(RES_DIR, OUT_DIR_NAME)
+-- flip this to true if you don't want method overloads
+-- when `nil` values may be returned for errors
+_G.WITHOUT_ERROR_HANDLING = false
 
-assert(fs.existsSync(INC_DIR), INC_DIR .. " directory must contain Discordia's libs folder")
-if not fs.existsSync(OUT_DIR) then
-	fs.mkdirSync(OUT_DIR)
+do
+  local dirs = {RES_DIR, OUT_DIR}
+  for _, d in ipairs(dirs) do
+    if not exists(d) then
+      assert(mkdir(d))
+    end
+  end
+  if not exists(INC_DIR) then
+    print("Please copy Discordia's libs folder into " .. INC_DIR)
+    print('https://github.com/sinisterRectus/discordia/blob/master/libs')
+    os.exit(1)
+  end
 end
 
 ---Create a new Writer buffer, a writer is a higher level interface for a file.
@@ -69,7 +85,7 @@ local function openBuf()
   })
 
   local function close(path)
-    return fs.writeFileSync(pathJoin(OUT_DIR, path), concat(buf))
+    return fs.writeFileSync(join(OUT_DIR, path), concat(buf))
   end
 
   return buf, close
