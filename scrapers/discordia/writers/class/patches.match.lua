@@ -1,6 +1,7 @@
 local utils = require('useful')
 
 local patches = utils.initDir('./writers/class/patches', 'patch')
+local insert = table.insert
 
 ---@type Scanners
 local scanners = {}
@@ -10,6 +11,17 @@ local builder = {
   ---@type Class
   class = nil
 }
+
+function builder.index(tbl, ...)
+  local prev = tbl
+  for _, key in pairs{...} do
+    if not prev[key] then
+      prev[key] = {}
+    end
+    prev = prev[key]
+  end
+  return prev
+end
 
 function builder:findMethod(name)
   for _, method in ipairs(self.class.methods or {}) do
@@ -24,15 +36,20 @@ function builder:findMethod(name)
   end
 end
 
-function builder.index(tbl, ...)
-  local prev = tbl
-  for _, key in pairs{...} do
-    if not prev[key] then
-      prev[key] = {}
+---@return (Method|Static)[]
+function builder:findMethods(name)
+  local rtn = {}
+  for _, method in ipairs(self.class.methods or {}) do
+    if method.name:match(name) then
+      insert(rtn, method)
     end
-    prev = prev[key]
   end
-  return prev
+  for _, method in ipairs(self.class.statics or {}) do
+    if method.name:match(name) then
+      insert(rtn, method)
+    end
+  end
+  return rtn
 end
 
 function builder:nodiscard(name)
@@ -42,9 +59,11 @@ function builder:nodiscard(name)
     end
     return
   end
-  local method = self:findMethod(name)
-  assert(method)
-  method.nodiscard = true
+  local methods = self:findMethods(name)
+  assert(#methods > 0)
+  for _, method in pairs(methods) do
+    method.nodiscard = true
+  end
 end
 
 function builder:paramtype(method_name, no, new_type)
@@ -92,6 +111,21 @@ function builder:copymethod(method_name)
     new_method[i] = v
   end
   return new_method
+end
+
+function builder:property(name, typ, desc)
+  if type(name) == 'table' then
+    for _, v in ipairs(name) do
+      self:property(unpack(v))
+    end
+    return
+  end
+  for _, prop in ipairs(self.class.properties) do
+    if prop.name:match(name) then
+      prop.type = typ or prop.type
+      prop.desc = desc or prop.desc
+    end
+  end
 end
 
 function builder.init(class)

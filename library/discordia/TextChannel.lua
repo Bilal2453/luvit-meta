@@ -18,8 +18,7 @@ local TextChannel = {}
 ---@param id Message-ID-Resolvable
 ---@return Message|nil
 ---@return string error_msg
-function TextChannel:getMessage(id) end
----@return nil, string error_msg
+---@nodiscard
 function TextChannel:getMessage(id) end
 
 ---
@@ -29,6 +28,7 @@ function TextChannel:getMessage(id) end
 ---
 ---@return Message|nil
 ---@return string error_msg
+---@nodiscard
 function TextChannel:getFirstMessage() end
 
 ---
@@ -38,6 +38,7 @@ function TextChannel:getFirstMessage() end
 ---
 ---@return Message|nil
 ---@return string error_msg
+---@nodiscard
 function TextChannel:getLastMessage() end
 
 ---
@@ -48,6 +49,7 @@ function TextChannel:getLastMessage() end
 ---@param limit? number
 ---@return SecondaryCache|nil
 ---@return string error_msg
+---@nodiscard
 function TextChannel:getMessages(limit) end
 
 ---
@@ -59,6 +61,7 @@ function TextChannel:getMessages(limit) end
 ---@param limit? number
 ---@return SecondaryCache|nil
 ---@return string error_msg
+---@nodiscard
 function TextChannel:getMessagesAfter(id, limit) end
 
 ---
@@ -70,6 +73,7 @@ function TextChannel:getMessagesAfter(id, limit) end
 ---@param limit? number
 ---@return SecondaryCache|nil
 ---@return string error_msg
+---@nodiscard
 function TextChannel:getMessagesBefore(id, limit) end
 
 ---
@@ -81,6 +85,7 @@ function TextChannel:getMessagesBefore(id, limit) end
 ---@param limit? number
 ---@return SecondaryCache|nil
 ---@return string error_msg
+---@nodiscard
 function TextChannel:getMessagesAround(id, limit) end
 
 ---
@@ -90,6 +95,7 @@ function TextChannel:getMessagesAround(id, limit) end
 ---
 ---@return SecondaryCache|nil
 ---@return string error_msg
+---@nodiscard
 function TextChannel:getPinnedMessages() end
 
 ---
@@ -106,7 +112,7 @@ function TextChannel:broadcastTyping() end
 ---
 ---*This method always makes an HTTP request.*
 ---
----@param content string|table
+---@param content discordia.aliases.Channel.send
 ---@return Message|nil
 ---@return string error_msg
 function TextChannel:send(content) end

@@ -117,9 +117,11 @@ local function writeFunction(w, func, sep)
   w('function %s%s%s(%s) end\n', func.class.name, sep, func.name, concat(param_names, ', '))
 
   -- write an overload/return in case of possible error returns
-  if not WITHOUT_ERROR_HANDLING and not ERRORS_AS_RETURNS and func.tags.http or func.tags["http?"] then
-    w('---@return nil, string error_msg\n')
-    w('function %s%s%s(%s) end\n', func.class.name, sep, func.name, concat(param_names, ', '))
+  if func.tags.http or func.tags["http?"] then
+    if not (WITHOUT_ERROR_HANDLING or ERRORS_AS_RETURNS) then
+      w('---@return nil, string error_msg\n')
+      w('function %s%s%s(%s) end\n', func.class.name, sep, func.name, concat(param_names, ', '))
+    end
   end
 
   w('\n')

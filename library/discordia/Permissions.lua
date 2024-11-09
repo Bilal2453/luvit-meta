@@ -11,16 +11,12 @@ local Permissions = {}
 ---
 ---Returns a Permissions object with all of the defined permissions.
 ---
----*This method only operates on data in memory.*
----
 ---@param ... Permission-Resolvables
 ---@return Permissions
 function Permissions.fromMany(...) end
 
 ---
 ---Returns a Permissions object with all permissions.
----
----*This method only operates on data in memory.*
 ---
 ---@return Permissions
 function Permissions.all() end

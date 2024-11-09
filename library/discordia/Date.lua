@@ -10,8 +10,6 @@ local Date = {}
 ---
 ---Converts an ISO 8601 string into a Unix time in seconds. For compatibility with Discord's timestamp format, microseconds are also provided as a second return value.
 ---
----*This method only operates on data in memory.*
----
 ---@param str string
 ---@return number
 ---@return number
@@ -21,8 +19,6 @@ function Date.parseISO(str) end
 ---
 ---Converts an RFC 2822 string (an HTTP Date header) into a Unix time in seconds.
 ---
----*This method only operates on data in memory.*
----
 ---@param str string
 ---@return number
 ---@nodiscard
@@ -30,8 +26,6 @@ function Date.parseHeader(str) end
 
 ---
 ---Converts a Discord Snowflake ID into a Unix time in seconds. Additional decimal points may be present, though only the first 3 (milliseconds) should be considered accurate.
----
----*This method only operates on data in memory.*
 ---
 ---@param id string
 ---@return number
@@ -41,8 +35,6 @@ function Date.parseSnowflake(id) end
 ---
 ---Interprets a Lua date table as a local time and converts it to a Unix time in seconds. Equivalent to `os.time(tbl)`.
 ---
----*This method only operates on data in memory.*
----
 ---@param tbl? table
 ---@return number
 ---@nodiscard
@@ -50,8 +42,6 @@ function Date.parseTable(tbl) end
 
 ---
 ---Interprets a Lua date table as a UTC time and converts it to a Unix time in seconds. Equivalent to `os.time(tbl)` with a correction for UTC.
----
----*This method only operates on data in memory.*
 ---
 ---@param tbl? table
 ---@return number
@@ -61,8 +51,6 @@ function Date.parseTableUTC(tbl) end
 ---
 ---Constructs a new Date object from an ISO 8601 string. Equivalent to `Date(Date.parseISO(str))`.
 ---
----*This method only operates on data in memory.*
----
 ---@param str string
 ---@return Date
 ---@nodiscard
@@ -70,8 +58,6 @@ function Date.fromISO(str) end
 
 ---
 ---Constructs a new Date object from an RFC 2822 string. Equivalent to `Date(Date.parseHeader(str))`.
----
----*This method only operates on data in memory.*
 ---
 ---@param str string
 ---@return Date
@@ -81,8 +67,6 @@ function Date.fromHeader(str) end
 ---
 ---Constructs a new Date object from a Discord/Twitter Snowflake ID. Equivalent to `Date(Date.parseSnowflake(id))`.
 ---
----*This method only operates on data in memory.*
----
 ---@param id string
 ---@return Date
 ---@nodiscard
@@ -90,8 +74,6 @@ function Date.fromSnowflake(id) end
 
 ---
 ---Constructs a new Date object from a Lua date table interpreted as a local time. Equivalent to `Date(Date.parseTable(tbl))`.
----
----*This method only operates on data in memory.*
 ---
 ---@param tbl table
 ---@return Date
@@ -101,8 +83,6 @@ function Date.fromTable(tbl) end
 ---
 ---Constructs a new Date object from a Lua date table interpreted as a UTC time. Equivalent to `Date(Date.parseTableUTC(tbl))`.
 ---
----*This method only operates on data in memory.*
----
 ---@param tbl table
 ---@return Date
 ---@nodiscard
@@ -110,8 +90,6 @@ function Date.fromTableUTC(tbl) end
 
 ---
 ---Constructs a new Date object from a Unix time in seconds.
----
----*This method only operates on data in memory.*
 ---
 ---@param s number
 ---@return Date
@@ -121,8 +99,6 @@ function Date.fromSeconds(s) end
 ---
 ---Constructs a new Date object from a Unix time in milliseconds.
 ---
----*This method only operates on data in memory.*
----
 ---@param ms number
 ---@return Date
 ---@nodiscard
@@ -131,8 +107,6 @@ function Date.fromMilliseconds(ms) end
 ---
 ---Constructs a new Date object from a Unix time in microseconds.
 ---
----*This method only operates on data in memory.*
----
 ---@param us number
 ---@return Date
 ---@nodiscard
@@ -140,8 +114,6 @@ function Date.fromMicroseconds(us) end
 
 ---
 ---Constructs a new Date object from the Discord timestamp format `<t:seconds:style>`.
----
----*This method only operates on data in memory.*
 ---
 ---@param str string
 ---@return Date

@@ -16,7 +16,18 @@ return function (open)
     w('---@meta _\n\n') -- no pseudo types are allowed to be required directly
 
     for _, t in ipairs(alias) do
-      w(template, t[2]:trim():brToNewline(), t[1], concat(t[3], '|'))
+      w(
+        template,
+        t[2]
+          :trim()
+          :brToNewline(),
+        t[1],
+        concat(t[3], '|')
+          :gsub('[\n\t]*', '')
+          :gsub('  +', ' ')
+          :gsub('{ *', '{')
+          :gsub(' *}', '}')
+        )
     end
     save(name .. '.lua')
   end

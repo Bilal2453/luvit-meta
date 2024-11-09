@@ -18,18 +18,8 @@ return function(_, builder)
   }
 
   builder:nodiscard{
-    'getIntents',
-    'getWebhook',
-    'getInvite',
-    'getUser',
-    'getGuild',
-    'getChannel',
-    'getRole',
-    'getEmoji',
-    'getSticker',
+    'get%w+',
     'listVoiceRegions',
-    'getConnections',
-    'getApplicationInformation',
   }
 
   do

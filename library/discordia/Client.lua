@@ -439,8 +439,6 @@ function Client:getInvite(code, counts) end
 ---@return string error_msg
 ---@nodiscard
 function Client:getUser(id) end
----@return nil, string error_msg
-function Client:getUser(id) end
 
 ---
 ---Gets a guild object by ID. The current user must be in the guild and the client must be running the appropriate shard that serves this guild. This method never makes an HTTP request to obtain a guild.

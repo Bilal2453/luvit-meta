@@ -33,8 +33,6 @@ function AuditLogEntry:getBeforeAfter() end
 ---@return any|nil
 ---@return string error_msg
 function AuditLogEntry:getTarget() end
----@return nil, string error_msg
-function AuditLogEntry:getTarget() end
 
 ---
 ---Gets the user who performed the changes.
@@ -44,8 +42,6 @@ function AuditLogEntry:getTarget() end
 ---@return User|nil
 ---@return string error_msg
 function AuditLogEntry:getUser() end
----@return nil, string error_msg
-function AuditLogEntry:getUser() end
 
 ---
 ---Gets the member object of the user who performed the changes.
@@ -54,7 +50,5 @@ function AuditLogEntry:getUser() end
 ---
 ---@return Member|nil
 ---@return string
-function AuditLogEntry:getMember() end
----@return nil, string error_msg
 function AuditLogEntry:getMember() end
 

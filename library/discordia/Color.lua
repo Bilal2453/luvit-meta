@@ -14,16 +14,12 @@ local Color = {}
 ---
 ---Constructs a new Color object from a hexadecimal string. The string may or may not be prefixed by `#`; all other characters are interpreted as a hex string.
 ---
----*This method only operates on data in memory.*
----
 ---@param hex string
 ---@return Color
 function Color.fromHex(hex) end
 
 ---
 ---Constructs a new Color object from RGB values. Values are allowed to overflow though one component will not overflow to the next component.
----
----*This method only operates on data in memory.*
 ---
 ---@param r number
 ---@param g number
@@ -34,8 +30,6 @@ function Color.fromRGB(r, g, b) end
 ---
 ---Constructs a new Color object from HSV values. Hue is allowed to overflow while saturation and value are clamped to [0, 1].
 ---
----*This method only operates on data in memory.*
----
 ---@param h number
 ---@param s number
 ---@param v number
@@ -44,8 +38,6 @@ function Color.fromHSV(h, s, v) end
 
 ---
 ---Constructs a new Color object from HSL values. Hue is allowed to overflow while saturation and lightness are clamped to [0, 1].
----
----*This method only operates on data in memory.*
 ---
 ---@param h number
 ---@param s number

@@ -57,8 +57,6 @@ function Member:getPermissions(channel) end
 ---@return boolean|nil
 ---@return string error_msg
 function Member:addRole(id) end
----@return nil, string error_msg
-function Member:addRole(id) end
 
 ---
 ---Removes a role from the member. If the member does not have the role, then no action is taken. Note that the everyone role cannot be removed.
@@ -68,8 +66,6 @@ function Member:addRole(id) end
 ---@param id Role-ID-Resolvable
 ---@return boolean|nil
 ---@return string error_msg
-function Member:removeRole(id) end
----@return nil, string error_msg
 function Member:removeRole(id) end
 
 ---

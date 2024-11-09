@@ -19,15 +19,15 @@
 ---@field tts boolean # Whether this message is a text-to-speech message.
 ---@field nonce string|number|boolean|nil # Used by the official Discord client to detect the success of a sent message.
 ---@field editedTimestamp string|nil # The date and time at which the message was most recently edited, represented as an ISO 8601 string plus microseconds when available.
----@field oldContent table|nil # Yields a table containing keys as timestamps and value as content of the message at that time.
+---@field oldContent {[string]: string} # Yields a table containing keys as timestamps and value as content of the message at that time.
 ---@field content string # The raw message content. This should be between 0 and 2000 characters in length.
 ---@field author User # The object of the user that created the message.
 ---@field channel TextChannel # The channel in which this message was sent.
----@field type number # The message type. Use the `messageType` enumeration for a human-readable representation.
----@field embed table|nil # A raw data table that represents the first rich embed that exists in this message. See the Discord documentation for more information.
----@field attachment table|nil # A raw data table that represents the first file attachment that exists in this message. See the Discord documentation for more information.
----@field embeds table # A raw data table that contains all embeds that exist for this message. If there are none, this table will not be present.
----@field attachments table # A raw data table that contains all attachments that exist for this message. If there are none, this table will not be present.
+---@field type discordia.enums.messageType_value # The message type. Use the `messageType` enumeration for a human-readable representation.
+---@field embed discordia.aliases.Embed # A raw data table that represents the first rich embed that exists in this message. See the Discord documentation for more information.
+---@field attachment discordia.aliases.Attachment # A raw data table that represents the first file attachment that exists in this message. See the Discord documentation for more information.
+---@field embeds discordia.aliases.Embed[] # A raw data table that contains all embeds that exist for this message. If there are none, this table will not be present.
+---@field attachments discordia.aliases.Attachment[] # A raw data table that contains all attachments that exist for this message. If there are none, this table will not be present.
 ---@field guild Guild|nil # The guild in which this message was sent. This will not exist if the message was not sent in a guild text channel. Equivalent to `Message.channel.guild`.
 ---@field member Member|nil # The member object of the message's author. This will not exist if the message is not sent in a guild text channel or if the member object is not cached. Equivalent to `Message.guild.members:get(Message.author.id)`.
 ---@field referencedMessage Message|nil # If available, the previous message that this current message references as seen in replies.
@@ -51,7 +51,7 @@ function Message:setContent(content) end
 ---
 ---*This method always makes an HTTP request.*
 ---
----@param embed table
+---@param embed discordia.aliases.Embed
 ---@return boolean|nil
 ---@return string error_msg
 function Message:setEmbed(embed) end
@@ -81,6 +81,7 @@ function Message:showEmbeds() end
 ---
 ---@param flag Message-Flag-Resolvable
 ---@return boolean
+---@nodiscard
 function Message:hasFlag(flag) end
 
 ---
@@ -88,7 +89,7 @@ function Message:hasFlag(flag) end
 ---
 ---*This method always makes an HTTP request.*
 ---
----@param data table
+---@param data {content?: string, embed?: discordia.aliases.Embed, embeds?: discordia.aliases.Embed[]}
 ---@return boolean|nil
 ---@return string error_msg
 function Message:update(data) end
@@ -155,7 +156,7 @@ function Message:delete() end
 ---
 ---*This method always makes an HTTP request.*
 ---
----@param content string|table
+---@param content discordia.aliases.Channel.send
 ---@return Message|nil
 ---@return string error_msg
 function Message:reply(content) end

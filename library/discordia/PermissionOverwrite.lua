@@ -31,8 +31,6 @@ function PermissionOverwrite:delete() end
 ---@return Role|Member|nil
 ---@return string error_msg
 function PermissionOverwrite:getObject() end
----@return nil, string error_msg
-function PermissionOverwrite:getObject() end
 
 ---
 ---Returns a permissions object that represents the permissions that this overwrite explicitly allows.

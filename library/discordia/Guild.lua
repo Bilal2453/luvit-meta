@@ -77,8 +77,6 @@ function Guild:sync() end
 ---@return string error_msg
 ---@nodiscard
 function Guild:getMember(id) end
----@return nil, string error_msg
-function Guild:getMember(id) end
 
 ---
 ---Gets a role object by ID.
@@ -312,6 +310,7 @@ function Guild:setSplash(splash) end
 ---@param days? number
 ---@return number|nil
 ---@return string error_msg
+---@nodiscard
 function Guild:getPruneCount(days) end
 
 ---
@@ -332,6 +331,7 @@ function Guild:pruneMembers(days, count) end
 ---
 ---@return Cache|nil
 ---@return string error_msg
+---@nodiscard
 function Guild:getBans() end
 
 ---
@@ -342,6 +342,7 @@ function Guild:getBans() end
 ---@param id User-ID-Resolvable
 ---@return Ban|nil
 ---@return string error_msg
+---@nodiscard
 function Guild:getBan(id) end
 
 ---
@@ -351,6 +352,7 @@ function Guild:getBan(id) end
 ---
 ---@return Cache|nil
 ---@return string error_msg
+---@nodiscard
 function Guild:getInvites() end
 
 ---
@@ -361,6 +363,7 @@ function Guild:getInvites() end
 ---@param query? table
 ---@return Cache|nil
 ---@return string error_msg
+---@nodiscard
 function Guild:getAuditLogs(query) end
 
 ---
@@ -370,6 +373,7 @@ function Guild:getAuditLogs(query) end
 ---
 ---@return Cache|nil
 ---@return string error_msg
+---@nodiscard
 function Guild:getWebhooks() end
 
 ---

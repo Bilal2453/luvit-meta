@@ -10,16 +10,12 @@ local Time = {}
 ---
 ---Constructs a new Time object from a value interpreted as weeks, where a week is equal to 7 days.
 ---
----*This method only operates on data in memory.*
----
 ---@param t number
 ---@return Time
 function Time.fromWeeks(t) end
 
 ---
 ---Constructs a new Time object from a value interpreted as days, where a day is equal to 24 hours.
----
----*This method only operates on data in memory.*
 ---
 ---@param t number
 ---@return Time
@@ -28,16 +24,12 @@ function Time.fromDays(t) end
 ---
 ---Constructs a new Time object from a value interpreted as hours, where an hour is equal to 60 minutes.
 ---
----*This method only operates on data in memory.*
----
 ---@param t number
 ---@return Time
 function Time.fromHours(t) end
 
 ---
 ---Constructs a new Time object from a value interpreted as minutes, where a minute is equal to 60 seconds.
----
----*This method only operates on data in memory.*
 ---
 ---@param t number
 ---@return Time
@@ -46,8 +38,6 @@ function Time.fromMinutes(t) end
 ---
 ---Constructs a new Time object from a value interpreted as seconds, where a second is equal to 1000 milliseconds.
 ---
----*This method only operates on data in memory.*
----
 ---@param t number
 ---@return Time
 function Time.fromSeconds(t) end
@@ -55,16 +45,12 @@ function Time.fromSeconds(t) end
 ---
 ---Constructs a new Time object from a value interpreted as milliseconds, the base unit represented.
 ---
----*This method only operates on data in memory.*
----
 ---@param t number
 ---@return Time
 function Time.fromMilliseconds(t) end
 
 ---
 ---Constructs a new Time object from a table of time values where the keys are defined in the constructors above (eg: `weeks`, `days`, `hours`).
----
----*This method only operates on data in memory.*
 ---
 ---@param t table
 ---@return Time
