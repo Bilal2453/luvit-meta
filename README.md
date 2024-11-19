@@ -27,7 +27,7 @@ The definitions use the [Sumneko's Lua Language Server (LLS)](https://github.com
 #### On Visual Studio Code:
 
   1. Install [this plugin](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) then reload editor.
-    
+
   2. Open the workspace you want to enable this in.
   3. Press `Ctrl + Shift + P`, a prompt will open.
   4. Type "Open addon manager" and press enter.
@@ -104,6 +104,7 @@ Popular libraries that are not built-in:
 - [ ] coro-wrapper
 - [ ] coro-fs
 - [ ] coro-spawn
+- [x] [discordia](https://github.com/SinisterRectus/Discordia/)
 
 ## License
 
