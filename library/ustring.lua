@@ -3,22 +3,10 @@
 ---@class luvit.ustring
 local ustring = {}
 
----@class luvit.ustring.UStr
-local meta = {
-	__index = ustring,
-}
----@param ustr1 luvit.ustring.UStr
----@param ustr2 luvit.ustring.UStr
----@return boolean
-function meta.__eq(ustr1, ustr2) end
----@param self luvit.ustring.UStr
----@return string
-function meta.__tostring(self) end
----@param ustr1 luvit.ustring.UStr
----@param ustr2 luvit.ustring.UStr
----@return luvit.ustring.UStr
-function meta.__concat(ustr1, ustr2) end
-meta.__len = ustring.len
+---@class luvit.ustring.UStr: luvit.ustring
+---@operator concat: luvit.ustring
+---@operator len: integer
+local UStr = {}
 
 ---
 ---@param byte integer
