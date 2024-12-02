@@ -92,6 +92,41 @@ function builder:returntype(method_name, new_type, no)
   method.returns[no] = new_type
 end
 
+function builder:operator(name, return_type, inputs)
+  if type(name) == 'table' then
+    for _, v in ipairs(name) do
+      self:operator(unpack(v))
+    end
+    return
+  end
+  inputs = inputs and {'other', inputs, false} or nil
+  insert(self.class.operators, {
+    name = name,
+    parameters = {inputs},
+    returns = {return_type},
+  })
+end
+
+---@param visibility 'public'|'private'|'protected'
+function builder:methodvisibility(method_name, visibility)
+  local method = assert(self:findMethod(method_name))
+  method.visibility = visibility
+end
+
+function builder:protected(name)
+  if type(name) == 'table' then
+    for _, v in ipairs(name) do
+      self:protected(v)
+    end
+    return
+  end
+  local methods = self:findMethods(name)
+  assert(#methods > 0)
+  for _, method in pairs(methods) do
+    method.visibility = 'protected'
+  end
+end
+
 function builder:inittype(new_type)
   builder.index(self.class, 'parameters', 1)[2] = new_type
 end

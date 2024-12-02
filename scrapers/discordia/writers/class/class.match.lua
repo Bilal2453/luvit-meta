@@ -167,6 +167,7 @@ local function newClass(docs, dir)
     class.parameters = matchParameters(s)
     class.tags = matchTags(s)
     class.methodTags = matchMethodTags(s)
+    class.operators = {}
     assert(not docs[class.name], 'duplicate class: ' .. class.name)
     docs[class.name] = class
   end
@@ -262,6 +263,22 @@ function writers.writeProperties(w, class)
     end
   end
   w('\n')
+end
+
+--- write operator tags, those represent Lua meta-methods
+function writers.writeOperators(w, class)
+  if #class.operators < 1 then
+    return
+  end
+  for _, operator in ipairs(class.operators) do
+    local buf = {}
+    for _, param in ipairs(operator.parameters) do
+      insert(buf, param[2]:prepareType())
+    end
+    local params = #buf > 0 and ('(' .. concat(buf, ',') .. ')') or ''
+    assert(operator.returns[1], 'expected at least 1 operator return')
+    w('---@operator %s%s:%s\n', operator.name, params, operator.returns[1])
+  end
 end
 
 -- write init call overload

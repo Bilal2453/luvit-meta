@@ -13,44 +13,44 @@ local methodTags = {
 }
 
 local function prepareType(typ)
-  return typ
+  return (typ
     :gsub('/', '|')
     :gsub('*', 'any')
-    :gsub('nothing', '')
+    :gsub('nothing', ''))
 end
 string.prepareType = prepareType
 
 local function prepareField(str)
-  return str:gsub('^private$', 'public private')
+  return (str:gsub('^private$', 'public private'))
 end
 string.prepareField = prepareField
 
 local function trim(str)
-  return str
+  return (str
     :gsub('^%s*', '')
     :gsub('%s*$', '')
     :gsub('^<br>', '')
-    :gsub('<br>$', '')
+    :gsub('<br>$', ''))
 end
 string.trim = trim
 
 local function multiline(str)
-  return str:gsub('\r?\n([^\n]*)', '\n%-%-%-%1')
+  return (str:gsub('\r?\n([^\n]*)', '\n%-%-%-%1'))
 end
 string.multiline = multiline
 
 local function singleline(str)
-  return str:gsub('\r?\n', '')
+  return (str:gsub('\r?\n', ''))
 end
 string.singleline = singleline
 
 local function newlineToBr(str)
-  return str:gsub('\r?\n', '<br>')
+  return (str:gsub('\r?\n', '<br>'))
 end
 string.newlineToBr = newlineToBr
 
 local function brToNewline(str)
-  return str:gsub('<br>(.+)', '\n%-%-%- %1')
+  return (str:gsub('<br>(.+)', '\n%-%-%- %1'))
 end
 string.brToNewline = brToNewline
 
@@ -107,6 +107,11 @@ local function writeFunction(w, func, sep)
   -- write no discard if set
   if func.nodiscard then
     w('---@nodiscard\n')
+  end
+
+  -- write no discard if set
+  if func.visibility then
+    w('---@%s\n', func.visibility)
   end
 
   -- write signature

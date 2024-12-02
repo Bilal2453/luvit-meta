@@ -56,6 +56,8 @@ return function(open)
     -- write class events, if any
     events.writers.writeEventFields(w, class)
 
+    -- write metamethod definitions
+    classes.writers.writeOperators(w, class)
     -- write init call overload
     classes.writers.writeOverload(w, class)
 

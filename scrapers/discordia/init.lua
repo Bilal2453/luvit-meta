@@ -16,8 +16,14 @@
 ---@field tags MethodTags
 ---@field nodiscard boolean?
 ---@field deprecated boolean|string?
+---@field visibility? 'public'|'private'|'protected'
 
 ---@class Static: Method
+
+---@class Operator
+---@field name string
+---@field parameters Parameter[]
+---@field returns string[]
 
 ---@class Class
 ---@field name string
@@ -26,6 +32,7 @@
 ---@field methods Method[]
 ---@field statics Static[]
 ---@field properties Property[]
+---@field operators Operator[]
 ---@field parents string[]
 ---@field methodTags MethodTags
 ---@field desc string
