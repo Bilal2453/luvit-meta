@@ -19,6 +19,7 @@
 local json = {}
 
 ---@alias json_encode_state {indent?: boolean, keyorder?: string|integer, level?: integer|boolean, buffer?: table, bufferlen?: integer, tables?: table<table, boolean>, exception?: fun(reason: "reference cycle"|"custom encoder failed"|"unsupported type", value: any, state: json_encode_state, defaultmessage: string)}
+---@alias json_encode_state_buffer {buffer: table, indent?: boolean, keyorder?: string|integer, level?: integer|boolean, buffer?: table, bufferlen?: integer, tables?: table<table, boolean>, exception?: fun(reason: "reference cycle"|"custom encoder failed"|"unsupported type", value: any, state: json_encode_state, defaultmessage: string)}
 
 ---
 ---Create a string representing the object. Object can be a table, a string, a number, a boolean, nil, json.null or any object with a function __tojson in its metatable. A table can only use strings and numbers as keys and its values have to be valid objects as well. It raises an error for any invalid data types or reference cycles.
@@ -46,8 +47,17 @@ local json = {}
 ---When `state.buffer` was set, the return value will be `true` on success. Without `state.buffer` the return value will be a string.
 ---
 ---@param object table|string|number|nil
----@param state? json_encode_state
----@return string|boolean result
+---@return string result
+---@nodiscard
+function json.encode(object, state) end
+---@param object table|string|number|nil
+---@param state json_encode_state
+---@return string result
+---@nodiscard
+function json.encode(object, state) end
+---@param object table|string|number|nil
+---@param state json_encode_state_buffer
+---@return boolean result
 ---@nodiscard
 function json.encode(object, state) end
 json.stringify = json.encode
