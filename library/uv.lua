@@ -1145,7 +1145,7 @@ function uv.new_signal() end
 
 -- TODO: make sure that the above method can indeed return nil + error.
 -- see uv_signal_init and uv__make_pipe, it will only fail if pipe2 fails
--- I belive it is very unlikely it would ever error for this call, but it is theortically possible 
+-- I belive it is very unlikely it would ever error for this call, but it is theortically possible
 
 ---
 ---Start the handle with the given callback, watching for the given signal.
@@ -2745,7 +2745,7 @@ local luv_dir_t = {}
 ---A bitwise OR mask.
 ---|integer
 
----@alias uv.aliases.fs_readdir_entries {type: uv.aliases.fs_types, name: string}
+---@alias uv.aliases.fs_readdir_entries {type: uv.aliases.fs_types, name: string}[]
 
 ---@alias uv.aliases.fs_symlink_flags {dir: boolean, junction: boolean}
 
