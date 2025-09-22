@@ -24,7 +24,7 @@ function core.instanceof(obj, class) end
 ---
 ---@class luvit.core.Object
 ---A table value holding all metatables that will be applied on `Object:create()`.
----@field meta {super?: luvit.core.Object, __index: table, [string]: function?}
+---@field meta {super?: luvit.core.Object, __index: table, [string]: (function|table)?}
 local Object = {}
 core.Object = Object
 
