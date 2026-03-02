@@ -14,7 +14,7 @@ local http = {}
 ---@field url? string
 ---@field statusCode? httpCodec_code
 ---@field statusMessage? httpCodec_reason
----@field socket luvit.net.Socket
+---@field socket luvit.net.Socket|luvit.tls.TLSSocket
 ---Emitted on error, as well as on `Emitter:wrap()`.
 ---@field on fun(self: luvit.http.IncomingMessage, name: 'error', callback: fun(err: string|luvit.core.Error))
 ---Emitted on error, as well as on `Emitter:wrap()`.
@@ -67,7 +67,7 @@ function IncomingMessage:_read() end
 ---@class luvit.http.ServerResponse: luvit.stream.Writable
 ---Override this in the instance to not send the date.
 ---@field sendDate boolean
----@field socket luvit.net.Socket
+---@field socket luvit.net.Socket|luvit.tls.TLSSocket
 ---@field headersSent boolean
 ---@field headers table
 ---@field _extra_http table
