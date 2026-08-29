@@ -92,9 +92,10 @@ function lpeg.B(patt) end
 ---As an example, the pattern lpeg.R("09") matches any digit, and lpeg.R("az", "AZ") matches any ASCII letter.
 ---
 ---@param range? string
+---@param ... string?
 ---@return lpeg-pattern
 ---@nodiscard
-function lpeg.R(range) end
+function lpeg.R(range, ...) end
 
 ---
 ---Returns a pattern that matches any single character that appears in the given string. (The `S` stands for *Set*.)
